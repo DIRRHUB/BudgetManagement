@@ -1,4 +1,4 @@
-package com.example.budgetmanagment;
+package com.example.budgetmanagement;
 
 import org.junit.Test;
 
