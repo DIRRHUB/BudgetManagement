@@ -13,4 +13,14 @@ public class Account {
         this.personName = personName;
         this.currencyType = currencyType;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", personEmail='" + personEmail + '\'' +
+                ", personName='" + personName + '\'' +
+                ", currencyType='" + currencyType + '\'' +
+                '}';
+    }
 }
