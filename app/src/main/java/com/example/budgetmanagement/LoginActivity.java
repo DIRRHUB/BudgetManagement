@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     public void onClickRegister(View view) {
         if(!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())){
             databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
@@ -43,9 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())){
              databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
         }
-        if(databaseContent.checkAuth()){
-            databaseContent.checkAuth();
+        if(databaseContent.checkAuth())
             startActivity(intent);
-        }
     }
 }

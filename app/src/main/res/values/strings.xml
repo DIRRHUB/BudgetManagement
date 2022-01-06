@@ -12,4 +12,6 @@
     <string name="textLogin">Login</string>
     <string name="textRegister">Register</string>
     <string name="textRegisterLogin">Регистрация/Вход</string>
+    <string name="next">Далее</string>
+    <string name="helloMessage">Вы вошли как</string>
 </resources>
