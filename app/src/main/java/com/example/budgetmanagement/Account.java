@@ -1,13 +1,14 @@
 package com.example.budgetmanagement;
 
 public class Account {
-   // private int personFamily, budget, budgetLeft, budgetLastMonth;
+    public int personFamily, budget, budgetLeft, budgetLastMonth;
     public String id, personEmail, personName, currencyType;
 
-    Account(){
-    }
-
-    public Account(String id, String personEmail, String personName, String currencyType) {
+    public Account(int personFamily, int budget, int budgetLeft, int budgetLastMonth, String id, String personEmail, String personName, String currencyType) {
+        this.personFamily = personFamily;
+        this.budget = budget;
+        this.budgetLeft = budgetLeft;
+        this.budgetLastMonth = budgetLastMonth;
         this.id = id;
         this.personEmail = personEmail;
         this.personName = personName;
@@ -17,7 +18,11 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id='" + id + '\'' +
+                "personFamily=" + personFamily +
+                ", budget=" + budget +
+                ", budgetLeft=" + budgetLeft +
+                ", budgetLastMonth=" + budgetLastMonth +
+                ", id='" + id + '\'' +
                 ", personEmail='" + personEmail + '\'' +
                 ", personName='" + personName + '\'' +
                 ", currencyType='" + currencyType + '\'' +
