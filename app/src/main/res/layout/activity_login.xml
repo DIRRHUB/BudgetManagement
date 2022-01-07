@@ -120,6 +120,7 @@
         android:id="@+id/bNext"
         android:layout_width="174dp"
         android:layout_height="63dp"
+        android:onClick="onClickNext"
         android:text="@string/next"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
