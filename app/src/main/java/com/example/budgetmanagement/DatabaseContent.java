@@ -1,9 +1,12 @@
 package com.example.budgetmanagement;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -12,22 +15,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class DatabaseContent{
     private FirebaseAuth mAuth;
     private FirebaseUser cUser;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference database;
-    private String email;
     private final String USER_KEY = "Account";
-
+    private Account account;
 
     public void init() {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        database = firebaseDatabase.getReference(USER_KEY);
+        database = firebaseDatabase.getReference(USER_KEY).push();
     }
 
     public boolean checkAuth() {
@@ -55,44 +58,44 @@ public class DatabaseContent{
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
             if (task.isSuccessful()) {
                 Log.d("login", "Successful");
-                /*Account account = new Account();
-                account = loadFromDatabase();
-                LoginActivity.setName(database);*/
                 LoginActivity.updateUILoggedIn();
             }
         }));
+        account = loadFromDatabase();
+        if(account!=null){
+            LoginActivity.setName(account.personName);
+        }
     }
-
 
     public void signOut() {
         mAuth.signOut();
     }
 
-    public List loadFromDatabase(){
-        List list = new ArrayList();
+    public Account loadFromDatabase(){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //if(list.size()>0) list.clear();
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    Account account = ds.getValue(Account.class);
-                    list.add(account);
-                }
+                account = snapshot.getValue(Account.class);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         };
         database.addValueEventListener(valueEventListener);
-        return list;
-    }
-    public void saveToDatabase(Account account){
-        database.setValue(account);
-    }
-    public String getUID(){
-        return mAuth.getUid();
+        return account;
     }
 
+    public void saveToDatabase(@NonNull Account account){
+        Map<String, Object> accountMap = account.toMap();
+        database.updateChildren(accountMap);
+    }
+
+
+    public String getUID(){
+        return mAuth.getCurrentUser().getUid();
+    }
+    public String getEmail(){
+        return mAuth.getCurrentUser().getEmail();
+    }
 }
 

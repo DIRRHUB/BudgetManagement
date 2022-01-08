@@ -15,4 +15,5 @@
     <string name="next">Далее</string>
     <string name="helloMessage">Вы вошли как</string>
     <string name="signout">Sign Out</string>
+    <string name="default_name">новый пользователь</string>
 </resources>

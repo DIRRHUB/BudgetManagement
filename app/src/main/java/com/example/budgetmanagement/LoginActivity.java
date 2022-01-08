@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity{
     public static void updateUILoggedIn(){
         binding.bNext.setVisibility(View.VISIBLE);
         binding.textHello.setVisibility(View.VISIBLE);
-        binding.textHelloUser.setVisibility(View.VISIBLE); //hello user set name
+        binding.textHelloUser.setVisibility(View.VISIBLE);
         binding.constraintLayout.setVisibility(View.GONE);
         binding.textRegistration4.setVisibility(View.GONE);
     }
