@@ -1,17 +1,21 @@
 package com.example.budgetmanagement;
 
+import android.annotation.SuppressLint;
+
 import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Account {
-    public int budget, budgetLeft, budgetLastMonth;
+    public double budget, budgetLeft, budgetLastMonth;
     public String id, email, personName, currencyType;
 
     public Account() {
     }
-    public Account(int budget, int budgetLeft, int budgetLastMonth, String id, String email, String personName, String currencyType) {
+    public Account(double budget, double budgetLeft, double budgetLastMonth, String id, String email, String personName, String currencyType) {
         this.budget = budget;
         this.budgetLeft = budgetLeft;
         this.budgetLastMonth = budgetLastMonth;
@@ -73,5 +77,19 @@ public class Account {
         result.put("currencyType", currencyType);
 
         return result;
+    }
+
+    static class Purchase{
+        public String name, category, date;
+        public double price;
+
+        @SuppressLint("SimpleDateFormat")
+        public void addPurchase(String name, String category, double price){
+            this.name = name;
+            this.category = category;
+            this.price = price;
+            date = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(new Date());
+        }
+
     }
 }

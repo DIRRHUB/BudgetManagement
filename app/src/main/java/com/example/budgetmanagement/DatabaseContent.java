@@ -30,7 +30,7 @@ public class DatabaseContent{
     public void init() {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        database = firebaseDatabase.getReference(USER_KEY).push();
+        database = firebaseDatabase.getReference(USER_KEY + "/" + mAuth.getUid());
     }
 
     public boolean checkAuth() {
@@ -88,6 +88,12 @@ public class DatabaseContent{
     public void saveToDatabase(@NonNull Account account){
         Map<String, Object> accountMap = account.toMap();
         database.updateChildren(accountMap);
+
+        //Next code must be located in other place
+        //
+        Account.Purchase purchase = new Account.Purchase();
+        purchase.addPurchase("test", "ntn", 424);
+        database.child("purchases").push().setValue(purchase);
     }
 
 
