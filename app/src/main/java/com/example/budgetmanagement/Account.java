@@ -38,6 +38,7 @@ public class Account {
                 '}';
     }
 
+
     public void setBudget(int budget) {
         this.budget = budget;
     }

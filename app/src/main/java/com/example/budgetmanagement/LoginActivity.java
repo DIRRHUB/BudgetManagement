@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import android.view.View;
 
 import com.example.budgetmanagement.databinding.ActivityLoginBinding;
-
-import java.io.Serializable;
 
 public class LoginActivity extends AppCompatActivity{
     private static ActivityLoginBinding binding;
@@ -38,12 +35,14 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     public void onClickRegister(View view) {
+        SpecialFunction.hideKeyboard(view);
         if(!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())){
             databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
         }
     }
 
     public void onClickLogin(View view) {
+        SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
             databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
         }
@@ -54,6 +53,7 @@ public class LoginActivity extends AppCompatActivity{
             startActivity(intent);
         }
     }
+
     public static void setName(String name){
         binding.textHelloUser.setText(name);
     }

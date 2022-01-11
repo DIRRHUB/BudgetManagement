@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
+    private Account.Purchase purchase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         account = new Account();
+        purchase = new Account.Purchase();
     }
 
     @Override
@@ -31,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         databaseContent = new DatabaseContent();
         databaseContent.init();
         loadAccount();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        databaseContent.saveToDatabase(account);
     }
 
     public void onClickSignOut(View view) {
@@ -47,15 +56,29 @@ public class MainActivity extends AppCompatActivity {
         binding.editList.setText(account.toString());
     }
     private void loadAccount(){
-        if(databaseContent.loadFromDatabase()==null) {
+        if(databaseContent.loadAccountFromDatabase()==null) {
             setDefaultAccount();
         } else {
-            account = databaseContent.loadFromDatabase();
+            account = databaseContent.loadAccountFromDatabase();
+            purchase = databaseContent.loadPurchaseFromDatabase();
         }
     }
+    public void onClickAddPurchase(View view) {
+        Account.Purchase purchase = new Account.Purchase();
+        purchase.addPurchase(String.valueOf(random.nextInt()), String.valueOf(random.nextInt()), random.nextDouble());
+        databaseContent.saveToDatabase(account, purchase);
+    }
+    public void onClickErasePurchase(View view) {
+        databaseContent.erasePurchaseFromDatabase(Integer.parseInt(binding.key.getText().toString()));
+    }
+    public void onClickRandom(View view) {
+        setAccount();
+    }
+
     private void saveAccount(){
         databaseContent.saveToDatabase(account);
     }
+
     protected void setDefaultAccount(){
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
@@ -65,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
         account.setBudgetLastMonth(0);
         account.setBudgetLeft(100);
     }
+    Random random = new Random(); //temp Random
     protected void setAccount(){
-        Random random = new Random();
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
@@ -75,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         account.setBudgetLastMonth(random.nextInt());
         account.setBudgetLeft(random.nextInt());
     }
+    @Override
+    public void onBackPressed() {}
 
-    public void onClickRandom(View view) {
-        setAccount();
-    }
+
 }
