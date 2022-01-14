@@ -1,6 +1,7 @@
 package com.example.budgetmanagement;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if(databaseContent.checkAuth()){
             startActivity(intent);
         }

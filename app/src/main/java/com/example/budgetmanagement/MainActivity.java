@@ -1,6 +1,7 @@
 package com.example.budgetmanagement;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         databaseContent = new DatabaseContent();
         databaseContent.init();
         loadAccount();
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickLoad(View view) {
         loadAccount();
-        binding.editList.setText(account.toString());
+       // binding.editList.setText(account.toString());
     }
     private void loadAccount(){
         if(databaseContent.loadAccountFromDatabase()==null) {
