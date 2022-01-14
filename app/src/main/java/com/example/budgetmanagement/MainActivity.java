@@ -65,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onClickAddPurchase(View view) {
         Account.Purchase purchase = new Account.Purchase();
-        purchase.addPurchase(String.valueOf(random.nextInt()), String.valueOf(random.nextInt()), random.nextDouble());
+        purchase.addPurchase(String.valueOf(random.nextInt()), String.valueOf(random.nextInt()), databaseContent.getPurchaseID(),random.nextDouble());
         databaseContent.saveToDatabase(account, purchase);
     }
     public void onClickErasePurchase(View view) {
-        databaseContent.erasePurchaseFromDatabase(Integer.parseInt(binding.key.getText().toString()));
+        databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
     }
     public void onClickRandom(View view) {
         setAccount();

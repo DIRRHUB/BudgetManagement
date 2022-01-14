@@ -3,6 +3,7 @@ package com.example.budgetmanagement;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public class DatabaseContent{
     private final String USER_KEY = "Account", PURCHASES = "purchases";
     private Account account;
     private Account.Purchase purchase;
+    private String lastPurchaseID;
 
     public void init() {
         mAuth = FirebaseAuth.getInstance();
@@ -103,24 +105,30 @@ public class DatabaseContent{
         database.addValueEventListener(valueEventListener);
         return purchase;
     }
-    public void erasePurchaseFromDatabase(int keyPurchase){
-        //database = firebaseDatabase.getReference(USER_KEY + "/" + mAuth.getUid());
+    public void erasePurchaseFromDatabase(String purchaseID){ // If future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
+        database.child(PURCHASES).child(purchaseID).removeValue();
     }
 
     public void saveToDatabase(@NonNull Account account){
         Map<String, Object> accountMap = account.toMap();
         database.updateChildren(accountMap);
     }
+
     public void saveToDatabase(@NonNull Account account, Account.Purchase purchase){
         saveToDatabase(account);
-        database.child(PURCHASES).push().setValue(purchase);
+        database.child(PURCHASES).child(lastPurchaseID).setValue(purchase);
     }
-
+    public String getPurchaseID() {
+        lastPurchaseID = database.child(PURCHASES).push().getKey();
+        return lastPurchaseID;
+    }
     public String getUID(){
         return mAuth.getCurrentUser().getUid();
     }
     public String getEmail(){
         return mAuth.getCurrentUser().getEmail();
     }
+
+
 }
 
