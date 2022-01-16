@@ -44,18 +44,18 @@ public class MainActivity extends AppCompatActivity {
         databaseContent.saveToDatabase(account);
     }
 
-    public void onClickSignOut(View view) {
+    public void onClickSignOut(MenuItem item) {
         databaseContent.signOut();
         LoginActivity.updateUILoggedOut();
         startActivity(new Intent(this, LoginActivity.class));
     }
-    public void onClickSave(View view){
+    public void onClickSave(MenuItem item){
         saveAccount();
     }
 
-    public void onClickLoad(View view) {
+    public void onClickLoad(MenuItem item) {
         loadAccount();
-       // binding.editList.setText(account.toString());
+        binding.editList.setText(account.toString());
     }
     private void loadAccount(){
         if(databaseContent.loadAccountFromDatabase()==null) {
@@ -65,15 +65,15 @@ public class MainActivity extends AppCompatActivity {
             purchase = databaseContent.loadPurchaseFromDatabase();
         }
     }
-    public void onClickAddPurchase(View view) {
+    public void onClickAddPurchase(MenuItem item) {
         Account.Purchase purchase = new Account.Purchase();
         purchase.addPurchase(String.valueOf(random.nextInt()), String.valueOf(random.nextInt()), databaseContent.getPurchaseID(),random.nextDouble());
         databaseContent.saveToDatabase(account, purchase);
     }
-    public void onClickErasePurchase(View view) {
+    public void onClickErasePurchase(MenuItem item) {
         databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
     }
-    public void onClickRandom(View view) {
+    public void onClickRandom(MenuItem item) {
         setAccount();
     }
 
@@ -102,6 +102,4 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {}
-
-
 }

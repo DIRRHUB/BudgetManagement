@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/load"
+            android:title="@string/load"
+            android:onClick="onClickLoad"/>
+        <item
+            android:id="@+id/save"
+            android:onClick="onClickSave"
+            android:title="@string/save" />
+        <item
+            android:id="@+id/random"
+            android:onClick="onClickRandom"
+            android:title="@string/Random" />
+        <item
+            android:id="@+id/save_purchase"
+            android:onClick="onClickAddPurchase"
+            android:title="@string/save_purchase" />
+        <item
+            android:id="@+id/erase_purchase"
+            android:onClick="onClickErasePurchase"
+            android:title="@string/erase_purchase" />
+        <item
+            android:id="@+id/signout"
+            android:menuCategory="container"
+            android:onClick="onClickSignOut"
+            android:title="@string/signout" />
+    </group>
+
+</menu>

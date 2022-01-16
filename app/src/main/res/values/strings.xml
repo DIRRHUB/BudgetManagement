@@ -19,7 +19,7 @@
     <string name="save">Сохранить</string>
     <string name="Random">Random</string>
     <string name="erase_puchase" />
-    <string name="erase_purchase">Erase Puchase</string>
+    <string name="erase_purchase">Erase Purchase</string>
     <string name="save_purchase">Save Purchase</string>
     <string name="load">Загрузить</string>
 </resources>
