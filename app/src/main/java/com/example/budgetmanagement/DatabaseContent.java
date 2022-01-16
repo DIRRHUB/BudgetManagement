@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +37,6 @@ public class DatabaseContent{
             Log.d("checkAuth", "NULL");
             return false;
         } else {
-
             Log.d("checkAuth", "NOT NULL");
             return true;
         }
@@ -114,8 +112,7 @@ public class DatabaseContent{
         database.updateChildren(accountMap);
     }
 
-    public void saveToDatabase(@NonNull Account account, Account.Purchase purchase){
-        saveToDatabase(account);
+    public void saveToDatabase(@NonNull Account.Purchase purchase){
         database.child(PURCHASES).child(lastPurchaseID).setValue(purchase);
     }
     public String getPurchaseID() {

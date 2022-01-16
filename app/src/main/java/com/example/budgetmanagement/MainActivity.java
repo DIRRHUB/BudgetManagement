@@ -1,32 +1,44 @@
 package com.example.budgetmanagement;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
-
+    private Fragment newPurchase, settings;
+    private FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        Log.e("test", binding.getRoot().toString());
         View view = binding.getRoot();
         setContentView(view);
+        binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
+        newPurchase = new Fragment();
+        settings = new Fragment();
     }
 
     @Override
@@ -37,11 +49,25 @@ public class MainActivity extends AppCompatActivity {
         databaseContent.init();
         loadAccount();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         databaseContent.saveToDatabase(account);
+    }
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.new_purchase:
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), newPurchase);
+                return true;
+            case R.id.settings:
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), settings);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onClickSignOut(MenuItem item) {
@@ -53,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
         saveAccount();
     }
 
-    public void onClickLoad(MenuItem item) {
-        loadAccount();
-        binding.editList.setText(account.toString());
-    }
     private void loadAccount(){
         if(databaseContent.loadAccountFromDatabase()==null) {
             setDefaultAccount();
@@ -65,13 +87,8 @@ public class MainActivity extends AppCompatActivity {
             purchase = databaseContent.loadPurchaseFromDatabase();
         }
     }
-    public void onClickAddPurchase(MenuItem item) {
-        Account.Purchase purchase = new Account.Purchase();
-        purchase.addPurchase(String.valueOf(random.nextInt()), String.valueOf(random.nextInt()), databaseContent.getPurchaseID(),random.nextDouble());
-        databaseContent.saveToDatabase(account, purchase);
-    }
     public void onClickErasePurchase(MenuItem item) {
-        databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
+       // databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
     }
     public void onClickRandom(MenuItem item) {
         setAccount();
@@ -102,4 +119,6 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {}
+
+
 }

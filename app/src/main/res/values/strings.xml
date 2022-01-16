@@ -18,8 +18,15 @@
     <string name="default_name">новый пользователь</string>
     <string name="save">Сохранить</string>
     <string name="Random">Random</string>
-    <string name="erase_puchase" />
     <string name="erase_purchase">Erase Purchase</string>
     <string name="save_purchase">Save Purchase</string>
     <string name="load">Загрузить</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_purchase">New Purchase</string>
+    <string name="add_new_purchase">Добавить новую покупку</string>
+    <string name="name_purchase">Название:</string>
+    <string name="category">Категория:</string>
+    <string name="price">Цена:</string>
+    <string name="add_purchase">Добавить</string>
+    <string name="settings">Настройки</string>
 </resources>

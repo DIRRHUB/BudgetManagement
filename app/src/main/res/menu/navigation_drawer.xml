@@ -4,9 +4,11 @@
         android:id="@+id/group"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/load"
-            android:title="@string/load"
-            android:onClick="onClickLoad"/>
+            android:id="@+id/new_purchase"
+            android:title="@string/new_purchase"/>
+        <item
+            android:id="@+id/settings"
+            android:title="@string/settings" />
         <item
             android:id="@+id/save"
             android:onClick="onClickSave"
@@ -17,7 +19,6 @@
             android:title="@string/Random" />
         <item
             android:id="@+id/save_purchase"
-            android:onClick="onClickAddPurchase"
             android:title="@string/save_purchase" />
         <item
             android:id="@+id/erase_purchase"
