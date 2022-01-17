@@ -3,18 +3,17 @@ package com.example.budgetmanagement;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.MenuItem;
 import android.view.View;
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
@@ -25,20 +24,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
-    private Fragment newPurchase, settings;
     private FragmentTransaction fragmentTransaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        Log.e("test", binding.getRoot().toString());
         View view = binding.getRoot();
         setContentView(view);
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
         binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
-        newPurchase = new Fragment();
-        settings = new Fragment();
     }
 
     @Override
@@ -54,16 +51,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         databaseContent.saveToDatabase(account);
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.new_purchase:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), newPurchase);
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchase()).commit();
                 return true;
             case R.id.settings:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), settings);
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new Settings()).commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,10 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentNewPurchaseBinding.inflate(getLayoutInflater());
+        binding = FragmentNewPurchaseBinding.inflate(inflater, container, false);
         binding.addPurchase.setOnClickListener(this);
-        return inflater.inflate(R.layout.fragment_new_purchase, container, false);
+        return binding.getRoot();
     }
-
 
     String name, category;
     double price;
@@ -34,11 +34,11 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addPurchase:
-                if (binding.editName.getText().toString() != null && binding.spinnerEditCategory.getSelectedItem().toString() != null && binding.editPrice.getText().toString() != null) {
-                    name = binding.editName.getText().toString();
-                    category = binding.spinnerEditCategory.getSelectedItem().toString();
-                    price = Double.parseDouble(binding.editPrice.getText().toString());
-                    addPurchase();
+                if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
+                name = binding.editName.getText().toString();
+                category = binding.spinnerEditCategory.getSelectedItem().toString();
+                price = Double.parseDouble(binding.editPrice.getText().toString());
+                addPurchase();
                 }
         }
     }
