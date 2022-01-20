@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(this);
         binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseContent = new DatabaseContent();
         databaseContent.init();
         loadAccount();
+        binding.textView3.setText(account.toString());
     }
     @Override
     protected void onPause() {
@@ -62,11 +61,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.settings:
                 fragmentTransaction.replace(binding.fragmentContainerView.getId(), new Settings()).commit();
                 return true;
+            case R.id.save:
+                saveAccount();;
+                return true;
+            case R.id.load:
+                loadAccount();
+                binding.textView3.setText(account.toString());
+                return true;
+            case R.id.random:
+                onClickRandom();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
     public void onClickSignOut(MenuItem item) {
         databaseContent.signOut();
         LoginActivity.updateUILoggedOut();
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClickErasePurchase(MenuItem item) {
        // databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
     }
-    public void onClickRandom(MenuItem item) {
+    public void onClickRandom() {
         setAccount();
     }
 
@@ -109,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
-        account.setPersonName(getString(R.string.default_name));
         account.setBudget(random.nextInt());
         account.setBudgetLastMonth(random.nextInt());
         account.setBudgetLeft(random.nextInt());

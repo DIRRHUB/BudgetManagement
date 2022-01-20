@@ -1,5 +1,6 @@
 package com.example.budgetmanagement;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import com.example.budgetmanagement.databinding.FragmentNewPurchaseBinding;
 public class NewPurchase extends Fragment implements View.OnClickListener {
     private DatabaseContent databaseContent;
     private FragmentNewPurchaseBinding binding;
+    private String name, category;
+    private double price;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         databaseContent = new DatabaseContent();
@@ -28,8 +31,7 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
         return binding.getRoot();
     }
 
-    String name, category;
-    double price;
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

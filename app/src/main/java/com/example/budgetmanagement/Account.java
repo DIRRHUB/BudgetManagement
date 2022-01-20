@@ -1,6 +1,8 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
@@ -37,7 +39,6 @@ public class Account {
                 ", currencyType='" + currencyType + '\'' +
                 '}';
     }
-
 
     public void setBudget(int budget) {
         this.budget = budget;

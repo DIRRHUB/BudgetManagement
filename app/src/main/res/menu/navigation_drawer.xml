@@ -11,12 +11,13 @@
             android:title="@string/settings" />
         <item
             android:id="@+id/save"
-            android:onClick="onClickSave"
             android:title="@string/save" />
         <item
             android:id="@+id/random"
-            android:onClick="onClickRandom"
             android:title="@string/Random" />
+        <item
+            android:id="@+id/load"
+            android:title="@string/load" />
         <item
             android:id="@+id/save_purchase"
             android:title="@string/save_purchase" />

@@ -78,7 +78,9 @@ public class DatabaseContent{
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                account = snapshot.getValue(Account.class);
+                if (snapshot.exists()) {
+                    account = snapshot.getValue(Account.class);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -103,7 +105,7 @@ public class DatabaseContent{
         database.addValueEventListener(valueEventListener);
         return purchase;
     }
-    public void erasePurchaseFromDatabase(String purchaseID){ // If future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
+    public void erasePurchaseFromDatabase(String purchaseID){ // In future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
         database.child(PURCHASES).child(purchaseID).removeValue();
     }
 
