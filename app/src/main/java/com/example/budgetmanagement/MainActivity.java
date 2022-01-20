@@ -18,7 +18,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;

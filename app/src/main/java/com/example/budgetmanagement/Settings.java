@@ -8,15 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Settings extends Fragment {
+import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 
+public class Settings extends Fragment {
+    private DatabaseContent databaseContent;
+    private FragmentSettingsBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        databaseContent = new DatabaseContent();
+        databaseContent.init();
         super.onCreate(savedInstanceState);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
+    public void setUsername(){
+
+    }
+
 }

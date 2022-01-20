@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources><string-array name="list_category">
+<resources>
+    <string-array name="list_category">
     <item>Магазин</item>
     <item>Кафе</item>
     <item>Развлечения</item>
     <item>Другое</item>
 </string-array>
+
+    <string-array name="list_currency">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
 </resources>
