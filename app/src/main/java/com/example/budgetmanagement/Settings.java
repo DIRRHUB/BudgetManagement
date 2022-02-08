@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 
@@ -33,9 +34,13 @@ public class Settings extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setName.setOnClickListener(this);
+        binding.setBudget.setOnClickListener(this);
+        binding.setCurrencyType.setOnClickListener(this);
         account = databaseContent.loadAccountFromDatabase(account -> {
             setAccount(account);
             setUsername();
+            setBudget();
+            setCurrencyType();
         });
         return binding.getRoot();
     }
@@ -44,14 +49,21 @@ public class Settings extends Fragment implements View.OnClickListener{
         binding.username.setText(account.personName);
     }
 
-    protected void setDefaultAccount(){
-        account.setEmail(databaseContent.getEmail());
-        account.setCurrencyType("USD");
-        account.setId(databaseContent.getUID());
-        account.setPersonName(getString(R.string.default_name));
-        account.setBudget(100);
-        account.setBudgetLastMonth(0);
-        account.setBudgetLeft(100);
+    private void setBudget() {
+        binding.editBudget.setText(String.valueOf(account.budget));
+    }
+
+    private void setCurrencyType() {
+        selectSpinnerValue(binding.editCurrencyType, account.currencyType);
+    }
+
+    private void selectSpinnerValue(Spinner spinner, String myString) {
+        for(int i = 0; i < spinner.getCount(); i++){
+            if(spinner.getItemAtPosition(i).toString().equals(myString)){
+                spinner.setSelection(i);
+                break;
+            }
+        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -59,10 +71,27 @@ public class Settings extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setName:
-                if(!binding.username.getText().toString().equals(account.personName)){
+                if (!binding.username.getText().toString().equals(account.personName) && !TextUtils.isEmpty(binding.username.getText().toString())) {
                     account.personName = binding.username.getText().toString();
                     databaseContent.saveToDatabase(account);
                 }
+                break;
+            case R.id.setBudget:
+                if (!TextUtils.isEmpty(binding.editBudget.getText().toString())) {
+                    try {
+                        account.budget = Double.parseDouble(binding.editBudget.getText().toString().replace(",", "."));
+                        databaseContent.saveToDatabase(account);
+                    } catch (NumberFormatException e){
+                        Log.e("Error parse to double", binding.editBudget.getText().toString());
+                    }
+                }
+            break;
+            case R.id.setCurrencyType:
+                account.currencyType = binding.editCurrencyType.getSelectedItem().toString();
+                Log.d("test", account.currencyType);
+                databaseContent.saveToDatabase(account);
+                break;
+
         }
     }
 

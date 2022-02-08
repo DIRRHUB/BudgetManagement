@@ -108,6 +108,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:ems="10"
+                android:longClickable="false"
                 android:inputType="numberSigned"
                 android:minHeight="48dp"
                 app:layout_constraintStart_toEndOf="@+id/budgetTextView"
