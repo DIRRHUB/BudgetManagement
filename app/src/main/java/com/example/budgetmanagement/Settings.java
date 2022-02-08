@@ -45,7 +45,7 @@ public class Settings extends Fragment implements View.OnClickListener{
         return binding.getRoot();
     }
 
-    private void setUsername(){
+    private void setUsername() {
         binding.username.setText(account.personName);
     }
 
@@ -57,7 +57,7 @@ public class Settings extends Fragment implements View.OnClickListener{
         selectSpinnerValue(binding.editCurrencyType, account.currencyType);
     }
 
-    private void selectSpinnerValue(Spinner spinner, String myString) {
+    private void selectSpinnerValue(@NonNull Spinner spinner, String myString) {
         for(int i = 0; i < spinner.getCount(); i++){
             if(spinner.getItemAtPosition(i).toString().equals(myString)){
                 spinner.setSelection(i);
@@ -68,10 +68,13 @@ public class Settings extends Fragment implements View.OnClickListener{
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.setName:
-                if (!binding.username.getText().toString().equals(account.personName) && !TextUtils.isEmpty(binding.username.getText().toString())) {
+                if (!binding.username.getText().toString().equals(account.personName)
+                        && !TextUtils.isEmpty(binding.username.getText().toString())
+                        && binding.username.getText().toString().length() <= 30 ) {
+
                     account.personName = binding.username.getText().toString();
                     databaseContent.saveToDatabase(account);
                 }
@@ -88,7 +91,6 @@ public class Settings extends Fragment implements View.OnClickListener{
             break;
             case R.id.setCurrencyType:
                 account.currencyType = binding.editCurrencyType.getSelectedItem().toString();
-                Log.d("test", account.currencyType);
                 databaseContent.saveToDatabase(account);
                 break;
 
