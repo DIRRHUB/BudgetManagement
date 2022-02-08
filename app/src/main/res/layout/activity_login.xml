@@ -7,7 +7,7 @@
     android:visibility="visible">
 
     <TextView
-        android:id="@+id/textRegistration4"
+        android:id="@+id/textRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
@@ -102,19 +102,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
-    <TextView
-        android:id="@+id/textHelloUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/default_name"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHello"
-        tools:visibility="gone" />
 
     <Button
         android:id="@+id/bNext"
@@ -126,12 +113,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHelloUser"
+        app:layout_constraintTop_toBottomOf="@+id/textHello"
         tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-

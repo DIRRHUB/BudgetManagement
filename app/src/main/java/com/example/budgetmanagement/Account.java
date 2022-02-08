@@ -17,6 +17,7 @@ public class Account {
 
     public Account() {
     }
+
     public Account(double budget, double budgetLeft, double budgetLastMonth, String id, String email, String personName, String currencyType) {
         this.budget = budget;
         this.budgetLeft = budgetLeft;
@@ -67,6 +68,7 @@ public class Account {
     public void setCurrencyType(String currencyType) {
         this.currencyType = currencyType;
     }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -81,12 +83,12 @@ public class Account {
         return result;
     }
 
-    static class Purchase{
+    static class Purchase {
         public String name, category, date, purchaseID;
         public double price;
 
         @SuppressLint("SimpleDateFormat")
-        public void addPurchase(String name, String category, String purchaseID, double price){
+        public void addPurchase(String name, String category, String purchaseID, double price) {
             this.name = name;
             this.category = category;
             this.price = price;

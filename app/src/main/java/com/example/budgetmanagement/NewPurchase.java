@@ -18,12 +18,14 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
     private FragmentNewPurchaseBinding binding;
     private String name, category;
     private double price;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         databaseContent = new DatabaseContent();
         databaseContent.init();
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNewPurchaseBinding.inflate(inflater, container, false);
@@ -37,16 +39,17 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.addPurchase:
                 if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
-                name = binding.editName.getText().toString();
-                category = binding.spinnerEditCategory.getSelectedItem().toString();
-                price = Double.parseDouble(binding.editPrice.getText().toString());
-                addPurchase();
+                    name = binding.editName.getText().toString();
+                    category = binding.spinnerEditCategory.getSelectedItem().toString();
+                    price = Double.parseDouble(binding.editPrice.getText().toString());
+                    addPurchase();
                 }
         }
     }
+
     private void addPurchase() {
         Account.Purchase purchase = new Account.Purchase();
-        purchase.addPurchase(name, category, databaseContent.getPurchaseID(),price);
+        purchase.addPurchase(name, category, databaseContent.getPurchaseID(), price);
         databaseContent.saveToDatabase(purchase);
     }
 }

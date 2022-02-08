@@ -13,9 +13,8 @@
     <string name="textRegister">Register</string>
     <string name="textRegisterLogin">Регистрация/Вход</string>
     <string name="next">Далее</string>
-    <string name="helloMessage">Вы вошли как</string>
+    <string name="helloMessage">Добро пожаловать</string>
     <string name="signout">Sign Out</string>
-    <string name="default_name">новый пользователь</string>
     <string name="save">Сохранить</string>
     <string name="Random">Random</string>
     <string name="erase_purchase">Erase Purchase</string>
@@ -33,4 +32,5 @@
     <string name="ok_button">OK</string>
     <string name="set_budget_text">Бюджет на месяц:</string>
     <string name="currency_type">Валюта аккаунта:</string>
+    <string name="default_name">новый пользователь</string>
 </resources>

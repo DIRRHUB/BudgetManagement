@@ -12,18 +12,20 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 import android.view.View;
+
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
     private FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseContent = new DatabaseContent();
         databaseContent.init();
         loadAccount();
-        binding.textView3.setText(account.toString());
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -62,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentTransaction.replace(binding.fragmentContainerView.getId(), new Settings()).commit();
                 return true;
             case R.id.save:
-                saveAccount();;
+                saveAccount();
+                ;
                 return true;
             case R.id.load:
                 loadAccount();
@@ -75,35 +78,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return super.onOptionsItemSelected(item);
         }
     }
+
     public void onClickSignOut(MenuItem item) {
         databaseContent.signOut();
         LoginActivity.updateUILoggedOut();
         startActivity(new Intent(this, LoginActivity.class));
     }
-    public void onClickSave(MenuItem item){
+
+    public void onClickSave(MenuItem item) {
         saveAccount();
     }
 
-    private void loadAccount(){
-        if(databaseContent.loadAccountFromDatabase()==null) {
+    private void loadAccount() {
+        account = databaseContent.loadAccountFromDatabase(account -> {
+            setAccount(account);
+            binding.textView3.setText(account.toString()); /**TEMP**/
+        });
+        if (account == null) {
             setDefaultAccount();
-        } else {
-            account = databaseContent.loadAccountFromDatabase();
-            purchase = databaseContent.loadPurchaseFromDatabase();
         }
     }
+
     public void onClickErasePurchase(MenuItem item) {
-       // databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
+        // databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
     }
+
     public void onClickRandom() {
         setAccount();
     }
 
-    private void saveAccount(){
+    private void saveAccount() {
         databaseContent.saveToDatabase(account);
     }
 
-    protected void setDefaultAccount(){
+    protected void setDefaultAccount() {
+        account = new Account();
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
@@ -112,8 +121,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setBudgetLastMonth(0);
         account.setBudgetLeft(100);
     }
+
     Random random = new Random(); //temp Random
-    protected void setAccount(){
+
+    protected void setAccount() {
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
@@ -121,8 +132,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setBudgetLastMonth(random.nextInt());
         account.setBudgetLeft(random.nextInt());
     }
+
+    protected void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+    }
 
 
 }

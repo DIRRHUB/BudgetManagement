@@ -3,6 +3,7 @@ package com.example.budgetmanagement;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -22,23 +23,27 @@ public class Settings extends Fragment implements View.OnClickListener{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         databaseContent = new DatabaseContent();
         databaseContent.init();
         account = new Account();
-        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setName.setOnClickListener(this);
-        account = databaseContent.loadAccountFromDatabase();
-        getUsername();
+        account = databaseContent.loadAccountFromDatabase(account -> {
+            setAccount(account);
+            setUsername();
+        });
         return binding.getRoot();
     }
-    private void getUsername(){
+
+    private void setUsername(){
         binding.username.setText(account.personName);
     }
+
     protected void setDefaultAccount(){
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
@@ -59,5 +64,9 @@ public class Settings extends Fragment implements View.OnClickListener{
                     databaseContent.saveToDatabase(account);
                 }
         }
+    }
+
+    protected void setAccount(Account account){
+        this.account = account;
     }
 }
