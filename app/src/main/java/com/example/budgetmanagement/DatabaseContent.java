@@ -46,6 +46,7 @@ public class DatabaseContent {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("register", "Successful");
+                LoginActivity.updateUILoggedIn();
             } else {
                 Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()).toString());
             }

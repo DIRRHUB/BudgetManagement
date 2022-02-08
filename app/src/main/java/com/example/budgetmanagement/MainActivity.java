@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.save:
                 saveAccount();
-                ;
                 return true;
             case R.id.load:
                 loadAccount();
@@ -97,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         if (account == null) {
             setDefaultAccount();
+            saveAccount();
+            binding.textView3.setText(account.toString());
         }
     }
 
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setBudgetLeft(random.nextInt());
     }
 
-    protected void setAccount(Account account) {
+    private void setAccount(Account account) {
         this.account = account;
     }
 
