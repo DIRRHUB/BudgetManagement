@@ -1,5 +1,5 @@
 package com.example.budgetmanagement;
 
-public interface FirebaseCallback {
+public interface FirebaseCallbackAccount {
     void onCallback(Account account);
 }

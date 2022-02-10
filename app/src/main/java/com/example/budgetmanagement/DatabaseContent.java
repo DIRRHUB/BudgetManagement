@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -69,18 +70,17 @@ public class DatabaseContent {
         mAuth.signOut();
     }
 
-    public void loadAccountFromDatabase(FirebaseCallback accountFirebaseCallback) {
+    public void loadAccountFromDatabase(FirebaseCallbackAccount accountFirebaseCallback) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     account = snapshot.getValue(Account.class);
-                    accountFirebaseCallback.onCallback(account);
                 } else {
                     account = new Account();
                     setDefaultAccount();
-                    accountFirebaseCallback.onCallback(account);
                 }
+                accountFirebaseCallback.onCallback(account);
             }
 
             @Override
@@ -91,19 +91,25 @@ public class DatabaseContent {
         database.addValueEventListener(valueEventListener);
     }
 
-    public Account.Purchase loadPurchaseFromDatabase() {
+    public Account.Purchase loadPurchaseFromDatabase(FirebaseCallbackPurchase callbackPurchase) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                purchase = snapshot.getValue(Account.Purchase.class);
+                if(snapshot.exists()) {
+                    ArrayList<Account.Purchase> purchasesList = new ArrayList<>();
+                    for(DataSnapshot purchaseItem : snapshot.getChildren()) {
+                        purchase = purchaseItem.getValue(Account.Purchase.class);
+                        purchasesList.add(purchase);
+                    }
+                    callbackPurchase.onCallback(purchasesList);
+                }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("loadPurchaseFromDatabase", "Error:  " + error.toString());
             }
         };
-        database.addValueEventListener(valueEventListener);
+        database.child(PURCHASES).addValueEventListener(valueEventListener);
         return purchase;
     }
 

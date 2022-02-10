@@ -18,6 +18,9 @@ import com.example.budgetmanagement.databinding.ActivityMainBinding;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.load:
                 loadAccount();
+                purchasesToArrayList();
                 binding.textView3.setText(account.toString());
                 return true;
             case R.id.random:
@@ -78,6 +82,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void purchasesToArrayList() {
+        ArrayList<Account.Purchase> purchasesList = new ArrayList<>();
+        databaseContent.loadPurchaseFromDatabase(arrayList -> {
+            purchasesList.addAll(arrayList);
+            for(int i=0; i<purchasesList.size(); i++){
+                purchase = purchasesList.get(i);
+                Log.i("test", purchase.purchaseID);
+            }
+        });
     }
 
     public void onClickSignOut(MenuItem item) {
