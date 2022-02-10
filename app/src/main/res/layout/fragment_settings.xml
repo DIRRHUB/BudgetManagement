@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="LabelFor"
     tools:context=".Settings">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="216dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,41 +17,44 @@
 
         <TextView
             android:id="@+id/textSettings"
-            android:layout_width="0dp"
-            android:layout_height="34dp"
+            android:layout_width="350dp"
+            android:layout_height="37dp"
             android:gravity="center"
-            android:text="Настройки профиля"
+            android:text="@string/profile_settings"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.592" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+            android:id="@+id/constraintLayout3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textSettings">
+            app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/setName"
+                android:layout_width="60dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/username"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/ok_button"
+                app:layout_constraintStart_toEndOf="@+id/username"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
             <EditText
                 android:id="@+id/username"
-                android:layout_width="247dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_width="224dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
@@ -59,42 +63,33 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-            <Button
-                android:id="@+id/setName"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/ok_button"
-                app:layout_constraintStart_toEndOf="@+id/username"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
             <TextView
-                android:id="@+id/budgetTextView"
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:text="@string/set_budget_text"
+                android:layout_marginTop="21dp"
+                android:text="@string/username"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/budgetTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
+                android:text="@string/set_budget_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <TextView
                 android:id="@+id/currencyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="38dp"
                 android:text="@string/currency_type"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -103,49 +98,49 @@
 
             <EditText
                 android:id="@+id/editBudget"
-                android:layout_width="130dp"
+                android:layout_width="126dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
                 android:ems="10"
-                android:longClickable="false"
                 android:inputType="numberSigned"
-                android:minHeight="48dp"
+                android:longClickable="false"
                 app:layout_constraintStart_toEndOf="@+id/budgetTextView"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/username"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <Button
                 android:id="@+id/setBudget"
-                android:layout_width="81dp"
+                android:layout_width="60dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/ok_button"
                 app:layout_constraintStart_toEndOf="@+id/editBudget"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/setName" />
 
             <Button
                 android:id="@+id/setCurrencyType"
-                android:layout_width="81dp"
+                android:layout_width="60dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/ok_button"
                 app:layout_constraintStart_toEndOf="@+id/editCurrencyType"
                 app:layout_constraintTop_toBottomOf="@+id/setBudget" />
 
             <Spinner
                 android:id="@+id/editCurrencyType"
-                android:layout_width="130dp"
+                android:layout_width="132dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
                 android:entries="@array/list_currency"
                 app:layout_constraintStart_toEndOf="@+id/currencyTextView"
                 app:layout_constraintTop_toBottomOf="@+id/editBudget" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

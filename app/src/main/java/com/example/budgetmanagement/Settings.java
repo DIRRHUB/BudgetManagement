@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class Settings extends Fragment implements View.OnClickListener{
@@ -37,7 +38,7 @@ public class Settings extends Fragment implements View.OnClickListener{
         binding.setBudget.setOnClickListener(this);
         binding.setCurrencyType.setOnClickListener(this);
         databaseContent.loadAccountFromDatabase(account -> {
-            setAccount(account);
+            this.account = account;
             setUsername();
             setBudget();
             setCurrencyType();
@@ -84,6 +85,7 @@ public class Settings extends Fragment implements View.OnClickListener{
                 if (!TextUtils.isEmpty(binding.editBudget.getText().toString())) {
                     try {
                         account.budget = Double.parseDouble(binding.editBudget.getText().toString().replace(",", "."));
+                        account.budgetLeft = account.budget;
                         databaseContent.saveToDatabase(account);
                     } catch (NumberFormatException e){
                         Log.e("Error parse to double", binding.editBudget.getText().toString());
@@ -96,9 +98,5 @@ public class Settings extends Fragment implements View.OnClickListener{
                 break;
 
         }
-    }
-
-    protected void setAccount(Account account){
-        this.account = account;
     }
 }

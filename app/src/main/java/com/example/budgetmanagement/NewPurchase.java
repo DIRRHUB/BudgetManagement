@@ -44,17 +44,15 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addPurchase:
-                if(account.budgetLeft>0) {
-                    if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
-                        name = binding.editName.getText().toString();
-                        category = binding.spinnerEditCategory.getSelectedItem().toString();
-                        price = Double.parseDouble(binding.editPrice.getText().toString());
-                        decreaseBudget(price);
-                        addPurchase();
-                        databaseContent.saveToDatabase(account);
-                        databaseContent.saveToDatabase(purchase);
-                        Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
-                    }
+                if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
+                    name = binding.editName.getText().toString();
+                    category = binding.spinnerEditCategory.getSelectedItem().toString();
+                    price = Double.parseDouble(binding.editPrice.getText().toString());
+                    decreaseBudget(price);
+                    addPurchase();
+                    databaseContent.saveToDatabase(account);
+                    databaseContent.saveToDatabase(purchase);
+                    Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
                 }
         }
     }
