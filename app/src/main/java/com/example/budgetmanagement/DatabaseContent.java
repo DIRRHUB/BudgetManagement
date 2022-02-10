@@ -69,12 +69,16 @@ public class DatabaseContent {
         mAuth.signOut();
     }
 
-    public Account loadAccountFromDatabase(FirebaseCallback accountFirebaseCallback) {
+    public void loadAccountFromDatabase(FirebaseCallback accountFirebaseCallback) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     account = snapshot.getValue(Account.class);
+                    accountFirebaseCallback.onCallback(account);
+                } else {
+                    account = new Account();
+                    setDefaultAccount();
                     accountFirebaseCallback.onCallback(account);
                 }
             }
@@ -85,7 +89,6 @@ public class DatabaseContent {
             }
         };
         database.addValueEventListener(valueEventListener);
-        return account;
     }
 
     public Account.Purchase loadPurchaseFromDatabase() {
@@ -106,6 +109,16 @@ public class DatabaseContent {
 
     public void erasePurchaseFromDatabase(String purchaseID) { // In future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
         database.child(PURCHASES).child(purchaseID).removeValue();
+    }
+
+    protected void setDefaultAccount() {
+        account.setEmail(getEmail());
+        account.setCurrencyType("USD");
+        account.setId(getUID());
+        account.setPersonName("новый пользователь");
+        account.setBudget(100);
+        account.setBudgetLastMonth(0);
+        account.setBudgetLeft(100);
     }
 
     public void saveToDatabase(@NonNull Account account) {

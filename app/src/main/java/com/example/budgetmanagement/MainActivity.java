@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -90,15 +91,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadAccount() {
-        account = databaseContent.loadAccountFromDatabase(account -> {
-            setAccount(account);
-            binding.textView3.setText(account.toString()); /**TEMP**/
-        });
-        if (account == null) {
-            setDefaultAccount();
-            saveAccount();
+        databaseContent.loadAccountFromDatabase(account -> {
+            this.account = account;
             binding.textView3.setText(account.toString());
-        }
+        });
     }
 
     public void onClickErasePurchase(MenuItem item) {
@@ -130,13 +126,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setEmail(databaseContent.getEmail());
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
-        account.setBudget(random.nextInt());
-        account.setBudgetLastMonth(random.nextInt());
-        account.setBudgetLeft(random.nextInt());
-    }
-
-    private void setAccount(Account account) {
-        this.account = account;
+        account.setBudget(0);
+        account.setBudgetLastMonth(0);
+        account.setBudgetLeft(0);
     }
 
     @Override

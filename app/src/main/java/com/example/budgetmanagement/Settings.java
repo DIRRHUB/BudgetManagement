@@ -36,7 +36,7 @@ public class Settings extends Fragment implements View.OnClickListener{
         binding.setName.setOnClickListener(this);
         binding.setBudget.setOnClickListener(this);
         binding.setCurrencyType.setOnClickListener(this);
-        account = databaseContent.loadAccountFromDatabase(account -> {
+        databaseContent.loadAccountFromDatabase(account -> {
             setAccount(account);
             setUsername();
             setBudget();
@@ -69,6 +69,7 @@ public class Settings extends Fragment implements View.OnClickListener{
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(@NonNull View view) {
+        databaseContent.loadAccountFromDatabase(account -> this.account = account);
         switch (view.getId()) {
             case R.id.setName:
                 if (!binding.username.getText().toString().equals(account.personName)
