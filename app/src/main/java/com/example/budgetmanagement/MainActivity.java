@@ -39,21 +39,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
+        databaseContent = new DatabaseContent();
+        databaseContent.init();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        databaseContent = new DatabaseContent();
-        databaseContent.init();
         loadAccount();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        databaseContent.saveToDatabase(account);
+        //databaseContent.saveToDatabase(account);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -106,10 +106,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadAccount() {
-        databaseContent.loadAccountFromDatabase(account -> {
-            this.account = account;
-            binding.textView3.setText(account.toString());
-        });
+        if(SpecialFunction.isNetworkAvailable()) {
+            databaseContent.loadAccountFromDatabase(account -> {
+                this.account = account;
+                binding.textView3.setText(account.toString());
+            });
+        } else {
+            startActivity(new Intent(this, InternetTroubleActivity.class));
+        }
     }
 
     public void onClickErasePurchase(MenuItem item) {
@@ -123,19 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void saveAccount() {
         databaseContent.saveToDatabase(account);
     }
-
-    protected void setDefaultAccount() {
-        account = new Account();
-        account.setEmail(databaseContent.getEmail());
-        account.setCurrencyType("USD");
-        account.setId(databaseContent.getUID());
-        account.setPersonName(getString(R.string.default_name));
-        account.setBudget(100);
-        account.setBudgetLastMonth(0);
-        account.setBudgetLeft(100);
-    }
-
-    Random random = new Random(); //temp Random
 
     protected void setAccount() {
         account.setEmail(databaseContent.getEmail());

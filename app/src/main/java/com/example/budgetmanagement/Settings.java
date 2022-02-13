@@ -1,6 +1,7 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,12 +38,16 @@ public class Settings extends Fragment implements View.OnClickListener{
         binding.setName.setOnClickListener(this);
         binding.setBudget.setOnClickListener(this);
         binding.setCurrencyType.setOnClickListener(this);
-        databaseContent.loadAccountFromDatabase(account -> {
-            this.account = account;
-            setUsername();
-            setBudget();
-            setCurrencyType();
-        });
+        if(SpecialFunction.isNetworkAvailable()) {
+            databaseContent.loadAccountFromDatabase(account -> {
+                this.account = account;
+                setUsername();
+                setBudget();
+                setCurrencyType();
+            });
+        } else {
+            startActivity(new Intent(getActivity(), InternetTroubleActivity.class));
+        }
         return binding.getRoot();
     }
 
@@ -70,7 +75,9 @@ public class Settings extends Fragment implements View.OnClickListener{
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(@NonNull View view) {
-        databaseContent.loadAccountFromDatabase(account -> this.account = account);
+        if(SpecialFunction.isNetworkAvailable()) {
+            databaseContent.loadAccountFromDatabase(account -> this.account = account);
+        }
         switch (view.getId()) {
             case R.id.setName:
                 if (!binding.username.getText().toString().equals(account.personName)
@@ -78,7 +85,6 @@ public class Settings extends Fragment implements View.OnClickListener{
                         && binding.username.getText().toString().length() <= 30 ) {
 
                     account.personName = binding.username.getText().toString();
-                    databaseContent.saveToDatabase(account);
                 }
                 break;
             case R.id.setBudget:
@@ -96,7 +102,9 @@ public class Settings extends Fragment implements View.OnClickListener{
                 account.currencyType = binding.editCurrencyType.getSelectedItem().toString();
                 databaseContent.saveToDatabase(account);
                 break;
-
+        }
+        if(SpecialFunction.isNetworkAvailable()) {
+            databaseContent.saveToDatabase(account);
         }
     }
 }

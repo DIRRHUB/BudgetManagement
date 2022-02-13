@@ -21,10 +21,10 @@ public class DatabaseContent {
     private FirebaseUser cUser;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference database;
-    private final String USER_KEY = "Account", PURCHASES = "purchases";
     private Account account;
     private Account.Purchase purchase;
     private String lastPurchaseID;
+    private final String USER_KEY = "Account", PURCHASES = "purchases";
 
     public void init() {
         mAuth = FirebaseAuth.getInstance();
@@ -43,7 +43,7 @@ public class DatabaseContent {
         }
     }
 
-    public void register(String email, String password) {
+    public DatabaseContent register(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("register", "Successful");
@@ -52,6 +52,7 @@ public class DatabaseContent {
                 Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()).toString());
             }
         });
+        return this;
     }
 
     public DatabaseContent login(String email, String password) {
@@ -82,7 +83,6 @@ public class DatabaseContent {
                 }
                 accountFirebaseCallback.onCallback(account);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("loadAccountFromDatabase", "Error:  " + error.toString());
@@ -91,7 +91,7 @@ public class DatabaseContent {
         database.addValueEventListener(valueEventListener);
     }
 
-    public Account.Purchase loadPurchaseFromDatabase(FirebaseCallbackPurchase callbackPurchase) {
+    public void loadPurchaseFromDatabase(FirebaseCallbackPurchase callbackPurchase) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -110,7 +110,6 @@ public class DatabaseContent {
             }
         };
         database.child(PURCHASES).addValueEventListener(valueEventListener);
-        return purchase;
     }
 
     public void erasePurchaseFromDatabase(String purchaseID) { // In future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
