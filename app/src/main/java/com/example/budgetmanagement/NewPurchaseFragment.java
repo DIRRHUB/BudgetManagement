@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.budgetmanagement.databinding.FragmentNewPurchaseBinding;
 
-public class NewPurchase extends Fragment implements View.OnClickListener {
+public class NewPurchaseFragment extends Fragment implements View.OnClickListener {
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
@@ -24,8 +24,7 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        databaseContent = new DatabaseContent();
-        databaseContent.init();
+        databaseContent = new DatabaseContent().init();
         databaseContent.loadAccountFromDatabase(account -> {
             this.account = account;
         });
@@ -42,24 +41,29 @@ public class NewPurchase extends Fragment implements View.OnClickListener {
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.addPurchase:
-                if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
-                    name = binding.editName.getText().toString();
-                    category = binding.spinnerEditCategory.getSelectedItem().toString();
-                    price = Double.parseDouble(binding.editPrice.getText().toString());
-                    decreaseBudget(price);
-                    addPurchase();
-                    databaseContent.saveToDatabase(account);
-                    databaseContent.saveToDatabase(purchase);
-                    Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
-                }
+        if(SpecialFunction.isNetworkAvailable()) {
+            switch (view.getId()) {
+                case R.id.addPurchase:
+                    if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
+                        name = binding.editName.getText().toString();
+                        if(name.length()>25){
+                            break;
+                        }
+                        category = binding.spinnerEditCategory.getSelectedItem().toString();
+                        price = Double.parseDouble(binding.editPrice.getText().toString());
+                        decreaseBudget(price);
+                        addPurchase();
+                        databaseContent.saveToDatabase(account);
+                        databaseContent.saveToDatabase(purchase);
+                        Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
+                    }
+            }
         }
     }
 
     private void addPurchase() {
         purchase = new Account.Purchase();
-        purchase.addPurchase(name, category, databaseContent.getPurchaseID(), price);
+        purchase.addPurchase(name, category, account.currencyType, databaseContent.getPurchaseID(), price);
     }
 
     private void decreaseBudget(double price) {

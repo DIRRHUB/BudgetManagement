@@ -10,6 +10,9 @@
             android:id="@+id/settings"
             android:title="@string/settings" />
         <item
+            android:id="@+id/list_purchases"
+            android:title="@string/list_purchases" />
+        <item
             android:id="@+id/save"
             android:title="@string/save" />
         <item

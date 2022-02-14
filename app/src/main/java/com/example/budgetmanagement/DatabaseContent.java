@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,10 +28,11 @@ public class DatabaseContent {
     private String lastPurchaseID;
     private final String USER_KEY = "Account", PURCHASES = "purchases";
 
-    public void init() {
+    public DatabaseContent init() {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, mAuth.getUid()));
+        return this;
     }
 
     public boolean checkAuth() {
@@ -92,24 +95,16 @@ public class DatabaseContent {
     }
 
     public void loadPurchaseFromDatabase(FirebaseCallbackPurchase callbackPurchase) {
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    ArrayList<Account.Purchase> purchasesList = new ArrayList<>();
-                    for(DataSnapshot purchaseItem : snapshot.getChildren()) {
-                        purchase = purchaseItem.getValue(Account.Purchase.class);
-                        purchasesList.add(purchase);
-                    }
-                    callbackPurchase.onCallback(purchasesList);
+        database.child(PURCHASES).get().addOnCompleteListener(task -> {
+            if(task.isComplete()){
+                ArrayList<Account.Purchase> purchaseArrayList = new ArrayList<>();
+                for(DataSnapshot purchaseItem : task.getResult().getChildren()){
+                    purchase = purchaseItem.getValue(Account.Purchase.class);
+                    purchaseArrayList.add(purchase);
                 }
+                callbackPurchase.onCallback(purchaseArrayList);
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("loadPurchaseFromDatabase", "Error:  " + error.toString());
-            }
-        };
-        database.child(PURCHASES).addValueEventListener(valueEventListener);
+        });
     }
 
     public void erasePurchaseFromDatabase(String purchaseID) { // In future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)

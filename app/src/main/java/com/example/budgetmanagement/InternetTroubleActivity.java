@@ -15,7 +15,7 @@ public class InternetTroubleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_internet_trouble);
     }
 
-    public void temp(View view) {
+    public void tryStart(View view) {
         if(SpecialFunction.isNetworkAvailable()){
             startActivity(new Intent(this, MainActivity.class));
         }

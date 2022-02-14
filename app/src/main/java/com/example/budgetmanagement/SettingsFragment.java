@@ -19,7 +19,7 @@ import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Settings extends Fragment implements View.OnClickListener{
+public class SettingsFragment extends Fragment implements View.OnClickListener{
     private DatabaseContent databaseContent;
     private FragmentSettingsBinding binding;
     private Account account;
@@ -27,8 +27,7 @@ public class Settings extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseContent = new DatabaseContent();
-        databaseContent.init();
+        databaseContent = new DatabaseContent().init();
         account = new Account();
     }
 

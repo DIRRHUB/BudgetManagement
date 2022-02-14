@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,9 +18,6 @@ import com.example.budgetmanagement.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ActivityMainBinding binding;
@@ -39,8 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
-        databaseContent = new DatabaseContent();
-        databaseContent.init();
+        databaseContent = new DatabaseContent().init();
     }
 
     @Override
@@ -63,10 +58,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.new_purchase:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchase()).commit();
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
                 return true;
             case R.id.settings:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new Settings()).commit();
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new SettingsFragment()).commit();
+                return true;
+            case R.id.list_purchases:
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new PurchasesListFragment()).commit();
                 return true;
             case R.id.save:
                 saveAccount();
@@ -90,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             purchasesList.addAll(arrayList);
             for(int i=0; i<purchasesList.size(); i++){
                 purchase = purchasesList.get(i);
-                Log.i("test", purchase.purchaseID);
             }
         });
     }

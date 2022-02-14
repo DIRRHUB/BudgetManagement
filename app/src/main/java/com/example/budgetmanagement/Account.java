@@ -84,15 +84,16 @@ public class Account {
     }
 
     static class Purchase {
-        public String name, category, date, purchaseID;
+        public String name, category, date, currency, purchaseID;
         public double price;
 
         @SuppressLint("SimpleDateFormat")
-        public void addPurchase(String name, String category, String purchaseID, double price) {
+        public void addPurchase(String name, String category, String currency, String purchaseID, double price) {
             this.name = name;
             this.category = category;
             this.price = price;
             this.purchaseID = purchaseID;
+            this.currency = currency;
             date = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(new Date());
         }
 
