@@ -34,7 +34,16 @@
     <string name="default_name">новый пользователь</string>
     <string name="profile_settings">Настройки профиля</string>
     <string name="connection_fixed">Подключение восстановлено</string>
-    <string name="sort_by">Сортировка за:</string>
+    <string name="sort_by">Сортировка по:</string>
     <string name="date">дата</string>
     <string name="list_purchases">Список покупок</string>
+
+    <string name="name_a_z">Названию (А-Я)</string>
+    <string name="name_z_a">Названию (Я-А)</string>
+    <string name="category_a_z">Категории (А-Я)</string>
+    <string name="category_z_a">Категории (Я-А)</string>
+    <string name="date_0_1">Дате (возростанию)</string>
+    <string name="date_1_0">Дате (убыванию)</string>
+    <string name="price_0_1">Цене (возростанию)</string>
+    <string name="price_1_0">Цене (убыванию)</string>
 </resources>

@@ -42,21 +42,21 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if(SpecialFunction.isNetworkAvailable()) {
-            switch (view.getId()) {
-                case R.id.addPurchase:
-                    if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
-                        name = binding.editName.getText().toString();
-                        if(name.length()>25){
-                            break;
-                        }
-                        category = binding.spinnerEditCategory.getSelectedItem().toString();
-                        price = Double.parseDouble(binding.editPrice.getText().toString());
-                        decreaseBudget(price);
-                        addPurchase();
-                        databaseContent.saveToDatabase(account);
-                        databaseContent.saveToDatabase(purchase);
-                        Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
+            if (view.getId() == R.id.addPurchase) {
+                if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
+                    name = binding.editName.getText().toString();
+                    if (name.length() > 25) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Слишком длинное имя", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    category = binding.spinnerEditCategory.getSelectedItem().toString();
+                    price = Double.parseDouble(binding.editPrice.getText().toString());
+                    decreaseBudget(price);
+                    addPurchase();
+                    databaseContent.saveToDatabase(account);
+                    databaseContent.saveToDatabase(purchase);
+                    Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="list_category">
     <item>Магазин</item>
     <item>Кафе</item>
     <item>Развлечения</item>
     <item>Другое</item>
-</string-array>
+    </string-array>
 
     <string-array name="list_currency">
         <item>USD</item>
         <item>EUR</item>
         <item>UAH</item>
         <item>RUB</item>
+    </string-array>
+
+    <string-array name="purchases_sort_type">
+        <item>@string/name_a_z</item>
+        <item>@string/name_z_a</item>
+        <item>@string/category_a_z</item>
+        <item>@string/category_z_a</item>
+        <item>@string/date_0_1</item>
+        <item>@string/date_1_0</item>
+        <item>@string/price_0_1</item>
+        <item>@string/price_1_0</item>
     </string-array>
 </resources>
