@@ -1,20 +1,18 @@
 package com.example.budgetmanagement;
 
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.example.budgetmanagement.databinding.FragmentPurchasesListBinding;
 
@@ -26,13 +24,12 @@ public class PurchasesListFragment extends Fragment {
     private SortPurchasesContent sortPurchasesContent;
     private ArrayList purchasesList;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseContent = new DatabaseContent().init();
         purchasesList = new ArrayList<>();
-
+        sortPurchasesContent = new SortPurchasesContent().tryGetExchangeRates();
     }
 
     @Override
@@ -65,15 +62,7 @@ public class PurchasesListFragment extends Fragment {
 
     private void trySort(ArrayList<Account.Purchase> unsortedArrayList, int sortType) {
         if(SpecialFunction.isNetworkAvailable()) {
-            if (sortPurchasesContent == null) {
-                sortPurchasesContent = new SortPurchasesContent(unsortedArrayList, sortType);
-            } else {
-                sortPurchasesContent.setSortType(sortType);
-            }
-            if ((sortType == 6 || sortType == 7) && !sortPurchasesContent.isDownloaded()) {
-                sortPurchasesContent.tryGetExchangeRates();
-            }
-            purchasesList = sortPurchasesContent.setSortType(sortType).sort().getArrayList();
+            purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).setSortType(sortType).sort().getArrayList();
             setAdapter();
         } else {
             startActivity(new Intent(this.getActivity(), InternetTroubleActivity.class));

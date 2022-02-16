@@ -26,13 +26,13 @@ public class SortPurchasesContent {
     private double convertedEUR, convertedRUB, convertedUSD;
     private final String PATH = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange";
 
-    public SortPurchasesContent(ArrayList arrayList, int sortType) {
-        this.arrayList = arrayList;
-        this.sortType = sortType;
-    }
-
     public SortPurchasesContent setSortType(int sortType) {
         this.sortType = sortType;
+        return this;
+    }
+
+    public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
+        this.arrayList = arrayList;
         return this;
     }
 
@@ -129,7 +129,7 @@ public class SortPurchasesContent {
         return isDownloaded;
     }
 
-    public void tryGetExchangeRates() {
+    public SortPurchasesContent tryGetExchangeRates() {
         new Thread(() -> {
             try{
                 mapContent = new HashMap<>();
@@ -140,6 +140,7 @@ public class SortPurchasesContent {
                 Log.e("tryGetExchangeRates", ex.toString());
             }
         }).start();
+        return this;
     }
 
     private Map<String, Double> download(String urlPath) throws IOException {
