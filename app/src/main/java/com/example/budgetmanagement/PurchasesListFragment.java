@@ -1,6 +1,7 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -42,9 +43,7 @@ public class PurchasesListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                purchasesList = sortPurchasesContent.setSortType(position).sort().getArrayList();
-                Log.i("sortType", String.valueOf(position));
-                setAdapter();
+                trySort(purchasesList, position);
             }
 
             @Override
@@ -60,10 +59,25 @@ public class PurchasesListFragment extends Fragment {
             purchasesList = new ArrayList<Account.Purchase>(unsortedArrayList);
             int sortType = binding.sortTypeSpinner.getSelectedItemPosition();
             Log.i("sortType", String.valueOf(sortType));
-            sortPurchasesContent = new SortPurchasesContent(unsortedArrayList, sortType);
-            purchasesList = sortPurchasesContent.sort().getArrayList();
-            setAdapter();
+            trySort(unsortedArrayList, sortType);
         });
+    }
+
+    private void trySort(ArrayList<Account.Purchase> unsortedArrayList, int sortType) {
+        if(SpecialFunction.isNetworkAvailable()) {
+            if (sortPurchasesContent == null) {
+                sortPurchasesContent = new SortPurchasesContent(unsortedArrayList, sortType);
+            } else {
+                sortPurchasesContent.setSortType(sortType);
+            }
+            if ((sortType == 6 || sortType == 7) && !sortPurchasesContent.isDownloaded()) {
+                sortPurchasesContent.tryGetExchangeRates();
+            }
+            purchasesList = sortPurchasesContent.setSortType(sortType).sort().getArrayList();
+            setAdapter();
+        } else {
+            startActivity(new Intent(this.getActivity(), InternetTroubleActivity.class));
+        }
     }
 
     private void setAdapter() {
