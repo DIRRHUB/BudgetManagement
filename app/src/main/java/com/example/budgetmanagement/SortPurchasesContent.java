@@ -20,16 +20,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class SortPurchasesContent {
     private ArrayList<Account.Purchase> arrayList;
-    private int sortType;
     private boolean isDownloaded = false;
     private Map<String, Double> mapContent;
     private double convertedEUR, convertedRUB, convertedUSD;
     private final String PATH = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange";
-
-    public SortPurchasesContent setSortType(int sortType) {
-        this.sortType = sortType;
-        return this;
-    }
 
     public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
         this.arrayList = arrayList;
@@ -41,7 +35,7 @@ public class SortPurchasesContent {
     }
 
     @SuppressLint("NonConstantResourceId")
-    public SortPurchasesContent sort(){
+    public SortPurchasesContent sort(int sortType){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             switch (sortType) {
                 case 0://name a-z
@@ -85,18 +79,19 @@ public class SortPurchasesContent {
                 Log.i("SortPurchasesUSD", String.valueOf(convertedUSD));
             } catch (NullPointerException e){
                 Log.e("SortPurchases", "Something is wrong with map");
+                return;
             }
             arrayList.sort((purchase1, purchase2) -> {
                 double price1, price2;
                 switch (purchase1.currency) {
                     case "UAH":
-                        price1 = purchase1.price * convertedUSD;
+                        price1 = purchase1.price / convertedUSD;
                         break;
                     case "RUB":
-                        price1 = purchase1.price * convertedUSD * convertedRUB;
+                        price1 = purchase1.price * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price1 = purchase1.price * convertedUSD * convertedEUR;
+                        price1 = purchase1.price * convertedEUR / convertedUSD ;
                         break;
                     default:
                         price1 = purchase1.price;
@@ -104,13 +99,13 @@ public class SortPurchasesContent {
                 }
                 switch (purchase2.currency) {
                     case "UAH":
-                        price2 = purchase2.price * convertedUSD;
+                        price2 = purchase2.price / convertedUSD;
                         break;
                     case "RUB":
-                        price2 = purchase2.price * convertedUSD * convertedRUB;
+                        price2 = purchase2.price * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price2 = purchase2.price * convertedUSD * convertedEUR;
+                        price2 = purchase2.price * convertedEUR / convertedUSD ;
                         break;
                     default:
                         price2 = purchase2.price;
@@ -123,10 +118,6 @@ public class SortPurchasesContent {
                 }
             });
         }
-    }
-
-    public boolean isDownloaded() {
-        return isDownloaded;
     }
 
     public SortPurchasesContent tryGetExchangeRates() {

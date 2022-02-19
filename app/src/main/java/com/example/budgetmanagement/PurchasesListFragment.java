@@ -4,7 +4,6 @@ package com.example.budgetmanagement;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,14 +54,13 @@ public class PurchasesListFragment extends Fragment {
         databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
             purchasesList = new ArrayList<Account.Purchase>(unsortedArrayList);
             int sortType = binding.sortTypeSpinner.getSelectedItemPosition();
-            Log.i("sortType", String.valueOf(sortType));
             trySort(unsortedArrayList, sortType);
         });
     }
 
     private void trySort(ArrayList<Account.Purchase> unsortedArrayList, int sortType) {
         if(SpecialFunction.isNetworkAvailable()) {
-            purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).setSortType(sortType).sort().getArrayList();
+            purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(sortType).getArrayList();
             setAdapter();
         } else {
             startActivity(new Intent(this.getActivity(), InternetTroubleActivity.class));

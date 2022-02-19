@@ -1,8 +1,6 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
@@ -96,6 +94,5 @@ public class Account {
             this.currency = currency;
             date = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(new Date());
         }
-
     }
 }
