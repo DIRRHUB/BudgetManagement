@@ -71,10 +71,10 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
 
     private void addPurchase() {
         purchase = new Account.Purchase();
-        purchase.addPurchase(name, category, account.currencyType, databaseContent.getPurchaseID(), price);
+        purchase.addPurchase(name, category, account.getCurrencyType(), databaseContent.getPurchaseID(), price);
     }
 
     private void decreaseBudget(double price) {
-        account.budgetLeft-=price;
+        account.setBudgetLeft(account.getBudgetLeft()-price);
     }
 }

@@ -3,10 +3,6 @@ package com.example.budgetmanagement;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
-import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
-import java.util.Locale;
-import java.util.Objects;
+import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener{
     private DatabaseContent databaseContent;
@@ -51,15 +47,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setUsername() {
-        binding.username.setText(account.personName);
+        binding.username.setText(account.getPersonName());
     }
 
     private void setBudget() {
-        binding.editBudget.setText(String.valueOf(account.budget));
+        binding.editBudget.setText(String.valueOf(account.getBudget()));
     }
 
     private void setCurrencyType() {
-        selectSpinnerValue(binding.editCurrencyType, account.currencyType);
+        selectSpinnerValue(binding.editCurrencyType, account.getCurrencyType());
     }
 
     private void selectSpinnerValue(@NonNull Spinner spinner, String myString) {
@@ -79,18 +75,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         }
         switch (view.getId()) {
             case R.id.setName:
-                if (!binding.username.getText().toString().equals(account.personName)
+                if (!binding.username.getText().toString().equals(account.getPersonName())
                         && !TextUtils.isEmpty(binding.username.getText().toString())
                         && binding.username.getText().toString().length() <= 30 ) {
 
-                    account.personName = binding.username.getText().toString();
+                    account.setPersonName(binding.username.getText().toString());
                 }
                 break;
             case R.id.setBudget:
                 if (!TextUtils.isEmpty(binding.editBudget.getText().toString())) {
                     try {
-                        account.budget = Double.parseDouble(binding.editBudget.getText().toString().replace(",", "."));
-                        account.budgetLeft = account.budget;
+                        account.setBudget(Double.parseDouble(binding.editBudget.getText().toString().replace(",", ".")));
+                        account.setBudgetLeft(account.getBudget());
                         databaseContent.saveToDatabase(account);
                     } catch (NumberFormatException e){
                         Log.e("Error parse to double", binding.editBudget.getText().toString());
@@ -98,7 +94,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 }
             break;
             case R.id.setCurrencyType:
-                account.currencyType = binding.editCurrencyType.getSelectedItem().toString();
+                account.setCurrencyType(binding.editCurrencyType.getSelectedItem().toString());
                 databaseContent.saveToDatabase(account);
                 break;
         }

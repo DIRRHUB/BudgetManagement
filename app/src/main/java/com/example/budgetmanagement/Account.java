@@ -10,21 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Account {
-    public double budget, budgetLeft, budgetLastMonth;
-    public String id, email, personName, currencyType;
-
-    public Account() {
-    }
-
-    public Account(double budget, double budgetLeft, double budgetLastMonth, String id, String email, String personName, String currencyType) {
-        this.budget = budget;
-        this.budgetLeft = budgetLeft;
-        this.budgetLastMonth = budgetLastMonth;
-        this.id = id;
-        this.email = email;
-        this.personName = personName;
-        this.currencyType = currencyType;
-    }
+    private double budget, budgetLeft, budgetLastMonth;
+    private String id, email, personName, currencyType;
 
     @Override
     public String toString() {
@@ -37,34 +24,6 @@ public class Account {
                 ", personName='" + personName + '\'' +
                 ", currencyType='" + currencyType + '\'' +
                 '}';
-    }
-
-    public void setBudget(int budget) {
-        this.budget = budget;
-    }
-
-    public void setBudgetLeft(int budgetLeft) {
-        this.budgetLeft = budgetLeft;
-    }
-
-    public void setBudgetLastMonth(int budgetLastMonth) {
-        this.budgetLastMonth = budgetLastMonth;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPersonName(String personName) {
-        this.personName = personName;
-    }
-
-    public void setCurrencyType(String currencyType) {
-        this.currencyType = currencyType;
     }
 
     @Exclude
@@ -81,9 +40,113 @@ public class Account {
         return result;
     }
 
+    public double getBudget() {
+        return budget;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+
+    public double getBudgetLeft() {
+        return budgetLeft;
+    }
+
+    public void setBudgetLeft(double budgetLeft) {
+        this.budgetLeft = budgetLeft;
+    }
+
+    public double getBudgetLastMonth() {
+        return budgetLastMonth;
+    }
+
+    public void setBudgetLastMonth(double budgetLastMonth) {
+        this.budgetLastMonth = budgetLastMonth;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
+
+    public String getCurrencyType() {
+        return currencyType;
+    }
+
+    public void setCurrencyType(String currencyType) {
+        this.currencyType = currencyType;
+    }
+
     static class Purchase {
-        public String name, category, date, currency, purchaseID;
-        public double price;
+        private String name, category, date, currency, purchaseID;
+        private double price;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
+
+        public String getPurchaseID() {
+            return purchaseID;
+        }
+
+        public void setPurchaseID(String purchaseID) {
+            this.purchaseID = purchaseID;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
 
         @SuppressLint("SimpleDateFormat")
         public void addPurchase(String name, String category, String currency, String purchaseID, double price) {

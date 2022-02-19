@@ -37,11 +37,11 @@ public class ListAdapter extends ArrayAdapter<Account.Purchase> {
         TextView textPrice = convertView.findViewById(R.id.textPrice);
         TextView textCurrency = convertView.findViewById(R.id.textCurrency);
 
-        textName.setText(purchase.name);
-        textCategory.setText(purchase.category);
-        textDate.setText(purchase.date);
-        textPrice.setText(formatDouble.format(purchase.price));
-        textCurrency.setText(purchase.currency);
+        textName.setText(purchase.getName());
+        textCategory.setText(purchase.getCategory());
+        textDate.setText(purchase.getDate());
+        textPrice.setText(formatDouble.format(purchase.getPrice()));
+        textCurrency.setText(purchase.getCurrency());
 
         return convertView;
     }

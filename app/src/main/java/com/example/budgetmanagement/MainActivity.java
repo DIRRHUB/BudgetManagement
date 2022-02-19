@@ -1,20 +1,17 @@
 package com.example.budgetmanagement;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import androidx.fragment.app.FragmentTransaction;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.budgetmanagement.databinding.ActivityMainBinding;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.budgetmanagement.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account.setCurrencyType("USD");
         account.setId(databaseContent.getUID());
         account.setBudget(0);
-        account.setBudgetLastMonth(0);
+        account.setBudgetLeft(0);
         account.setBudgetLeft(0);
     }
 

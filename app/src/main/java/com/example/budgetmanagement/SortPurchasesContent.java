@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,22 +40,22 @@ public class SortPurchasesContent {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             switch (sortType) {
                 case 0://name a-z
-                    arrayList.sort((t1, t2) -> t1.name.compareTo(t2.name));
+                    arrayList.sort(Comparator.comparing(Account.Purchase::getName));
                     break;
                 case 1://name z-a
-                    arrayList.sort((t1, t2) -> t2.name.compareTo(t1.name));
+                    arrayList.sort((t1, t2) -> t2.getName().compareTo(t1.getName()));
                     break;
                 case 2://category a-z
-                    arrayList.sort((t1, t2) -> t1.category.compareTo(t2.category));
+                    arrayList.sort(Comparator.comparing(Account.Purchase::getCategory));
                     break;
                 case 3://category z-a
-                    arrayList.sort((t1, t2) -> t2.category.compareTo(t1.category));
+                    arrayList.sort((t1, t2) -> t2.getCategory().compareTo(t1.getCategory()));
                     break;
                 case 4://date 0-1
-                    arrayList.sort((t1, t2) -> t1.date.compareTo(t2.date));
+                    arrayList.sort(Comparator.comparing(Account.Purchase::getDate));
                     break;
                 case 5://date 1-0
-                    arrayList.sort((t1, t2) -> t2.date.compareTo(t1.date));
+                    arrayList.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
                     break;
                 case 6://price 0-1
                     sortPrice(true);
@@ -83,32 +84,32 @@ public class SortPurchasesContent {
             }
             arrayList.sort((purchase1, purchase2) -> {
                 double price1, price2;
-                switch (purchase1.currency) {
+                switch (purchase1.getCurrency()) {
                     case "UAH":
-                        price1 = purchase1.price / convertedUSD;
+                        price1 = purchase1.getPrice() / convertedUSD;
                         break;
                     case "RUB":
-                        price1 = purchase1.price * convertedRUB / convertedUSD;
+                        price1 = purchase1.getPrice() * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price1 = purchase1.price * convertedEUR / convertedUSD ;
+                        price1 = purchase1.getPrice() * convertedEUR / convertedUSD ;
                         break;
                     default:
-                        price1 = purchase1.price;
+                        price1 = purchase1.getPrice();
                         break;
                 }
-                switch (purchase2.currency) {
+                switch (purchase2.getCurrency()) {
                     case "UAH":
-                        price2 = purchase2.price / convertedUSD;
+                        price2 = purchase2.getPrice() / convertedUSD;
                         break;
                     case "RUB":
-                        price2 = purchase2.price * convertedRUB / convertedUSD;
+                        price2 = purchase2.getPrice() * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price2 = purchase2.price * convertedEUR / convertedUSD ;
+                        price2 = purchase2.getPrice() * convertedEUR / convertedUSD ;
                         break;
                     default:
-                        price2 = purchase2.price;
+                        price2 = purchase2.getPrice();
                         break;
                 }
                 if(increasingPrice) {
