@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ListAdapter extends ArrayAdapter<Account.Purchase> {
 
@@ -31,7 +32,7 @@ public class ListAdapter extends ArrayAdapter<Account.Purchase> {
         if (convertView == null) {
             convertView =  LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
-        NumberFormat formatDouble = NumberFormat.getInstance();
+        NumberFormat formatDouble = NumberFormat.getInstance(Locale.ENGLISH);
         formatDouble.setMaximumFractionDigits(2);
 
         TextView textName = convertView.findViewById(R.id.textName);
