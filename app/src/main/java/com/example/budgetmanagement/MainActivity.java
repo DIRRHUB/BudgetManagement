@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
-        //databaseContent.saveToDatabase(account);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -73,15 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.list_purchases:
                 fragmentTransaction.replace(binding.fragmentContainerView.getId(), new PurchasesListFragment()).commit();
                 return true;
-            case R.id.save:
-                saveAccount();
-                return true;
-            case R.id.load:
-                loadAccount();
-                binding.textView3.setText(account.toString());
-                return true;
-            case R.id.random:
-                onClickRandom();
+            case R.id.signout:
+                signOut();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -128,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void onClickSignOut(MenuItem item) {
+    public void signOut() {
         databaseContent.signOut();
         LoginActivity.updateUILoggedOut();
         startActivity(new Intent(this, LoginActivity.class));
@@ -149,14 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void onClickErasePurchase(MenuItem item) {
-        // databaseContent.erasePurchaseFromDatabase(binding.purchaseID.getText().toString());
-    }
-
-    public void onClickRandom() {
-        setAccount();
-    }
-
     private void saveAccount() {
         databaseContent.saveToDatabase(account);
     }
@@ -172,5 +157,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        setDrawerClosed(true);
+    }
+
+    @SuppressLint("RtlHardcoded")
+    @Override
+    public void setDrawerClosed(boolean closed) {
+        if(closed){
+            binding.drawerLayout.closeDrawer(Gravity.LEFT);
+        } else{
+            binding.drawerLayout.openDrawer(Gravity.LEFT);
+        }
     }
 }

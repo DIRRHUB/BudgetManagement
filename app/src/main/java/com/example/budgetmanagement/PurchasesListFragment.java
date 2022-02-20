@@ -1,6 +1,5 @@
 package com.example.budgetmanagement;
 
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,10 +24,11 @@ public class PurchasesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         databaseContent = new DatabaseContent().init();
         purchasesList = new ArrayList<>();
         sortPurchasesContent = new SortPurchasesContent().tryGetExchangeRates();
+        ((DrawerLocker) requireActivity()).setDrawerClosed(true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override

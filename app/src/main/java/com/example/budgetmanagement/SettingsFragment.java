@@ -1,6 +1,8 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,6 +27,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         databaseContent = new DatabaseContent().init();
         account = new Account();
+        ((DrawerLocker) requireActivity()).setDrawerClosed(true);
     }
 
     @Override
@@ -51,7 +54,23 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setBudget() {
+        try {
+            account.setBudget(Double.parseDouble(binding.editBudget.getText().toString().replace(",", ".")));
+            databaseContent.saveToDatabase(account);
+        } catch (NumberFormatException e) {
+            Log.e("Error parse to double", binding.editBudget.getText().toString());
+        }
         binding.editBudget.setText(String.valueOf(account.getBudget()));
+    }
+
+    private void setBudgetConfirmation(){
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                setBudget();
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(R.string.changeBudgetAlert).setPositiveButton("Да", dialogClickListener).setNegativeButton("Нет", dialogClickListener).show();
     }
 
     private void setCurrencyType() {
@@ -78,19 +97,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 if (!binding.username.getText().toString().equals(account.getPersonName())
                         && !TextUtils.isEmpty(binding.username.getText().toString())
                         && binding.username.getText().toString().length() <= 30 ) {
-
                     account.setPersonName(binding.username.getText().toString());
                 }
                 break;
             case R.id.setBudget:
-                if (!TextUtils.isEmpty(binding.editBudget.getText().toString())) {
-                    try {
-                        account.setBudget(Double.parseDouble(binding.editBudget.getText().toString().replace(",", ".")));
-                        account.setBudgetLeft(account.getBudget());
-                        databaseContent.saveToDatabase(account);
-                    } catch (NumberFormatException e){
-                        Log.e("Error parse to double", binding.editBudget.getText().toString());
-                    }
+                if (!TextUtils.isEmpty(binding.editBudget.getText().toString()) && Double.parseDouble(binding.editBudget.getText().toString())!=account.getBudget()) {
+                   setBudgetConfirmation();
                 }
             break;
             case R.id.setCurrencyType:

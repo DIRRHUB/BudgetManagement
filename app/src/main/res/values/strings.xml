@@ -46,4 +46,5 @@
     <string name="date_1_0">Дате (убыванию)</string>
     <string name="price_0_1">Цене (возростанию)</string>
     <string name="price_1_0">Цене (убыванию)</string>
+    <string name="changeBudgetAlert">Вы уверены, что хотите изменить бюджет на месяц?</string>
 </resources>

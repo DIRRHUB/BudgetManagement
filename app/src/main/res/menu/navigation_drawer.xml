@@ -13,25 +13,7 @@
             android:id="@+id/list_purchases"
             android:title="@string/list_purchases" />
         <item
-            android:id="@+id/save"
-            android:title="@string/save" />
-        <item
-            android:id="@+id/random"
-            android:title="@string/Random" />
-        <item
-            android:id="@+id/load"
-            android:title="@string/load" />
-        <item
-            android:id="@+id/save_purchase"
-            android:title="@string/save_purchase" />
-        <item
-            android:id="@+id/erase_purchase"
-            android:onClick="onClickErasePurchase"
-            android:title="@string/erase_purchase" />
-        <item
             android:id="@+id/signout"
-            android:menuCategory="container"
-            android:onClick="onClickSignOut"
             android:title="@string/signout" />
     </group>
 

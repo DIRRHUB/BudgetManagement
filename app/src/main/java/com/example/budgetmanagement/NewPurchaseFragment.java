@@ -28,7 +28,7 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
         databaseContent.loadAccountFromDatabase(account -> {
             this.account = account;
         });
-
+        ((DrawerLocker) requireActivity()).setDrawerClosed(true);
         super.onCreate(savedInstanceState);
     }
 
