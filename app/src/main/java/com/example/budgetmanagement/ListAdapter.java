@@ -11,7 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListAdapter extends ArrayAdapter<Account.Purchase> {
 
@@ -19,7 +22,7 @@ public class ListAdapter extends ArrayAdapter<Account.Purchase> {
         super(context, R.layout.list_item, purchaseArrayList);
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
     @Nullable
     @Override
     public View getView(int position, @Nullable View convertView, @Nullable ViewGroup parent) {
@@ -39,7 +42,13 @@ public class ListAdapter extends ArrayAdapter<Account.Purchase> {
 
         textName.setText(purchase.getName());
         textCategory.setText(purchase.getCategory());
-        textDate.setText(purchase.getDate());
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").parse(purchase.getDate());
+            textDate.setText(String.format("%1$td %1$tB %1$tY %1$tH:%1$tM:%1$tS",date));
+        } catch (ParseException e) {
+            textDate.setText("");
+            e.printStackTrace();
+        }
         textPrice.setText(formatDouble.format(purchase.getPrice()));
         textCurrency.setText(purchase.getCurrency());
 
