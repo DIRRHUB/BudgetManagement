@@ -2,6 +2,8 @@ package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ public class Account {
     private double budget, budgetLeft, budgetLastMonth;
     private String id, email, personName, currencyType;
 
+    @NonNull
     @Override
     public String toString() {
         return "Account{" +

@@ -3,6 +3,7 @@ package com.example.budgetmanagement;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,13 +15,20 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
+    private ArrayList purchasesList;
+    private SortPurchasesContent sortPurchasesContent;
     private FragmentTransaction fragmentTransaction;
 
     @Override
@@ -32,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navigationView.setNavigationItemSelectedListener(this);
         account = new Account();
         purchase = new Account.Purchase();
+        sortPurchasesContent = new SortPurchasesContent();
         databaseContent = new DatabaseContent().init();
     }
 
@@ -40,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         loadAccount();
+        loadPurchasesToArrayList();
     }
 
     @Override
@@ -68,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.load:
                 loadAccount();
-                purchasesToArrayList();
                 binding.textView3.setText(account.toString());
                 return true;
             case R.id.random:
@@ -79,14 +88,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void purchasesToArrayList() {
-        ArrayList<Account.Purchase> purchasesList = new ArrayList<>();
-        databaseContent.loadPurchaseFromDatabase(arrayList -> {
-            purchasesList.addAll(arrayList);
-            for(int i=0; i<purchasesList.size(); i++){
-                purchase = purchasesList.get(i);
+    private void loadPurchasesToArrayList() {
+        databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
+            purchasesList = new ArrayList<Account.Purchase>(unsortedArrayList);
+            final int SORT_TYPE = 5;
+            purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(SORT_TYPE).getArrayList();
+            if(purchasesList.size()!=0) {
+                purchase = (Account.Purchase) purchasesList.get(0);
+                updateBudgetLastMonth();
             }
         });
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private void updateBudgetLastMonth(){
+        if(purchase!=null){
+            Log.i("updateBudgetLastMonthPurchaseDate", purchase.getDate());
+            int lastMonth = 0;
+            int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
+            Calendar lastMonthCalendar = Calendar.getInstance();
+            try {
+               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss");
+                Date date = sdf.parse(purchase.getDate());
+                lastMonthCalendar.setTime(Objects.requireNonNull(date));
+                lastMonth = lastMonthCalendar.get(Calendar.MONTH)+1;
+                Log.i("updateBudgetLastMonthCurrentMonth", String.valueOf(currentMonth));
+                Log.i("updateBudgetLastMonthLastMonth", String.valueOf(lastMonth));
+            } catch (ParseException e) {
+                Log.e("updateBudgetLastMonth", e.toString());
+            }
+
+            if(lastMonth!=currentMonth){
+                if(account!=null) {
+                    account.setBudgetLastMonth(account.getBudget());
+                    account.setBudgetLeft(account.getBudget());
+                    saveAccount();
+                }
+            }
+        }
     }
 
     public void onClickSignOut(MenuItem item) {
