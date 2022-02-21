@@ -109,7 +109,8 @@ public class PurchasesListFragment extends Fragment {
                 purchasesList.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 databaseContent.erasePurchaseFromDatabase(purchase.getPurchaseID());
-                Snackbar.make(binding.recyclerView, purchase.getName(), Snackbar.LENGTH_LONG).setAction(R.string.cancel, view -> {
+                Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + purchase.getName(), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.cancel, view -> {
                     purchasesList.add(position, purchase);
                     recyclerAdapter.notifyItemInserted(position);
                     databaseContent.saveToDatabase(purchase, purchase.getPurchaseID());

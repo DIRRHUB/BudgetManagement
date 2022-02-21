@@ -1,24 +1,13 @@
 <resources>
     <string name="app_name">Budget Management</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="textLogin">Login</string>
-    <string name="textRegister">Register</string>
+    <string name="textLogin">Вход</string>
+    <string name="textRegister">Регистрация</string>
     <string name="textRegisterLogin">Регистрация/Вход</string>
     <string name="next">Далее</string>
     <string name="helloMessage">Добро пожаловать</string>
-    <string name="signout">Sign Out</string>
+    <string name="signout">Выход</string>
     <string name="save">Сохранить</string>
-    <string name="Random">Random</string>
-    <string name="erase_purchase">Erase Purchase</string>
-    <string name="save_purchase">Save Purchase</string>
     <string name="load">Загрузить</string>
     <string name="new_purchase">Добавить покупку</string>
     <string name="add_new_purchase">Добавить новую покупку</string>
@@ -51,4 +40,9 @@
     <string name="price_1_0">Цене (убыванию)</string>
     <string name="changeBudgetAlert">Вы уверены, что хотите изменить бюджет на месяц?</string>
     <string name="cancel">Отменить</string>
+    <string name="deleted">Удалено</string>
+    <string name="confirm_same_purchase">Подтвердить добавление аналогичной покупки</string>
+    <string name="wrong_price_format">Неверный формат цены</string>
+    <string name="name_size_err">Слишком длинное имя</string>
+    <string name="purchase_successful">Покупка добавлена!</string>
 </resources>

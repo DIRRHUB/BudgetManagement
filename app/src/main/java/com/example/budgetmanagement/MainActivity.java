@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseContent databaseContent;
     private Account account;
     private Account.Purchase purchase;
-    private ArrayList purchasesList;
+    private ArrayList<Account.Purchase> purchasesList;
     private SortPurchasesContent sortPurchasesContent;
-    private FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         SpecialFunction.hideKeyboard(binding.navigationView);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.new_purchase:
                 fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadPurchasesToArrayList() {
         databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
-            purchasesList = new ArrayList<Account.Purchase>(unsortedArrayList);
+            purchasesList = new ArrayList<>(unsortedArrayList);
             final int SORT_TYPE = 5;
             purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(SORT_TYPE).getArrayList();
             if(purchasesList.size()!=0) {
