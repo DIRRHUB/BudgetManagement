@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.budgetmanagement.databinding.FragmentPurchasesListBinding;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class PurchasesListFragment extends Fragment {
     private FragmentPurchasesListBinding binding;
@@ -35,7 +36,15 @@ public class PurchasesListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPurchasesListBinding.inflate(inflater, container, false);
-        loadPurchasesToArrayList();
+        new Thread(() -> {
+            try {
+                TimeUnit.MILLISECONDS.sleep(250);
+                loadPurchasesToArrayList();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
         binding.sortTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

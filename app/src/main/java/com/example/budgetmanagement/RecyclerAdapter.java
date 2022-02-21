@@ -19,8 +19,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private List<Account.Purchase> purchasesArrayList;
-    private Context context;
+    private final List<Account.Purchase> purchasesArrayList;
+    private final Context context;
+    private NumberFormat formatDouble;
 
     public RecyclerAdapter(Context context, ArrayList<Account.Purchase> purchasesArrayList) {
         this.context = context;
@@ -37,8 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Account.Purchase purchase = purchasesArrayList.get(position);
-
-        NumberFormat formatDouble = NumberFormat.getInstance(Locale.ENGLISH);
+        formatDouble = NumberFormat.getInstance(Locale.ENGLISH);
         formatDouble.setMaximumFractionDigits(2);
         viewHolder.textName.setText(purchase.getName());
         viewHolder.textCategory.setText(purchase.getCategory());
@@ -59,12 +59,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return this.purchasesArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView textName;
-        private TextView textCategory;
-        private TextView textDate;
-        private TextView textPrice;
-        private TextView textCurrency;
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private final TextView textName;
+        private final TextView textCategory;
+        private final TextView textDate;
+        private final TextView textPrice;
+        private final TextView textCurrency;
 
         public ViewHolder(@NonNull View view) {
             super(view);

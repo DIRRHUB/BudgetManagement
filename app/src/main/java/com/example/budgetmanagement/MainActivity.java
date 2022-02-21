@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
 
     private void loadPurchasesToArrayList() {
