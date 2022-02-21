@@ -27,11 +27,11 @@ public class SortPurchasesContent {
     private final String PATH = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange";
 
     public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
-        this.arrayList = arrayList;
+        this.arrayList = (ArrayList<Account.Purchase>) arrayList;
         return this;
     }
 
-    public ArrayList getArrayList() {
+    public ArrayList<Account.Purchase> getArrayList() {
         return arrayList;
     }
 
@@ -72,9 +72,9 @@ public class SortPurchasesContent {
     private void sortPrice(boolean increasingPrice) {
         if(isDownloaded) {
             try {
-                convertedEUR = mapContent.get("EUR");
-                convertedRUB = mapContent.get("RUB");
-                convertedUSD = mapContent.get("USD");
+                convertedEUR = mapContent.get(R.string.eur);
+                convertedRUB = mapContent.get(R.string.rub);
+                convertedUSD = mapContent.get(R.string.usd);
                 Log.i("SortPurchasesEUR", String.valueOf(convertedEUR));
                 Log.i("SortPurchasesRUB", String.valueOf(convertedRUB));
                 Log.i("SortPurchasesUSD", String.valueOf(convertedUSD));

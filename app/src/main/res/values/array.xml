@@ -9,10 +9,10 @@
     </string-array>
 
     <string-array name="list_currency">
-        <item>USD</item>
-        <item>EUR</item>
-        <item>UAH</item>
-        <item>RUB</item>
+        <item>@string/usd</item>
+        <item>@string/eur</item>
+        <item>@string/uah</item>
+        <item>@string/rub</item>
     </string-array>
 
     <string-array name="purchases_sort_type">

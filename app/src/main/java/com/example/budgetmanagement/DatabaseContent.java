@@ -94,7 +94,7 @@ public class DatabaseContent {
         database.child(PURCHASES).get().addOnCompleteListener(task -> {
             if(task.isComplete()){
                 ArrayList<Account.Purchase> purchaseArrayList = new ArrayList<>();
-                for(DataSnapshot purchaseItem : task.getResult().getChildren()){
+                for(DataSnapshot purchaseItem : Objects.requireNonNull(task.getResult()).getChildren()){
                     purchase = purchaseItem.getValue(Account.Purchase.class);
                     purchaseArrayList.add(purchase);
                 }
@@ -103,7 +103,7 @@ public class DatabaseContent {
         });
     }
 
-    public void erasePurchaseFromDatabase(String purchaseID) { // In future you can get purchaseID from Activity.Purchase OBJECT (String PurchaseID)
+    public void erasePurchaseFromDatabase(String purchaseID) {
         database.child(PURCHASES).child(purchaseID).removeValue();
     }
 
@@ -124,6 +124,10 @@ public class DatabaseContent {
 
     public void saveToDatabase(@NonNull Account.Purchase purchase) {
         database.child(PURCHASES).child(lastPurchaseID).setValue(purchase);
+    }
+
+    public void saveToDatabase(@NonNull Account.Purchase purchase, String purchaseID){
+        database.child(PURCHASES).child(purchaseID).setValue(purchase);
     }
 
     public String getPurchaseID() {

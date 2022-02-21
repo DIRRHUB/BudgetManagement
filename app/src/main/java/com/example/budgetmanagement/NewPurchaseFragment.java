@@ -47,21 +47,21 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
                 if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
                     name = binding.editName.getText().toString();
                     if (name.length() > 25) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Слишком длинное имя", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity().getApplicationContext(), "Слишком длинное имя", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     category = binding.spinnerEditCategory.getSelectedItem().toString();
                     try {
                         price = Double.parseDouble(binding.editPrice.getText().toString().replace(",", "."));
                     } catch (NumberFormatException e){
-                        Toast.makeText(getActivity().getApplicationContext(), "Неверный формат цены", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity().getApplicationContext(), "Неверный формат цены", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     decreaseBudget(price);
                     addPurchase();
                     databaseContent.saveToDatabase(account);
                     databaseContent.saveToDatabase(purchase);
-                    Toast.makeText(getActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity().getApplicationContext(), "Покупка добавлена!", Toast.LENGTH_SHORT).show();
                 }
             }
         } else {

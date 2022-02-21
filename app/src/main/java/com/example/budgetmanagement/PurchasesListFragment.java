@@ -11,9 +11,12 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.budgetmanagement.databinding.FragmentPurchasesListBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +25,9 @@ public class PurchasesListFragment extends Fragment {
     private FragmentPurchasesListBinding binding;
     private DatabaseContent databaseContent;
     private SortPurchasesContent sortPurchasesContent;
-    private ArrayList purchasesList;
+    private ArrayList<Account.Purchase> purchasesList;
+    private Account.Purchase purchase;
+    private RecyclerAdapter recyclerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +61,15 @@ public class PurchasesListFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView);
         return binding.getRoot();
     }
 
     private void loadPurchasesToArrayList() {
         databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
-            purchasesList = new ArrayList<Account.Purchase>(unsortedArrayList);
+            purchasesList = new ArrayList<>(unsortedArrayList);
             int sortType = binding.sortTypeSpinner.getSelectedItemPosition();
             trySort(unsortedArrayList, sortType);
         });
@@ -77,11 +85,12 @@ public class PurchasesListFragment extends Fragment {
     }
 
     private void setAdapter() {
-        binding.recyclerView.setAdapter(new RecyclerAdapter(this.getContext(), purchasesList));
+        recyclerAdapter = new RecyclerAdapter(this.getContext(), purchasesList);
+        binding.recyclerView.setAdapter(recyclerAdapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
-/*
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+    final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -89,8 +98,20 @@ public class PurchasesListFragment extends Fragment {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAbsoluteAdapterPosition();
 
+            if (direction == ItemTouchHelper.LEFT) {
+                purchase = (Account.Purchase) purchasesList.get(position);
+                purchasesList.remove(position);
+                recyclerAdapter.notifyItemRemoved(position);
+                databaseContent.erasePurchaseFromDatabase(purchase.getPurchaseID());
+                Snackbar.make(binding.recyclerView, purchase.getName(), Snackbar.LENGTH_LONG).setAction(R.string.cancel, view -> {
+                    purchasesList.add(position, purchase);
+                    recyclerAdapter.notifyItemInserted(position);
+                    databaseContent.saveToDatabase(purchase, purchase.getPurchaseID());
+                }).show();
+            }
         }
-    };*/
+    };
 
 }

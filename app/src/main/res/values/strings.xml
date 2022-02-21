@@ -37,7 +37,10 @@
     <string name="sort_by">Сортировка по:</string>
     <string name="date">дата</string>
     <string name="list_purchases">Список покупок</string>
-
+    <string name="usd">USD</string>
+    <string name="eur">EUR</string>
+    <string name="uah">UAH</string>
+    <string name="rub">RUB</string>
     <string name="name_a_z">Названию (А-Я)</string>
     <string name="name_z_a">Названию (Я-А)</string>
     <string name="category_a_z">Категории (А-Я)</string>
@@ -47,4 +50,5 @@
     <string name="price_0_1">Цене (возростанию)</string>
     <string name="price_1_0">Цене (убыванию)</string>
     <string name="changeBudgetAlert">Вы уверены, что хотите изменить бюджет на месяц?</string>
+    <string name="cancel">Отменить</string>
 </resources>
