@@ -127,10 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(this, LoginActivity.class));
     }
 
-    public void onClickSave(MenuItem item) {
-        saveAccount();
-    }
-
     private void loadAccount() {
         if(SpecialFunction.isNetworkAvailable()) {
             databaseContent.loadAccountFromDatabase(account -> {

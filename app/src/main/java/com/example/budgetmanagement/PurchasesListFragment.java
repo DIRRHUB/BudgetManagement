@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.budgetmanagement.databinding.FragmentPurchasesListBinding;
 
@@ -44,7 +45,6 @@ public class PurchasesListFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
         return binding.getRoot();
@@ -68,8 +68,20 @@ public class PurchasesListFragment extends Fragment {
     }
 
     private void setAdapter() {
-        ListAdapter customAdapter = new ListAdapter(this.getContext(), purchasesList);
-        binding.listview.setAdapter(customAdapter);
-        binding.listview.setClickable(true);
+        binding.recyclerView.setAdapter(new RecyclerAdapter(this.getContext(), purchasesList));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
+/*
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };*/
+
 }

@@ -4,8 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +44,7 @@ public class DatabaseContent {
         }
     }
 
-    public DatabaseContent register(String email, String password) {
+    public void register(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("register", "Successful");
@@ -55,10 +53,9 @@ public class DatabaseContent {
                 Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()).toString());
             }
         });
-        return this;
     }
 
-    public DatabaseContent login(String email, String password) {
+    public void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
             if (task.isSuccessful()) {
                 Log.d("login", "Successful");
@@ -67,7 +64,6 @@ public class DatabaseContent {
                 Log.e("login", "Error:  " + Objects.requireNonNull(task.getException()).toString());
             }
         }));
-        return this;
     }
 
     public void signOut() {
