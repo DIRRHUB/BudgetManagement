@@ -6,25 +6,13 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-
 
 public class SortPurchasesContent {
     private ArrayList<Account.Purchase> arrayList;
-    private boolean isDownloaded = false;
-    private Map<String, Double> mapContent;
+    private BudgetManager budgetManager;
     private double convertedEUR, convertedRUB, convertedUSD;
-    private final String PATH = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange";
 
     public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
         this.arrayList = (ArrayList<Account.Purchase>) arrayList;
@@ -33,6 +21,12 @@ public class SortPurchasesContent {
 
     public ArrayList<Account.Purchase> getArrayList() {
         return arrayList;
+    }
+
+    public SortPurchasesContent init(){
+        budgetManager = new BudgetManager();
+        budgetManager.init();
+        return this;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -70,11 +64,11 @@ public class SortPurchasesContent {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortPrice(boolean increasingPrice) {
-        if(isDownloaded) {
+        if(budgetManager.isDownloaded()) {
             try {
-                convertedEUR = mapContent.get(R.string.eur);
-                convertedRUB = mapContent.get(R.string.rub);
-                convertedUSD = mapContent.get(R.string.usd);
+                convertedEUR = budgetManager.getConvertedEUR();
+                convertedRUB = budgetManager.getConvertedRUB();
+                convertedUSD = budgetManager.getConvertedUSD();
                 Log.i("SortPurchasesEUR", String.valueOf(convertedEUR));
                 Log.i("SortPurchasesRUB", String.valueOf(convertedRUB));
                 Log.i("SortPurchasesUSD", String.valueOf(convertedUSD));
@@ -118,63 +112,6 @@ public class SortPurchasesContent {
                     return Double.compare(price2, price1);
                 }
             });
-        }
-    }
-
-    public SortPurchasesContent tryGetExchangeRates() {
-        new Thread(() -> {
-            try{
-                mapContent = new HashMap<>();
-                mapContent = download(PATH);
-                isDownloaded = true;
-            }
-            catch (IOException ex){
-                Log.e("tryGetExchangeRates", ex.toString());
-            }
-        }).start();
-        return this;
-    }
-
-    private Map<String, Double> download(String urlPath) throws IOException {
-        Map<String, Double> map = new HashMap<>();
-        BufferedReader reader = null;
-        InputStream stream = null;
-        HttpsURLConnection connection = null;
-        try {
-            URL url = new URL(urlPath);
-            connection = (HttpsURLConnection) url.openConnection();
-            stream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-            String  cc = null, rate;
-            double rateDouble = 0;
-            while ((line = reader.readLine()) != null) {
-                if(line.contains("<rate>")){
-                    rate = line;
-                    rate = rate.replace("<rate>", "");
-                    rate = rate.replace("</rate>", "");
-                    rateDouble = Double.parseDouble(rate);
-                }
-                if(line.contains("<cc>")){
-                    cc = line;
-                    cc = cc.replace("    <cc>", "");
-                    cc = cc.replace("</cc>", "");
-                }
-                if(line.contains("</currency>")){
-                    map.put(cc, rateDouble);
-                }
-            }
-            return map;
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (stream != null) {
-                stream.close();
-            }
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
 }

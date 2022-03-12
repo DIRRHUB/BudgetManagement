@@ -14,18 +14,26 @@ import androidx.fragment.app.Fragment;
 import com.example.budgetmanagement.databinding.FragmentNewPurchaseBinding;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
+
 public class NewPurchaseFragment extends Fragment implements View.OnClickListener {
     private DatabaseContent databaseContent;
+    private BudgetManager budgetManager;
     private Account account;
     private Account.Purchase purchase;
     private FragmentNewPurchaseBinding binding;
-    private String name, category;
+    private String name, category, currency;
     private double price;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         databaseContent = new DatabaseContent().init();
-        databaseContent.loadAccountFromDatabase(account -> this.account = account);
+        databaseContent.loadAccountFromDatabase(account -> {
+            this.account = account;
+            setCurrency();
+        });
+        budgetManager = new BudgetManager();
+        budgetManager.init();
         ((DrawerLocker) requireActivity()).setDrawerClosed(true);
         super.onCreate(savedInstanceState);
     }
@@ -47,7 +55,8 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
                     if(purchase!=null) {
                         if (!binding.editName.getText().toString().equals(purchase.getName()) ||
                                 !binding.spinnerEditCategory.getSelectedItem().toString().equals(purchase.getCategory()) ||
-                                price != purchase.getPrice()) {
+                                !binding.spinnerEditSpecialCurrency.getSelectedItem().toString().equals(purchase.getCurrency()) ||
+                                price != purchase.getPrice() ) {
                             createPurchase();
                         } else {
                             Snackbar.make(binding.getRoot(), purchase.getName(), Snackbar.LENGTH_LONG)
@@ -78,19 +87,30 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
             return;
         }
         category = binding.spinnerEditCategory.getSelectedItem().toString();
-        decreaseBudget(price);
-        addPurchase();
+        currency = binding.spinnerEditSpecialCurrency.getSelectedItem().toString();
+        purchase = new Account.Purchase();
+        if(!currency.equals(account.getCurrencyType())){
+            double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), currency, price);
+            decreaseBudget(convertedPrice);
+            purchase.addPurchase(name, category, currency, databaseContent.getPurchaseID(), price);
+        } else {
+            decreaseBudget(price);
+            purchase.addPurchase(name, category, account.getCurrencyType(), databaseContent.getPurchaseID(), price);
+        }
         databaseContent.saveToDatabase(account);
         databaseContent.saveToDatabase(purchase);
         Snackbar.make(binding.getRoot(), getString(R.string.purchase_successful), Snackbar.LENGTH_SHORT).show();
     }
 
-    private void addPurchase() {
-        purchase = new Account.Purchase();
-        purchase.addPurchase(name, category, account.getCurrencyType(), databaseContent.getPurchaseID(), price);
-    }
-
     private void decreaseBudget(double price) {
         account.setBudgetLeft(account.getBudgetLeft()-price);
+    }
+
+    private void setCurrency(){
+        if(purchase==null) {
+            String[] currencyArray = {"USD", "EUR", "UAH", "RUB"};
+            int position = Arrays.asList(currencyArray).indexOf(account.getCurrencyType());
+            binding.spinnerEditSpecialCurrency.setSelection(position);
+        }
     }
 }

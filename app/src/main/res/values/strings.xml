@@ -45,4 +45,5 @@
     <string name="wrong_price_format">Неверный формат цены</string>
     <string name="name_size_err">Слишком длинное имя</string>
     <string name="purchase_successful">Покупка добавлена!</string>
+    <string name="currency">Валюта:</string>
 </resources>

@@ -31,13 +31,18 @@ public class PurchasesListFragment extends Fragment {
     private SortPurchasesContent sortPurchasesContent;
     private ArrayList<Account.Purchase> purchasesList;
     private Account.Purchase purchase;
+    private Account account;
     private RecyclerAdapter recyclerAdapter;
+    private BudgetManager budgetManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         databaseContent = new DatabaseContent().init();
+        account = new Account();
+        databaseContent.loadAccountFromDatabase(account -> this.account = account);
         purchasesList = new ArrayList<>();
-        sortPurchasesContent = new SortPurchasesContent().tryGetExchangeRates();
+        budgetManager = new BudgetManager().init();
+        sortPurchasesContent = new SortPurchasesContent().init();
         ((DrawerLocker) requireActivity()).setDrawerClosed(true);
         super.onCreate(savedInstanceState);
     }
@@ -105,15 +110,10 @@ public class PurchasesListFragment extends Fragment {
             final int position = viewHolder.getAbsoluteAdapterPosition();
 
             if (direction == ItemTouchHelper.LEFT) {
-                purchase = (Account.Purchase) purchasesList.get(position);
-                purchasesList.remove(position);
-                recyclerAdapter.notifyItemRemoved(position);
-                databaseContent.erasePurchaseFromDatabase(purchase.getPurchaseID());
-                Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + purchase.getName(), Snackbar.LENGTH_LONG)
+                removePurchase(position);
+                Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + " " + purchase.getName(), Snackbar.LENGTH_LONG)
                         .setAction(R.string.cancel, view -> {
-                    purchasesList.add(position, purchase);
-                    recyclerAdapter.notifyItemInserted(position);
-                    databaseContent.saveToDatabase(purchase, purchase.getPurchaseID());
+                    cancelRemovePurchase(position);
                 }).show();
             }
         }
@@ -129,4 +129,30 @@ public class PurchasesListFragment extends Fragment {
         }
     };
 
+    private void removePurchase(int position){
+        purchase = purchasesList.get(position);
+        purchasesList.remove(position);
+        recyclerAdapter.notifyItemRemoved(position);
+        if(!purchase.getCurrency().equals(account.getCurrencyType())){
+            double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
+            account.setBudgetLeft(account.getBudgetLeft()-convertedPrice);
+        } else {
+            account.setBudgetLeft(account.getBudgetLeft()-purchase.getPrice());
+        }
+        databaseContent.saveToDatabase(account);
+        databaseContent.erasePurchaseFromDatabase(purchase.getPurchaseID());
+    }
+
+    private void cancelRemovePurchase(int position){
+        purchasesList.add(position, purchase);
+        recyclerAdapter.notifyItemInserted(position);
+        if(!purchase.getCurrency().equals(account.getCurrencyType())){
+            double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
+            account.setBudgetLeft(account.getBudgetLeft()+convertedPrice);
+        } else {
+            account.setBudgetLeft(account.getBudgetLeft()+purchase.getPrice());
+        }
+        databaseContent.saveToDatabase(account);
+        databaseContent.saveToDatabase(purchase, purchase.getPurchaseID());
+    }
 }
