@@ -111,19 +111,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.e("updateBudgetLastMonth", e.toString());
             }
 
-            if(lastMonth!=currentMonth){
-                if(account!=null) {
-                    account.setBudgetLastMonth(account.getBudget());
-                    account.setBudgetLeft(account.getBudget());
-                    saveAccount();
-                }
+            if(account!=null && lastMonth!=currentMonth){
+                account.setBudgetLastMonth(account.getBudgetLeft());
+                account.setBudgetLeft(account.getBudget());
+                saveAccount();
             }
         }
     }
 
     public void signOut() {
         databaseContent.signOut();
-        LoginActivity.updateUILoggedOut();
         startActivity(new Intent(this, LoginActivity.class));
     }
 

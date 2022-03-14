@@ -18,8 +18,6 @@ import java.util.Objects;
 
 public class DatabaseContent {
     private FirebaseAuth mAuth;
-    private FirebaseUser cUser;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference database;
     private Account account;
     private Account.Purchase purchase;
@@ -28,13 +26,13 @@ public class DatabaseContent {
 
     public DatabaseContent init() {
         mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, mAuth.getUid()));
         return this;
     }
 
     public boolean checkAuth() {
-        cUser = mAuth.getCurrentUser();
+        FirebaseUser cUser = mAuth.getCurrentUser();
         if (cUser == null) {
             Log.d("checkAuth", "NULL");
             return false;
@@ -44,24 +42,24 @@ public class DatabaseContent {
         }
     }
 
-    public void register(String email, String password) {
+    public void register(String email, String password, UpdateUILoginCallback updateUILoginCallback) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("register", "Successful");
-                LoginActivity.updateUILoggedIn();
+                updateUILoginCallback.updateUILoggedIn();
             } else {
                 Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()).toString());
             }
         });
     }
 
-    public void login(String email, String password) {
+    public void login(String email, String password, UpdateUILoginCallback updateUILoginCallback) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
             if (task.isSuccessful()) {
                 Log.d("login", "Successful");
-                LoginActivity.updateUILoggedIn();
+                updateUILoginCallback.updateUILoggedIn();
             } else {
-                Log.e("login", "Error:  " + Objects.requireNonNull(task.getException()).toString());
+                Log.e("login", Objects.requireNonNull(task.getException()).toString());
             }
         }));
     }

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.example.budgetmanagement.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
-    private static ActivityLoginBinding binding;
+    private ActivityLoginBinding binding;
     private DatabaseContent databaseContent;
     private Intent intent;
 
@@ -19,8 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
         intent = new Intent(this, MainActivity.class);
         databaseContent = new DatabaseContent().init();
     }
@@ -31,20 +30,23 @@ public class LoginActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (databaseContent.checkAuth()) {
             startActivity(intent);
+        } else {
+            updateUIDefault();
         }
     }
 
     public void onClickRegister(View view) {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-            databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
+            databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), () -> updateUIAuthorized());
         }
     }
 
     public void onClickLogin(View view) {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString());
+            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), () -> updateUIAuthorized());
+
         }
     }
 
@@ -54,14 +56,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public static void updateUILoggedIn() {
+    private void updateUIAuthorized() {
         binding.bNext.setVisibility(View.VISIBLE);
         binding.textHello.setVisibility(View.VISIBLE);
         binding.constraintLayout.setVisibility(View.GONE);
         binding.textRegistration.setVisibility(View.GONE);
     }
 
-    public static void updateUILoggedOut() {
+    private void updateUIDefault() {
         binding.bNext.setVisibility(View.GONE);
         binding.textHello.setVisibility(View.GONE);
         binding.constraintLayout.setVisibility(View.VISIBLE);
