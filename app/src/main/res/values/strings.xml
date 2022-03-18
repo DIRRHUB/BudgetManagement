@@ -38,6 +38,12 @@
     <string name="date_1_0">Дате (убыванию)</string>
     <string name="price_0_1">Цене (возростанию)</string>
     <string name="price_1_0">Цене (убыванию)</string>
+    <string name="day_sort">Сегодня</string>
+    <string name="yesterday_sort">Вчера</string>
+    <string name="week_sort">Неделю</string>
+    <string name="month_sort">Месяц</string>
+    <string name="all_days_sort">Всё время</string>
+    <string name="show_time">Показать статистику за:</string>
     <string name="changeBudgetAlert">Вы уверены, что хотите изменить бюджет на месяц?</string>
     <string name="cancel">Отменить</string>
     <string name="deleted">Удалено</string>
@@ -46,4 +52,7 @@
     <string name="name_size_err">Слишком длинное имя</string>
     <string name="purchase_successful">Покупка добавлена!</string>
     <string name="currency">Валюта:</string>
+    <string name="percent_status">Процентное соотношение</string>
+
+
 </resources>

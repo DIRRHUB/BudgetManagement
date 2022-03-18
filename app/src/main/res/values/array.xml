@@ -25,4 +25,12 @@
         <item>@string/price_0_1</item>
         <item>@string/price_1_0</item>
     </string-array>
+
+    <string-array name="pie_chart_sort_type">
+        <item>@string/day_sort</item>
+        <item>@string/yesterday_sort</item>
+        <item>@string/week_sort</item>
+        <item>@string/month_sort</item>
+        <item>@string/all_days_sort</item>
+    </string-array>
 </resources>
