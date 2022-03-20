@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<Account.Purchase> purchasesList;
     private SortPurchasesContent sortPurchasesContent;
     private FragmentTransaction fragmentTransaction;
+    private PieChartFragment pieChartFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         purchase = new Account.Purchase();
         sortPurchasesContent = new SortPurchasesContent();
         databaseContent = new DatabaseContent();
+        pieChartFragment = new PieChartFragment();
     }
 
     @Override
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadAccount();
         loadPurchasesToArrayList();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(binding.fragmentContainerView.getId(), new PieChartFragment()).commit();
+        fragmentTransaction.replace(binding.fragmentContainerView.getId(), pieChartFragment).commit();
     }
 
     @Override

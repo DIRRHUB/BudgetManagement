@@ -16,32 +16,32 @@ import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
 
-
 public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;
     private ChartManager chartManager;
-    private int time = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chartManager = new ChartManager();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
+        chartManager = new ChartManager(binding);
         setParameters();
-        addData();
-        binding.sortTypeSpinner.setOnItemSelectedListener (listener);
+        binding.sortTypeSpinner.setOnItemSelectedListener(spinnerListener);
         return binding.getRoot();
     }
 
-    AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            time = binding.sortTypeSpinner.getSelectedItemPosition();
-            addData();
+            int time = binding.sortTypeSpinner.getSelectedItemPosition();
+            chartManager.getPieData(time, data -> {
+                binding.chart.setData(data);
+                binding.chart.invalidate();
+            });
         }
 
         @Override
@@ -70,10 +70,5 @@ public class PieChartFragment extends Fragment {
         l.setXEntrySpace(0f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
-    }
-
-    private void addData(){
-        binding.chart.setData(chartManager.getPieData(time, ""));
-        binding.chart.invalidate();
     }
 }

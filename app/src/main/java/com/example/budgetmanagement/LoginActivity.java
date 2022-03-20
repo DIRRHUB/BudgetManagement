@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
             databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), () -> updateUIAuthorized());
-
         }
     }
 
