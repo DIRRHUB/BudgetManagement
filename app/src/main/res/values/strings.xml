@@ -30,6 +30,10 @@
     <string name="eur">EUR</string>
     <string name="uah">UAH</string>
     <string name="rub">RUB</string>
+    <string name="shop">Магазин</string>
+    <string name="cafe">Рестораны</string>
+    <string name="entertainment">Развлечения</string>
+    <string name="other">Другое</string>
     <string name="name_a_z">Названию (А-Я)</string>
     <string name="name_z_a">Названию (Я-А)</string>
     <string name="category_a_z">Категории (А-Я)</string>

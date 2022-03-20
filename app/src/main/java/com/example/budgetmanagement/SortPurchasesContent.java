@@ -25,7 +25,6 @@ public class SortPurchasesContent {
 
     public SortPurchasesContent init(){
         budgetManager = new BudgetManager();
-        budgetManager.init();
         return this;
     }
 

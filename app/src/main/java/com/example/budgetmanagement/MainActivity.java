@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         account = new Account();
         purchase = new Account.Purchase();
         sortPurchasesContent = new SortPurchasesContent();
-        databaseContent = new DatabaseContent().init();
+        databaseContent = new DatabaseContent();
     }
 
     @Override

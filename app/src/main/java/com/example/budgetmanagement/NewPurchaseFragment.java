@@ -27,13 +27,12 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        databaseContent = new DatabaseContent().init();
+        databaseContent = new DatabaseContent();
         databaseContent.loadAccountFromDatabase(account -> {
             this.account = account;
             setCurrency();
         });
         budgetManager = new BudgetManager();
-        budgetManager.init();
         ((DrawerLocker) requireActivity()).setDrawerClosed(true);
         super.onCreate(savedInstanceState);
     }

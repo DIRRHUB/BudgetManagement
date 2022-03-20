@@ -2,10 +2,10 @@
 <resources>
 
     <string-array name="list_category">
-    <item>Магазин</item>
-    <item>Кафе</item>
-    <item>Развлечения</item>
-    <item>Другое</item>
+    <item>@string/shop</item>
+    <item>@string/cafe</item>
+    <item>@string/entertainment</item>
+    <item>@string/other</item>
     </string-array>
 
     <string-array name="list_currency">

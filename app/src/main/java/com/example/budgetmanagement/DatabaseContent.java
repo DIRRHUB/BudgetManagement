@@ -24,11 +24,10 @@ public class DatabaseContent {
     private String lastPurchaseID;
     private final String USER_KEY = "Account", PURCHASES = "purchases";
 
-    public DatabaseContent init() {
+    DatabaseContent() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, mAuth.getUid()));
-        return this;
     }
 
     public boolean checkAuth() {

@@ -18,7 +18,7 @@ public class BudgetManager {
     private boolean isDownloaded = false;
     private double convertedEUR, convertedRUB, convertedUSD;
 
-    public BudgetManager init() {
+    BudgetManager () {
         new Thread(() -> {
             try{
                 mapContent = new HashMap<>();
@@ -29,7 +29,6 @@ public class BudgetManager {
                 Log.e("init", ex.toString());
             }
         }).start();
-        return this;
     }
 
     private void download() throws IOException {

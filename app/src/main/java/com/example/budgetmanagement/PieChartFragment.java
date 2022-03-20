@@ -8,31 +8,24 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
+
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;
+    private ChartManager chartManager;
+    private int time = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        chartManager = new ChartManager();
     }
 
     @Override
@@ -40,8 +33,22 @@ public class PieChartFragment extends Fragment {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
         setParameters();
         addData();
+        binding.sortTypeSpinner.setOnItemSelectedListener (listener);
         return binding.getRoot();
     }
+
+    AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            time = binding.sortTypeSpinner.getSelectedItemPosition();
+            addData();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+     };
 
     private void setParameters(){
         binding.chart.setUsePercentValues(true);
@@ -66,37 +73,7 @@ public class PieChartFragment extends Fragment {
     }
 
     private void addData(){
-        List<PieEntry> entries = new ArrayList<>();
-
-        /*for (Data data : dataObjects) {
-            entries.add(new PieEntry(100, "test"));
-        }*/
-        PieDataSet dataSet = new PieDataSet(entries, "");
-
-        ArrayList<Integer> colors = new ArrayList<>();
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-        colors.add(ColorTemplate.getHoloBlue());
-        dataSet.setColors(colors);
-
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
-
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(15f);
-        data.setValueTextColor(Color.BLACK);
-        binding.chart.setData(data);
-
+        binding.chart.setData(chartManager.getPieData(time, ""));
         binding.chart.invalidate();
     }
 }

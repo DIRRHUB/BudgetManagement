@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         intent = new Intent(this, MainActivity.class);
-        databaseContent = new DatabaseContent().init();
+        databaseContent = new DatabaseContent();
     }
 
     @Override

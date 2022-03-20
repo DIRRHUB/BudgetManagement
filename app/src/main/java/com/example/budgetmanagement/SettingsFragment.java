@@ -25,7 +25,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseContent = new DatabaseContent().init();
+        databaseContent = new DatabaseContent();
         account = new Account();
         ((DrawerLocker) requireActivity()).setDrawerClosed(true);
     }

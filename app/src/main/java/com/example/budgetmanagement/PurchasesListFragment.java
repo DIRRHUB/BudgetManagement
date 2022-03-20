@@ -37,11 +37,11 @@ public class PurchasesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        databaseContent = new DatabaseContent().init();
+        databaseContent = new DatabaseContent();
         account = new Account();
         databaseContent.loadAccountFromDatabase(account -> this.account = account);
         purchasesList = new ArrayList<>();
-        budgetManager = new BudgetManager().init();
+        budgetManager = new BudgetManager();
         sortPurchasesContent = new SortPurchasesContent().init();
         ((DrawerLocker) requireActivity()).setDrawerClosed(true);
         super.onCreate(savedInstanceState);
