@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final int SORT_TYPE = 5;
             purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(SORT_TYPE).getArrayList();
             if(purchasesList.size()!=0) {
-                purchase = (Account.Purchase) purchasesList.get(0);
+                purchase = purchasesList.get(0);
                 updateBudgetLastMonth();
             }
         });

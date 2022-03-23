@@ -6,6 +6,7 @@
     <string name="textRegisterLogin">Регистрация/Вход</string>
     <string name="next">Далее</string>
     <string name="helloMessage">Добро пожаловать</string>
+    <string name="verificationMessage">Подвердите адрес электронной почты</string>
     <string name="signout">Выход</string>
     <string name="save">Сохранить</string>
     <string name="load">Загрузить</string>

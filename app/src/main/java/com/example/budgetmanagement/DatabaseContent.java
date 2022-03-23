@@ -17,22 +17,23 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DatabaseContent {
-    private FirebaseAuth mAuth;
-    private DatabaseReference database;
+    private final FirebaseAuth auth;
+    private FirebaseUser user;
+    private final DatabaseReference database;
     private Account account;
     private Account.Purchase purchase;
     private String lastPurchaseID;
     private final String USER_KEY = "Account", PURCHASES = "purchases";
 
     DatabaseContent() {
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, mAuth.getUid()));
+        database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, auth.getUid()));
     }
 
     public boolean checkAuth() {
-        FirebaseUser cUser = mAuth.getCurrentUser();
-        if (cUser == null) {
+        user = auth.getCurrentUser();
+        if (user == null) {
             Log.d("checkAuth", "NULL");
             return false;
         } else {
@@ -41,22 +42,57 @@ public class DatabaseContent {
         }
     }
 
+    public boolean checkVerification(){
+        user = auth.getCurrentUser();
+        Objects.requireNonNull(user).reload();
+        if (user != null) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return user.isEmailVerified();
+        } else {
+            return false;
+        }
+    }
+
     public void register(String email, String password, UpdateUILoginCallback updateUILoginCallback) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d("register", "Successful");
-                updateUILoginCallback.updateUILoggedIn();
+                Log.d("Register", "Successful");
+                Log.d("Register", "Need verification");
+                user = auth.getCurrentUser();
+                Objects.requireNonNull(user).sendEmailVerification().addOnCompleteListener(verificationTask -> {
+                    if (verificationTask.isSuccessful()) {
+                        Log.d("Register", "Email verification was sent.");
+                    }
+                });
+                updateUILoginCallback.updateUILoggedIn(false);
             } else {
-                Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()).toString());
+                Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()));
             }
         });
     }
 
+    public void tryLogin(String email, String password, UpdateUILoginCallback updateUILoginCallback, KeyboardCallback keyboard){
+        register(email, password, updateUILoginCallback);
+        if(!auth.isSignInWithEmailLink(email)){
+            login(email, password, updateUILoginCallback);
+            keyboard.hide();
+        }
+    }
+
     public void login(String email, String password, UpdateUILoginCallback updateUILoginCallback) {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
             if (task.isSuccessful()) {
-                Log.d("login", "Successful");
-                updateUILoginCallback.updateUILoggedIn();
+                if(checkVerification()){
+                    Log.d("Login", "Successful");
+                    updateUILoginCallback.updateUILoggedIn(true);
+                } else {
+                    Log.d("Login", "Need verification");
+                    updateUILoginCallback.updateUILoggedIn(false);
+                }
             } else {
                 Log.e("login", Objects.requireNonNull(task.getException()).toString());
             }
@@ -64,7 +100,7 @@ public class DatabaseContent {
     }
 
     public void signOut() {
-        mAuth.signOut();
+        auth.signOut();
     }
 
     public void loadAccountFromDatabase(FirebaseCallbackAccount accountFirebaseCallback) {
@@ -81,7 +117,7 @@ public class DatabaseContent {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("loadAccountFromDatabase", "Error:  " + error.toString());
+                Log.e("loadAccountFromDatabase", "Error:  " + error);
             }
         };
         database.addValueEventListener(valueEventListener);
@@ -133,13 +169,11 @@ public class DatabaseContent {
     }
 
     public String getUID() {
-        return Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        return Objects.requireNonNull(auth.getCurrentUser()).getUid();
     }
 
     public String getEmail() {
-        return Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
+        return Objects.requireNonNull(auth.getCurrentUser()).getEmail();
     }
-
-
 }
 

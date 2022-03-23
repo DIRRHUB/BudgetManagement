@@ -3,7 +3,11 @@ package com.example.budgetmanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -29,43 +33,78 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (databaseContent.checkAuth()) {
-            startActivity(intent);
+            if(databaseContent.checkVerification()) {
+                startActivity(intent);
+            } else {
+                updateUIAuthorized(false);
+            }
         } else {
             updateUIDefault();
+            binding.textEmail.setOnEditorActionListener(keyboardListener);
+            binding.textPassword.setOnEditorActionListener(keyboardListener);
         }
     }
 
     public void onClickRegister(View view) {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-            databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), () -> updateUIAuthorized());
+            databaseContent.register(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), a -> updateUIAuthorized(a));
         }
     }
 
     public void onClickLogin(View view) {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), () -> updateUIAuthorized());
+            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(),  a -> updateUIAuthorized(a));
         }
     }
 
     public void onClickNext(View view) {
         if (databaseContent.checkAuth()) {
-            startActivity(intent);
+            if(databaseContent.checkVerification()) {
+                startActivity(intent);
+            }
         }
     }
 
-    private void updateUIAuthorized() {
+    public void onClickSignOut(View view) {
+        databaseContent.signOut();
+        updateUIDefault();
+    }
+
+    private void updateUIAuthorized(boolean access) {
+        binding.loginLayout.setVisibility(View.GONE);
+        binding.welcomeLayout.setVisibility(View.VISIBLE);
         binding.bNext.setVisibility(View.VISIBLE);
+        binding.bSignOut.setVisibility(View.VISIBLE);
         binding.textHello.setVisibility(View.VISIBLE);
-        binding.constraintLayout.setVisibility(View.GONE);
-        binding.textRegistration.setVisibility(View.GONE);
+        if (!access) {
+            binding.textVerification.setVisibility(View.VISIBLE);
+        }
     }
 
     private void updateUIDefault() {
-        binding.bNext.setVisibility(View.GONE);
-        binding.textHello.setVisibility(View.GONE);
-        binding.constraintLayout.setVisibility(View.VISIBLE);
-        binding.textRegistration.setVisibility(View.VISIBLE);
+        binding.welcomeLayout.setVisibility(View.GONE);
+        binding.loginLayout.setVisibility(View.VISIBLE);
     }
+
+    private void hideKeyboard(TextView textView){
+        SpecialFunction.hideKeyboard(textView);
+        Log.i("login", "keyboard");
+    }
+
+    private final TextView.OnEditorActionListener keyboardListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+            if(id == EditorInfo.IME_ACTION_DONE){
+                Log.i("DONE", "true");
+                if(!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
+                    databaseContent.tryLogin(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(),
+                                             access -> updateUIAuthorized(access), () -> hideKeyboard(textView));
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
 }

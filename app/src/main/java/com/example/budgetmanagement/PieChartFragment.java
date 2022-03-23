@@ -34,7 +34,7 @@ public class PieChartFragment extends Fragment {
         return binding.getRoot();
     }
 
-    AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
+    private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             int time = binding.sortTypeSpinner.getSelectedItemPosition();
