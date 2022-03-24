@@ -35,6 +35,8 @@
     <string name="cafe">Рестораны</string>
     <string name="entertainment">Развлечения</string>
     <string name="other">Другое</string>
+    <string name="all_types">Все</string>
+    <string name="show_categories">Показать категории:</string>
     <string name="name_a_z">Названию (А-Я)</string>
     <string name="name_z_a">Названию (Я-А)</string>
     <string name="category_a_z">Категории (А-Я)</string>
@@ -58,6 +60,4 @@
     <string name="purchase_successful">Покупка добавлена!</string>
     <string name="currency">Валюта:</string>
     <string name="percent_status">Процентное соотношение</string>
-
-
 </resources>

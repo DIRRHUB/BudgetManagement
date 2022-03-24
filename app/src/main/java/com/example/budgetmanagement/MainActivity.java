@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadAccount();
         loadPurchasesToArrayList();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(binding.fragmentContainerView.getId(), pieChartFragment).commit();
+        fragmentTransaction.replace(binding.fragmentContainerView.getId(), new BarChartFragment()).commit();
     }
 
     @Override

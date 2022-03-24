@@ -6,10 +6,15 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 
 import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
+import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.ParseException;
@@ -26,7 +31,8 @@ public class ChartManager {
     private DatabaseContent databaseContent;
     private BudgetManager budgetManager;
     private List<Account.Purchase> purchases;
-    private List<PieEntry> entries;
+    private List<PieEntry> pieEntries;
+    private List<BarEntry> barEntries;
     private List<Integer> colors;
     private Account account;
     private Map<String, Float> processedPurchasesMap;
@@ -47,7 +53,13 @@ public class ChartManager {
         });
     }
 
+    ChartManager (FragmentBarChartBinding binding){
+        init();
+        databaseContent.loadPurchaseFromDatabase(arrayList -> {
+            purchases = new ArrayList<>(arrayList);
 
+        });
+    }
 
     private void init(){
         databaseContent = new DatabaseContent();
@@ -56,16 +68,16 @@ public class ChartManager {
         databaseContent.loadAccountFromDatabase(account -> this.account = account);
     }
 
-    public void getPieData(int time, ChartCallback callback){
+    public void getPieData(int time, PieChartCallback callback){
         processedPurchasesMap = new HashMap<>();
-        entries = new ArrayList<>();
+        pieEntries = new ArrayList<>();
         try {
             processPurchasesList(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         fillEntriesList();
-        PieDataSet dataSet = new PieDataSet(entries, "");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
         if (colors == null) {
             setColorsList();
         }
@@ -194,9 +206,35 @@ public class ChartManager {
             if (!processedPurchasesMap.isEmpty()) {
                 if (processedPurchasesMap.containsKey(key)) {
                     value = Objects.requireNonNull(processedPurchasesMap.get(key));
-                    entries.add(new PieEntry(value, key));
+                    pieEntries.add(new PieEntry(value, key));
                 }
             }
         }
+    }
+
+    public void getBarData(int time, int type, BarChartCallback callback){
+        processedPurchasesMap = new HashMap<>();
+        barEntries = new ArrayList<>();
+
+        barEntries.add(new BarEntry(1, 1));
+        barEntries.add(new BarEntry(2, 2));
+        barEntries.add(new BarEntry(3, 3));
+        barEntries.add(new BarEntry(4, 4));
+        barEntries.add(new BarEntry(5, 5));
+        barEntries.add(new BarEntry(6, 6));
+        barEntries.add(new BarEntry(7, 7));
+
+        BarDataSet dataSet = new BarDataSet(barEntries, "");
+        dataSet.setDrawIcons(false);
+        if (colors == null) {
+            setColorsList();
+        }
+        dataSet.setColors(colors);
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataSet);
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+        data.setBarWidth(0.9f);
+        callback.BarChartCallback(data);
     }
 }
