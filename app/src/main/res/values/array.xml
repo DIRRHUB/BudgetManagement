@@ -34,11 +34,16 @@
         <item>@string/all_days_sort</item>
     </string-array>
 
-    <string-array name="bar_chart_sort_type">
+    <string-array name="bar_chart_category_sort_type">
         <item>@string/all_types</item>
         <item>@string/shop</item>
         <item>@string/cafe</item>
         <item>@string/entertainment</item>
         <item>@string/other</item>
+    </string-array>
+
+    <string-array name="bar_chart_sort_type">
+        <item>@string/week_sort</item>
+        <item>@string/month_sort</item>
     </string-array>
 </resources>

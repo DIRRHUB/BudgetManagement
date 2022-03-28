@@ -26,16 +26,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
-            android:id="@+id/sortTypeSpinner"
-            android:layout_width="wrap_content"
+            android:id="@+id/sortTimeSpinner"
+            android:layout_width="162dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:entries="@array/bar_chart_sort_type"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textSortBy"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             tools:ignore="SpeakableTextPresentCheck" />
+
+        <Spinner
+            android:id="@+id/sortTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/bar_chart_category_sort_type"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textSortBy2"
+            app:layout_constraintTop_toBottomOf="@+id/sortTimeSpinner"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/textSortBy"
@@ -43,11 +53,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/show_categories"
+            android:text="@string/show_time"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:listItem="@layout/list_item" />
+
+        <TextView
+            android:id="@+id/textSortBy2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/show_categories"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textSortBy"
             tools:listItem="@layout/list_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

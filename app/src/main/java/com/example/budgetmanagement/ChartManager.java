@@ -35,7 +35,9 @@ public class ChartManager {
     private List<BarEntry> barEntries;
     private List<Integer> colors;
     private Account account;
-    private Map<String, Float> processedPurchasesMap;
+    private Map<String, Float> processedPiePurchasesMap;
+    private Map<Integer, BarEntry> processedBarPurchasesMap;
+    private int categoryType;
     private final String SHOP = "Магазин";
     private final String CAFE = "Рестораны";
     private final String ENTERTAINMENT = "Развлечения";
@@ -57,7 +59,10 @@ public class ChartManager {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);
-
+            getBarData(0, 0, data -> {
+                binding.chart.setData(data);
+                binding.chart.invalidate();
+            });
         });
     }
 
@@ -69,14 +74,14 @@ public class ChartManager {
     }
 
     public void getPieData(int time, PieChartCallback callback){
-        processedPurchasesMap = new HashMap<>();
+        processedPiePurchasesMap = new HashMap<>();
         pieEntries = new ArrayList<>();
         try {
-            processPurchasesList(time);
+            processPurchasesList(time, "pie");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        fillEntriesList();
+        fillPieEntriesList();
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
         if (colors == null) {
             setColorsList();
@@ -93,8 +98,32 @@ public class ChartManager {
         callback.PieChartCallback(pieData);
     }
 
+    public void getBarData(int time, int type, BarChartCallback callback) {
+        barEntries = new ArrayList<>();
+        processedBarPurchasesMap = new HashMap<>();
+        try {
+            categoryType = type;
+            processPurchasesList(time+2, "bar");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fillBarEntriesList();
+        BarDataSet dataSet = new BarDataSet(barEntries, "");
+        dataSet.setDrawIcons(false);
+        if (colors == null) {
+            setColorsList();
+        }
+        dataSet.setColors(colors);
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataSet);
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+        data.setBarWidth(0.9f);
+        callback.BarChartCallback(data);
+    }
+
     private void setColorsList(){
-       colors = new ArrayList<>();
+        colors = new ArrayList<>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
         for (int c : ColorTemplate.JOYFUL_COLORS)
@@ -109,7 +138,7 @@ public class ChartManager {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private void processPurchasesList(int time) throws ParseException {
+    private void processPurchasesList(int time, String chartType) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(PATTERN);
         Calendar calendarStart = getInstance();
         Calendar calendarEnd = getInstance();
@@ -132,22 +161,22 @@ public class ChartManager {
                 String dateString = p.getDate();
                 Date datePurchase = sdf.parse(dateString);
                 switch (time) {
-                    case 0:
+                    case 0://today
                         calendarEnd.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH));
                         break;
-                    case 1:
+                    case 1://yesterday
                         calendarStart.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH) - 1);
                         calendarEnd.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH) - 1);
                         break;
-                    case 2:
-                        calendarStart.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH) - 7);
+                    case 2://week
+                        calendarStart.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH) - 6);
                         calendarEnd.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH));
                         break;
-                    case 3:
+                    case 3://month
                         calendarStart.set(MONTH, calendarNow.get(MONTH) - 1);
                         calendarEnd.set(MONTH, calendarNow.get(MONTH));
                         break;
-                    case 4:
+                    case 4://all time
                         calendarStart.set(YEAR, 0);
                         calendarEnd.set(DAY_OF_MONTH, calendarNow.get(DAY_OF_MONTH));
                         break;
@@ -155,86 +184,125 @@ public class ChartManager {
                 dateStart = calendarStart.getTime();
                 dateEnd = calendarEnd.getTime();
                 if (datePurchase!=null && dateStart.getTime() <= datePurchase.getTime()
-                                       && dateEnd.getTime() > datePurchase.getTime()) {
-                    processPurchase(p);
+                        && dateEnd.getTime() > datePurchase.getTime()) {
+                    if(chartType.equals("pie")) {
+                        processPiePurchase(p);
+                    } else if (chartType.equals("bar")){
+                        processBarPurchase(p);
+                    }
                 }
             }
         }
     }
 
-    private void processPurchase(Account.Purchase purchase){
+    private void processPiePurchase(Account.Purchase purchase){
         double price = 0;
         if(budgetManager.isDownloaded()){
             price = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
         }
         switch (purchase.getCategory()) {
             case SHOP:
-                if(processedPurchasesMap.containsKey(SHOP)){
-                    processedPurchasesMap.put(SHOP, Objects.requireNonNull(processedPurchasesMap.get(SHOP)) + (float) price);
+                if(processedPiePurchasesMap.containsKey(SHOP)){
+                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(SHOP)) + (float) price);
                 } else {
-                    processedPurchasesMap.put(SHOP, (float) price);
+                    processedPiePurchasesMap.put(SHOP, (float) price);
                 }
                 break;
             case CAFE:
-                if(processedPurchasesMap.containsKey(CAFE)){
-                    processedPurchasesMap.put(SHOP, Objects.requireNonNull(processedPurchasesMap.get(CAFE)) + (float) price);
+                if(processedPiePurchasesMap.containsKey(CAFE)){
+                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(CAFE)) + (float) price);
                 } else {
-                    processedPurchasesMap.put(CAFE, (float) price);
+                    processedPiePurchasesMap.put(CAFE, (float) price);
                 }
                 break;
             case ENTERTAINMENT:
-                if(processedPurchasesMap.containsKey(ENTERTAINMENT)){
-                    processedPurchasesMap.put(SHOP, Objects.requireNonNull(processedPurchasesMap.get(ENTERTAINMENT)) + (float) price);
+                if(processedPiePurchasesMap.containsKey(ENTERTAINMENT)){
+                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(ENTERTAINMENT)) + (float) price);
                 } else {
-                    processedPurchasesMap.put(ENTERTAINMENT, (float) price);
+                    processedPiePurchasesMap.put(ENTERTAINMENT, (float) price);
                 }
                 break;
             case OTHER:
-                if(processedPurchasesMap.containsKey(OTHER)){
-                    processedPurchasesMap.put(SHOP, Objects.requireNonNull(processedPurchasesMap.get(OTHER)) + (float) price);
+                if(processedPiePurchasesMap.containsKey(OTHER)){
+                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(OTHER)) + (float) price);
                 } else {
-                    processedPurchasesMap.put(OTHER, (float) price);
+                    processedPiePurchasesMap.put(OTHER, (float) price);
                 }
                 break;
         }
     }
 
-    private void fillEntriesList(){
+    @SuppressLint("SimpleDateFormat")
+    private void processBarPurchase(Account.Purchase purchase) {
+        float price = 0;
+        if(budgetManager.isDownloaded()){
+            price = (float) budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
+        }
+        switch (categoryType) {
+            case 0:
+                fillBarEntriesMap(purchase.getDate(), price);
+                break;
+            case 1:
+                if (purchase.getCategory().equals(SHOP)) {
+                    fillBarEntriesMap(purchase.getDate(), price);
+                }
+                break;
+            case 2:
+                if (purchase.getCategory().equals(CAFE)) {
+                    fillBarEntriesMap(purchase.getDate(), price);
+                }
+            case 3:
+                if (purchase.getCategory().equals(ENTERTAINMENT)) {
+                    fillBarEntriesMap(purchase.getDate(), price);
+                }
+            case 4:
+                if (purchase.getCategory().equals(OTHER)) {
+                    fillBarEntriesMap(purchase.getDate(), price);
+                }
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private void fillBarEntriesMap(String date, float price){
+        SimpleDateFormat sdf = new SimpleDateFormat(PATTERN);
+        Calendar calendarPurchase = getInstance();
+        try {
+            calendarPurchase.setTime(Objects.requireNonNull(sdf.parse(date)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendarNow = getInstance();
+        calendarNow.setTime(new Date());
+        int today = calendarNow.get(DAY_OF_MONTH);
+        int last = calendarPurchase.get(DAY_OF_MONTH);
+        int diff = last - today;
+        if(!processedBarPurchasesMap.containsKey(0) && diff != 0){
+            processedBarPurchasesMap.put(0, new BarEntry(0, 0));
+        }
+        if(processedBarPurchasesMap.containsKey(diff)){
+            BarEntry oldEntry = processedBarPurchasesMap.get(diff);
+            processedBarPurchasesMap.remove(diff);
+            BarEntry entry = new BarEntry(diff, Objects.requireNonNull(oldEntry).getY() + price);
+            processedBarPurchasesMap.put(diff, entry);
+        } else {
+            processedBarPurchasesMap.put(diff, new BarEntry(diff, price));
+        }
+    }
+
+    private void fillBarEntriesList(){
+        barEntries = new ArrayList<>(processedBarPurchasesMap.values());
+    }
+
+    private void fillPieEntriesList(){
         float value;
         final String[] CATEGORIES = {SHOP, CAFE, ENTERTAINMENT, OTHER};
         for(String key : CATEGORIES) {
-            if (!processedPurchasesMap.isEmpty()) {
-                if (processedPurchasesMap.containsKey(key)) {
-                    value = Objects.requireNonNull(processedPurchasesMap.get(key));
+            if (!processedPiePurchasesMap.isEmpty()) {
+                if (processedPiePurchasesMap.containsKey(key)) {
+                    value = Objects.requireNonNull(processedPiePurchasesMap.get(key));
                     pieEntries.add(new PieEntry(value, key));
                 }
             }
         }
-    }
-
-    public void getBarData(int time, int type, BarChartCallback callback){
-        processedPurchasesMap = new HashMap<>();
-        barEntries = new ArrayList<>();
-
-        barEntries.add(new BarEntry(1, 1));
-        barEntries.add(new BarEntry(2, 2));
-        barEntries.add(new BarEntry(3, 3));
-        barEntries.add(new BarEntry(4, 4));
-        barEntries.add(new BarEntry(5, 5));
-        barEntries.add(new BarEntry(6, 6));
-        barEntries.add(new BarEntry(7, 7));
-
-        BarDataSet dataSet = new BarDataSet(barEntries, "");
-        dataSet.setDrawIcons(false);
-        if (colors == null) {
-            setColorsList();
-        }
-        dataSet.setColors(colors);
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-        dataSets.add(dataSet);
-        BarData data = new BarData(dataSets);
-        data.setValueTextSize(10f);
-        data.setBarWidth(0.9f);
-        callback.BarChartCallback(data);
     }
 }

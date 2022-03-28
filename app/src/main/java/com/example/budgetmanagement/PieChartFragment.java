@@ -30,14 +30,14 @@ public class PieChartFragment extends Fragment {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
         chartManager = new ChartManager(binding);
         setParameters();
-        binding.sortTypeSpinner.setOnItemSelectedListener(spinnerListener);
+        binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);
         return binding.getRoot();
     }
 
     private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int time = binding.sortTypeSpinner.getSelectedItemPosition();
+            int time = binding.sortTimeSpinner.getSelectedItemPosition();
             chartManager.getPieData(time, data -> {
                 binding.chart.setData(data);
                 binding.chart.invalidate();

@@ -11,12 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 
 public class BarChartFragment extends Fragment {
     private FragmentBarChartBinding binding;
@@ -31,6 +28,7 @@ public class BarChartFragment extends Fragment {
         binding = FragmentBarChartBinding.inflate(getLayoutInflater());
         chartManager = new ChartManager(binding);
         setParameters();
+        binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);
         binding.sortTypeSpinner.setOnItemSelectedListener(spinnerListener);
         return binding.getRoot();
     }
@@ -38,8 +36,8 @@ public class BarChartFragment extends Fragment {
     private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            int time = binding.sortTimeSpinner.getSelectedItemPosition();
             int type = binding.sortTypeSpinner.getSelectedItemPosition();
-            int time = 0; //need to implement listener for other spinner which gets time
             chartManager.getBarData(time, type, data -> {
                 binding.chart.setData(data);
                 binding.chart.invalidate();
@@ -65,6 +63,7 @@ public class BarChartFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(7);
+        //TODO Data labels for x-axis,
 
         YAxis leftAxis = binding.chart.getAxisLeft();
         leftAxis.setLabelCount(8, false);
