@@ -4,9 +4,15 @@ import static java.util.Calendar.*;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -14,6 +20,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -37,6 +44,7 @@ public class ChartManager {
     private Account account;
     private Map<String, Float> processedPiePurchasesMap;
     private Map<Integer, BarEntry> processedBarPurchasesMap;
+    private Map<Integer, String> labelsXBarMap;
     private int categoryType;
     private final String SHOP = "Магазин";
     private final String CAFE = "Рестораны";
@@ -59,8 +67,23 @@ public class ChartManager {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);
-            getBarData(0, 0, data -> {
+            getBarData(0, 0, (l, data) -> {
                 binding.chart.setData(data);
+                labelsXBarMap = l;
+                XAxis xAxis = binding.chart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setDrawGridLines(false);
+                xAxis.setGranularity(1f);
+                xAxis.setLabelCount(7);
+                xAxis.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getAxisLabel(float value, AxisBase axis) {
+                        if(labelsXBarMap.containsKey((int) value)){
+                            return labelsXBarMap.get((int) value);
+                        }
+                        return "";
+                    }
+                });
                 binding.chart.invalidate();
             });
         });
@@ -95,11 +118,12 @@ public class ChartManager {
         pieData.setValueFormatter(new PercentFormatter());
         pieData.setValueTextSize(15f);
         pieData.setValueTextColor(Color.BLACK);
-        callback.PieChartCallback(pieData);
+        callback.pieChartCallback(pieData);
     }
 
     public void getBarData(int time, int type, BarChartCallback callback) {
         barEntries = new ArrayList<>();
+        labelsXBarMap = new HashMap<>();
         processedBarPurchasesMap = new HashMap<>();
         try {
             categoryType = type;
@@ -119,7 +143,7 @@ public class ChartManager {
         BarData data = new BarData(dataSets);
         data.setValueTextSize(10f);
         data.setBarWidth(0.9f);
-        callback.BarChartCallback(data);
+        callback.barChartCallback(labelsXBarMap, data);
     }
 
     private void setColorsList(){
@@ -287,6 +311,14 @@ public class ChartManager {
         } else {
             processedBarPurchasesMap.put(diff, new BarEntry(diff, price));
         }
+        fillLabelXBarMap(calendarPurchase, diff);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private void fillLabelXBarMap(Calendar calendarPurchase, int value){
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM");
+        String formatted = format.format(calendarPurchase.getTime());
+        labelsXBarMap.put(value, formatted);
     }
 
     private void fillBarEntriesList(){
