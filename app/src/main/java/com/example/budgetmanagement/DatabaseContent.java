@@ -70,7 +70,7 @@ public class DatabaseContent {
                 });
                 updateUILoginCallback.updateUILoggedIn(false);
             } else {
-                Log.e("register", "Error:  " + Objects.requireNonNull(task.getException()));
+                Log.e("Register", "Error:  " + Objects.requireNonNull(task.getException()));
             }
         });
     }
@@ -94,7 +94,7 @@ public class DatabaseContent {
                     updateUILoginCallback.updateUILoggedIn(false);
                 }
             } else {
-                Log.e("login", Objects.requireNonNull(task.getException()).toString());
+                Log.e("Login", Objects.requireNonNull(task.getException()).toString());
             }
         }));
     }
@@ -118,7 +118,7 @@ public class DatabaseContent {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("loadAccountFromDatabase", "Error:  " + error);
+                Log.e("loadAccountFromDatabase", error.toString());
             }
         };
         database.addValueEventListener(valueEventListener);

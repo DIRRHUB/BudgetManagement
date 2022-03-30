@@ -1,13 +1,10 @@
 package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 
 public class SortPurchasesContent {
     private ArrayList<Account.Purchase> arrayList;
@@ -30,25 +27,24 @@ public class SortPurchasesContent {
 
     @SuppressLint("NonConstantResourceId")
     public SortPurchasesContent sort(int sortType) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             switch (sortType) {
                 case 0://name a-z
-                    arrayList.sort(Comparator.comparing(Account.Purchase::getName));
+                    Collections.sort(arrayList, (t1, t2) -> t1.getName().compareTo(t2.getName()));
                     break;
                 case 1://name z-a
-                    arrayList.sort((t1, t2) -> t2.getName().compareTo(t1.getName()));
+                    Collections.sort(arrayList, (t1, t2) -> t2.getName().compareTo(t1.getName()));
                     break;
                 case 2://category a-z
-                    arrayList.sort(Comparator.comparing(Account.Purchase::getCategory));
+                    Collections.sort(arrayList, (t1, t2) -> t1.getCategory().compareTo(t2.getCategory()));
                     break;
                 case 3://category z-a
-                    arrayList.sort((t1, t2) -> t2.getCategory().compareTo(t1.getCategory()));
+                    Collections.sort(arrayList, (t1, t2) -> t2.getCategory().compareTo(t1.getCategory()));
                     break;
                 case 4://date 0-1
-                    arrayList.sort(Comparator.comparing(Account.Purchase::getDate));
+                    Collections.sort(arrayList, (t1, t2) -> t1.getDate().compareTo(t2.getDate()));
                     break;
                 case 5://date 1-0
-                    arrayList.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
+                    Collections.sort(arrayList, (t1, t2) -> t2.getDate().compareTo(t1.getDate()));
                     break;
                 case 6://price 0-1
                     sortPrice(true);
@@ -56,12 +52,10 @@ public class SortPurchasesContent {
                 case 7://price 1-0
                     sortPrice(false);
                     break;
-            }
         }
         return this;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortPrice(boolean increasingPrice) {
         if (budgetManager.isDownloaded()) {
             try {
@@ -75,7 +69,7 @@ public class SortPurchasesContent {
                 Log.e("SortPurchases", "Something is wrong with map");
                 return;
             }
-            arrayList.sort((purchase1, purchase2) -> {
+            Collections.sort(arrayList, (purchase1, purchase2) -> {
                 double price1, price2;
                 switch (purchase1.getCurrency()) {
                     case "UAH":

@@ -51,7 +51,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         viewHolder.textPrice.setText(formatDouble.format(purchase.getPrice()));
         viewHolder.textCurrency.setText(purchase.getCurrency());
-
     }
 
     @Override

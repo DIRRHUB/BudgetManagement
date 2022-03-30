@@ -23,6 +23,7 @@ public class BarChartFragment extends Fragment {
     private FragmentBarChartBinding binding;
     private ChartManager chartManager;
     private Map<Integer, String> labels;
+
     private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

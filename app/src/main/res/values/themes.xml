@@ -1,9 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BudgetManagement" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.BudgetManagement" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimaryDark">@color/primaryDarkColor</item>
     </style>
+
     <style name="Theme.BudgetManagement.AppBarOverlay"
-        parent="ThemeOverlay.AppCompat.Light" />
-    <style name="Theme.BudgetManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+        parent="ThemeOverlay.Material3.Light" />
+    <style name="Theme.BudgetManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 </resources>

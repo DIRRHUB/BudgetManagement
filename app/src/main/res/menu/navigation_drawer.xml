@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:id="@+id/group"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/new_purchase"
-            android:title="@string/new_purchase"/>
-        <item
-            android:id="@+id/settings"
-            android:title="@string/settings" />
-        <item
-            android:id="@+id/list_purchases"
-            android:title="@string/list_purchases" />
-        <item
-            android:id="@+id/signout"
-            android:title="@string/signout" />
-    </group>
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <group>
+                <item
+                    android:id="@+id/new_purchase"
+                    android:icon="@drawable/ic_new_purchase"
+                    android:title="@string/new_purchase" />
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/settings" />
+                <item
+                    android:id="@+id/list_purchases"
+                    android:icon="@drawable/ic_purchases_list"
+                    android:title="@string/list_purchases" />
+                <item
+                    android:id="@+id/signout"
+                    android:icon="@drawable/ic_sign_out"
+                    android:title="@string/sign_out" />
+        </group>
 </menu>

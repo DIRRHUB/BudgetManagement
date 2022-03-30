@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="list_category">
-    <item>@string/shop</item>
-    <item>@string/cafe</item>
-    <item>@string/entertainment</item>
-    <item>@string/other</item>
+        <item>@string/shop</item>
+        <item>@string/cafe</item>
+        <item>@string/entertainment</item>
+        <item>@string/bills</item>
+        <item>@string/other</item>
     </string-array>
 
     <string-array name="list_currency">
@@ -39,6 +39,7 @@
         <item>@string/shop</item>
         <item>@string/cafe</item>
         <item>@string/entertainment</item>
+        <item>@string/bills</item>
         <item>@string/other</item>
     </string-array>
 

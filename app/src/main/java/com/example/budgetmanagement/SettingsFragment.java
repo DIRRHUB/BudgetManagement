@@ -2,6 +2,7 @@ package com.example.budgetmanagement;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,7 +71,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(R.string.changeBudgetAlert).setPositiveButton("Да", dialogClickListener).setNegativeButton("Нет", dialogClickListener).show();
+        builder.setMessage(R.string.change_budget_alert).setPositiveButton("Да", dialogClickListener).setNegativeButton("Нет", dialogClickListener).show();
     }
 
     private void setCurrencyType() {

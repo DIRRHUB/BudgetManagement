@@ -23,7 +23,6 @@
             android:layout_marginEnd="41dp"
             android:gravity="center"
             android:text="@string/add_new_purchase"
-            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +35,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="16dp"
             android:text="@string/name_purchase"
-            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textAddNewPurchase" />
@@ -64,7 +62,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
             android:text="@string/category"
-            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editName" />
@@ -96,7 +93,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
             android:text="@string/price"
-            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerEditCategory" />
@@ -108,7 +104,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
             android:text="@string/currency"
-            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editPrice" />
@@ -121,7 +116,6 @@
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
-            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

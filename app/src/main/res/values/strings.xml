@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Budget Management</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="textLogin">Вход</string>
-    <string name="textRegister">Регистрация</string>
-    <string name="textRegisterLogin">Регистрация/Вход</string>
+    <string name="text_login">Вход</string>
+    <string name="text_register">Регистрация</string>
+    <string name="text_register_login">Регистрация/Вход</string>
     <string name="next">Далее</string>
-    <string name="helloMessage">Добро пожаловать</string>
-    <string name="verificationMessage">Подвердите адрес электронной почты</string>
-    <string name="signout">Выход</string>
+    <string name="hello_message">Добро пожаловать</string>
+    <string name="verification_message">Подвердите адрес электронной почты</string>
+    <string name="sign_out">Выход</string>
     <string name="save">Сохранить</string>
     <string name="load">Загрузить</string>
     <string name="new_purchase">Добавить покупку</string>
@@ -31,9 +31,10 @@
     <string name="eur">EUR</string>
     <string name="uah">UAH</string>
     <string name="rub">RUB</string>
-    <string name="shop">Магазин</string>
+    <string name="shop">Покупки</string>
     <string name="cafe">Рестораны</string>
     <string name="entertainment">Развлечения</string>
+    <string name="bills">Счета</string>
     <string name="other">Другое</string>
     <string name="all_types">Все</string>
     <string name="show_categories">Показать категории:</string>
@@ -51,7 +52,7 @@
     <string name="month_sort">Месяц</string>
     <string name="all_days_sort">Всё время</string>
     <string name="show_time">Показать статистику за:</string>
-    <string name="changeBudgetAlert">Вы уверены, что хотите изменить бюджет на месяц?</string>
+    <string name="change_budget_alert">Вы уверены, что хотите изменить бюджет на месяц?</string>
     <string name="cancel">Отменить</string>
     <string name="deleted">Удалено</string>
     <string name="confirm_same_purchase">Подтвердить добавление аналогичной покупки</string>
@@ -60,4 +61,5 @@
     <string name="purchase_successful">Покупка добавлена!</string>
     <string name="currency">Валюта:</string>
     <string name="percent_status">Процентное соотношение</string>
+    <string name="menu">Меню</string>
 </resources>

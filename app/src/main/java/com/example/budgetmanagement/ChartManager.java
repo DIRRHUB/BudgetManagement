@@ -10,8 +10,12 @@ import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 
+import com.example.budgetmanagement.DatabaseContent;
+import com.example.budgetmanagement.PieChartCallback;
 import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
 import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.components.AxisBase;
@@ -38,9 +42,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ChartManager {
-    private final String SHOP = "Магазин";
+    private final String SHOP = "Покупки";
     private final String CAFE = "Рестораны";
     private final String ENTERTAINMENT = "Развлечения";
+    private final String BILLS = "Счета";
     private final String OTHER = "Другое";
     private final String PATTERN = "yyyy-MM-dd-hh.mm.ss";
     private DatabaseContent databaseContent;
@@ -211,7 +216,7 @@ public class ChartManager {
                 dateStart = calendarStart.getTime();
                 dateEnd = calendarEnd.getTime();
                 if (datePurchase != null && dateStart.getTime() <= datePurchase.getTime()
-                        && dateEnd.getTime() > datePurchase.getTime()) {
+                                         && dateEnd.getTime() > datePurchase.getTime()) {
                     if (chartType.equals("pie")) {
                         processPiePurchase(p);
                     } else if (chartType.equals("bar")) {
@@ -237,21 +242,28 @@ public class ChartManager {
                 break;
             case CAFE:
                 if (processedPiePurchasesMap.containsKey(CAFE)) {
-                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(CAFE)) + (float) price);
+                    processedPiePurchasesMap.put(CAFE, Objects.requireNonNull(processedPiePurchasesMap.get(CAFE)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(CAFE, (float) price);
                 }
                 break;
             case ENTERTAINMENT:
                 if (processedPiePurchasesMap.containsKey(ENTERTAINMENT)) {
-                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(ENTERTAINMENT)) + (float) price);
+                    processedPiePurchasesMap.put(ENTERTAINMENT, Objects.requireNonNull(processedPiePurchasesMap.get(ENTERTAINMENT)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(ENTERTAINMENT, (float) price);
                 }
                 break;
+            case BILLS:
+                if (processedPiePurchasesMap.containsKey(BILLS)) {
+                    processedPiePurchasesMap.put(BILLS, Objects.requireNonNull(processedPiePurchasesMap.get(BILLS)) + (float) price);
+                } else {
+                    processedPiePurchasesMap.put(BILLS, (float) price);
+                }
+                break;
             case OTHER:
                 if (processedPiePurchasesMap.containsKey(OTHER)) {
-                    processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(OTHER)) + (float) price);
+                    processedPiePurchasesMap.put(OTHER, Objects.requireNonNull(processedPiePurchasesMap.get(OTHER)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(OTHER, (float) price);
                 }
@@ -278,14 +290,22 @@ public class ChartManager {
                 if (purchase.getCategory().equals(CAFE)) {
                     fillBarEntriesMap(purchase.getDate(), price);
                 }
+                break;
             case 3:
                 if (purchase.getCategory().equals(ENTERTAINMENT)) {
                     fillBarEntriesMap(purchase.getDate(), price);
                 }
+                break;
             case 4:
+                if (purchase.getCategory().equals(BILLS)) {
+                    fillBarEntriesMap(purchase.getDate(), price);
+                }
+                break;
+            case 5:
                 if (purchase.getCategory().equals(OTHER)) {
                     fillBarEntriesMap(purchase.getDate(), price);
                 }
+                break;
         }
     }
 
@@ -319,7 +339,7 @@ public class ChartManager {
 
     @SuppressLint("SimpleDateFormat")
     private void fillLabelXBarMap(Calendar calendarPurchase, int value) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM");
+        SimpleDateFormat format = new SimpleDateFormat("dd");
         String formatted = format.format(calendarPurchase.getTime());
         labelsXBarMap.put(value, formatted);
     }
@@ -330,7 +350,7 @@ public class ChartManager {
 
     private void fillPieEntriesList() {
         float value;
-        final String[] CATEGORIES = {SHOP, CAFE, ENTERTAINMENT, OTHER};
+        final String[] CATEGORIES = {SHOP, CAFE, ENTERTAINMENT, BILLS, OTHER};
         for (String key : CATEGORIES) {
             if (!processedPiePurchasesMap.isEmpty()) {
                 if (processedPiePurchasesMap.containsKey(key)) {

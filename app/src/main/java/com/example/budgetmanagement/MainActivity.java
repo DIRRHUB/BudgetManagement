@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.budgetmanagement.databinding.ActivityMainBinding;
@@ -23,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
+public class MainActivity extends AppCompatActivity implements DrawerLocker {
     private ActivityMainBinding binding;
     private DatabaseContent databaseContent;
     private Account account;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        binding.navigationView.setNavigationItemSelectedListener(this);
+        binding.navigationView.setNavigationItemSelectedListener(listenerNavigation);
+        binding.topAppBar.setOnClickListener(listenerAppBar);
         account = new Account();
         purchase = new Account.Purchase();
         sortPurchasesContent = new SortPurchasesContent();
@@ -63,8 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    private final NavigationView.OnNavigationItemSelectedListener listenerNavigation = item -> {
         SpecialFunction.hideKeyboard(binding.navigationView);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
@@ -83,8 +84,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 return super.onOptionsItemSelected(item);
         }
+    };
 
-    }
+
+    private final View.OnClickListener listenerAppBar = view -> {
+        if(view.getId()==R.id.topAppBar){
+            setDrawerClosed(false);
+        }
+    };
 
     private void loadPurchasesToArrayList() {
         databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
@@ -101,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("SimpleDateFormat")
     private void updateBudgetLastMonth() {
         if (purchase != null) {
-            Log.i("updateBudgetLastMonthPurchaseDate", purchase.getDate());
             int lastMonth = 0;
             int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
             Calendar lastMonthCalendar = Calendar.getInstance();
@@ -110,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Date date = sdf.parse(purchase.getDate());
                 lastMonthCalendar.setTime(Objects.requireNonNull(date));
                 lastMonth = lastMonthCalendar.get(Calendar.MONTH) + 1;
-                Log.i("updateBudgetLastMonthCurrentMonth", String.valueOf(currentMonth));
-                Log.i("updateBudgetLastMonthLastMonth", String.valueOf(lastMonth));
+                Log.i("CurrentMonth", String.valueOf(currentMonth));
+                Log.i("LastMonth", String.valueOf(lastMonth));
             } catch (ParseException e) {
                 Log.e("updateBudgetLastMonth", e.toString());
             }
@@ -131,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadAccount() {
         if (SpecialFunction.isNetworkAvailable()) {
-            databaseContent.loadAccountFromDatabase(account -> {
-                this.account = account;
-                binding.textView3.setText(account.toString());
-            });
+            databaseContent.loadAccountFromDatabase(account -> this.account = account);
         } else {
             startActivity(new Intent(this, InternetTroubleActivity.class));
         }
@@ -142,15 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void saveAccount() {
         databaseContent.saveToDatabase(account);
-    }
-
-    protected void setAccount() {
-        account.setEmail(databaseContent.getEmail());
-        account.setCurrencyType("USD");
-        account.setId(databaseContent.getUID());
-        account.setBudget(0);
-        account.setBudgetLeft(0);
-        account.setBudgetLeft(0);
     }
 
     @Override
