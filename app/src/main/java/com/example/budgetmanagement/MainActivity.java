@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             purchasesList = new ArrayList<>(unsortedArrayList);
             final int SORT_TYPE = 5;
             purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(SORT_TYPE).getArrayList();
-            if(purchasesList.size()!=0) {
+            if (purchasesList.size() != 0) {
                 purchase = purchasesList.get(0);
                 updateBudgetLastMonth();
             }
@@ -99,24 +99,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @SuppressLint("SimpleDateFormat")
-    private void updateBudgetLastMonth(){
-        if(purchase!=null){
+    private void updateBudgetLastMonth() {
+        if (purchase != null) {
             Log.i("updateBudgetLastMonthPurchaseDate", purchase.getDate());
             int lastMonth = 0;
-            int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
+            int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
             Calendar lastMonthCalendar = Calendar.getInstance();
             try {
-               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss");
                 Date date = sdf.parse(purchase.getDate());
                 lastMonthCalendar.setTime(Objects.requireNonNull(date));
-                lastMonth = lastMonthCalendar.get(Calendar.MONTH)+1;
+                lastMonth = lastMonthCalendar.get(Calendar.MONTH) + 1;
                 Log.i("updateBudgetLastMonthCurrentMonth", String.valueOf(currentMonth));
                 Log.i("updateBudgetLastMonthLastMonth", String.valueOf(lastMonth));
             } catch (ParseException e) {
                 Log.e("updateBudgetLastMonth", e.toString());
             }
 
-            if(account!=null && lastMonth!=currentMonth){
+            if (account != null && lastMonth != currentMonth) {
                 account.setBudgetLastMonth(account.getBudgetLeft());
                 account.setBudgetLeft(account.getBudget());
                 saveAccount();
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadAccount() {
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             databaseContent.loadAccountFromDatabase(account -> {
                 this.account = account;
                 binding.textView3.setText(account.toString());
@@ -161,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("RtlHardcoded")
     @Override
     public void setDrawerClosed(boolean closed) {
-        if(closed){
+        if (closed) {
             binding.drawerLayout.closeDrawer(Gravity.LEFT);
-        } else{
+        } else {
             binding.drawerLayout.openDrawer(Gravity.LEFT);
         }
     }

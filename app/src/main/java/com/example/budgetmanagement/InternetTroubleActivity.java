@@ -15,7 +15,7 @@ public class InternetTroubleActivity extends AppCompatActivity {
     }
 
     public void tryStart(View view) {
-        if(SpecialFunction.isNetworkAvailable()){
+        if (SpecialFunction.isNetworkAvailable()) {
             startActivity(new Intent(this, MainActivity.class));
         }
     }

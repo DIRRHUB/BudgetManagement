@@ -18,12 +18,12 @@ import java.util.Objects;
 
 public class DatabaseContent {
     private final FirebaseAuth auth;
-    private FirebaseUser user;
     private final DatabaseReference database;
+    private final String USER_KEY = "Account", PURCHASES = "purchases";
+    private FirebaseUser user;
     private Account account;
     private Account.Purchase purchase;
     private String lastPurchaseID;
-    private final String USER_KEY = "Account", PURCHASES = "purchases";
 
     DatabaseContent() {
         auth = FirebaseAuth.getInstance();
@@ -42,7 +42,7 @@ public class DatabaseContent {
         }
     }
 
-    public boolean checkVerification(){
+    public boolean checkVerification() {
         user = auth.getCurrentUser();
         Objects.requireNonNull(user).reload();
         if (user != null) {
@@ -75,9 +75,9 @@ public class DatabaseContent {
         });
     }
 
-    public void tryLogin(String email, String password, UpdateUILoginCallback updateUILoginCallback, KeyboardCallback keyboard){
+    public void tryLogin(String email, String password, UpdateUILoginCallback updateUILoginCallback, KeyboardCallback keyboard) {
         register(email, password, updateUILoginCallback);
-        if(!auth.isSignInWithEmailLink(email)){
+        if (!auth.isSignInWithEmailLink(email)) {
             login(email, password, updateUILoginCallback);
             keyboard.hide();
         }
@@ -86,7 +86,7 @@ public class DatabaseContent {
     public void login(String email, String password, UpdateUILoginCallback updateUILoginCallback) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task -> {
             if (task.isSuccessful()) {
-                if(checkVerification()){
+                if (checkVerification()) {
                     Log.d("Login", "Successful");
                     updateUILoginCallback.updateUILoggedIn(true);
                 } else {
@@ -115,6 +115,7 @@ public class DatabaseContent {
                 }
                 accountFirebaseCallback.onCallback(account);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("loadAccountFromDatabase", "Error:  " + error);
@@ -125,9 +126,9 @@ public class DatabaseContent {
 
     public void loadPurchaseFromDatabase(FirebaseCallbackPurchase callbackPurchase) {
         database.child(PURCHASES).get().addOnCompleteListener(task -> {
-            if(task.isComplete()){
+            if (task.isComplete()) {
                 ArrayList<Account.Purchase> purchaseArrayList = new ArrayList<>();
-                for(DataSnapshot purchaseItem : Objects.requireNonNull(task.getResult()).getChildren()){
+                for (DataSnapshot purchaseItem : Objects.requireNonNull(task.getResult()).getChildren()) {
                     purchase = purchaseItem.getValue(Account.Purchase.class);
                     purchaseArrayList.add(purchase);
                 }
@@ -159,7 +160,7 @@ public class DatabaseContent {
         database.child(PURCHASES).child(lastPurchaseID).setValue(purchase);
     }
 
-    public void saveToDatabase(@NonNull Account.Purchase purchase, String purchaseID){
+    public void saveToDatabase(@NonNull Account.Purchase purchase, String purchaseID) {
         database.child(PURCHASES).child(purchaseID).setValue(purchase);
     }
 

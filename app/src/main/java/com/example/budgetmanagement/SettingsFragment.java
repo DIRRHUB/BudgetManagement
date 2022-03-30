@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
 
-public class SettingsFragment extends Fragment implements View.OnClickListener{
+public class SettingsFragment extends Fragment implements View.OnClickListener {
     private DatabaseContent databaseContent;
     private FragmentSettingsBinding binding;
     private Account account;
@@ -36,7 +36,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         binding.setName.setOnClickListener(this);
         binding.setBudget.setOnClickListener(this);
         binding.setCurrencyType.setOnClickListener(this);
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             databaseContent.loadAccountFromDatabase(account -> {
                 this.account = account;
                 setUsername();
@@ -63,7 +63,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         binding.editBudget.setText(String.valueOf(account.getBudget()));
     }
 
-    private void setBudgetConfirmation(){
+    private void setBudgetConfirmation() {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 setBudget();
@@ -78,8 +78,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     }
 
     private void selectSpinnerValue(@NonNull Spinner spinner, String myString) {
-        for(int i = 0; i < spinner.getCount(); i++){
-            if(spinner.getItemAtPosition(i).toString().equals(myString)){
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equals(myString)) {
                 spinner.setSelection(i);
                 break;
             }
@@ -89,28 +89,28 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(@NonNull View view) {
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             databaseContent.loadAccountFromDatabase(account -> this.account = account);
         }
         switch (view.getId()) {
             case R.id.setName:
                 if (!binding.username.getText().toString().equals(account.getPersonName())
                         && !TextUtils.isEmpty(binding.username.getText().toString())
-                        && binding.username.getText().toString().length() <= 30 ) {
+                        && binding.username.getText().toString().length() <= 30) {
                     account.setPersonName(binding.username.getText().toString());
                 }
                 break;
             case R.id.setBudget:
-                if (!TextUtils.isEmpty(binding.editBudget.getText().toString()) && Double.parseDouble(binding.editBudget.getText().toString())!=account.getBudget()) {
-                   setBudgetConfirmation();
+                if (!TextUtils.isEmpty(binding.editBudget.getText().toString()) && Double.parseDouble(binding.editBudget.getText().toString()) != account.getBudget()) {
+                    setBudgetConfirmation();
                 }
-            break;
+                break;
             case R.id.setCurrencyType:
                 account.setCurrencyType(binding.editCurrencyType.getSelectedItem().toString());
                 databaseContent.saveToDatabase(account);
                 break;
         }
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             databaseContent.saveToDatabase(account);
         }
     }

@@ -14,22 +14,22 @@ public class SortPurchasesContent {
     private BudgetManager budgetManager;
     private double convertedEUR, convertedRUB, convertedUSD;
 
+    public ArrayList<Account.Purchase> getArrayList() {
+        return arrayList;
+    }
+
     public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
         this.arrayList = (ArrayList<Account.Purchase>) arrayList;
         return this;
     }
 
-    public ArrayList<Account.Purchase> getArrayList() {
-        return arrayList;
-    }
-
-    public SortPurchasesContent init(){
+    public SortPurchasesContent init() {
         budgetManager = new BudgetManager();
         return this;
     }
 
     @SuppressLint("NonConstantResourceId")
-    public SortPurchasesContent sort(int sortType){
+    public SortPurchasesContent sort(int sortType) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             switch (sortType) {
                 case 0://name a-z
@@ -63,7 +63,7 @@ public class SortPurchasesContent {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortPrice(boolean increasingPrice) {
-        if(budgetManager.isDownloaded()) {
+        if (budgetManager.isDownloaded()) {
             try {
                 convertedEUR = budgetManager.getConvertedEUR();
                 convertedRUB = budgetManager.getConvertedRUB();
@@ -71,7 +71,7 @@ public class SortPurchasesContent {
                 Log.i("SortPurchasesEUR", String.valueOf(convertedEUR));
                 Log.i("SortPurchasesRUB", String.valueOf(convertedRUB));
                 Log.i("SortPurchasesUSD", String.valueOf(convertedUSD));
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 Log.e("SortPurchases", "Something is wrong with map");
                 return;
             }
@@ -85,7 +85,7 @@ public class SortPurchasesContent {
                         price1 = purchase1.getPrice() * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price1 = purchase1.getPrice() * convertedEUR / convertedUSD ;
+                        price1 = purchase1.getPrice() * convertedEUR / convertedUSD;
                         break;
                     default:
                         price1 = purchase1.getPrice();
@@ -99,13 +99,13 @@ public class SortPurchasesContent {
                         price2 = purchase2.getPrice() * convertedRUB / convertedUSD;
                         break;
                     case "EUR":
-                        price2 = purchase2.getPrice() * convertedEUR / convertedUSD ;
+                        price2 = purchase2.getPrice() * convertedEUR / convertedUSD;
                         break;
                     default:
                         price2 = purchase2.getPrice();
                         break;
                 }
-                if(increasingPrice) {
+                if (increasingPrice) {
                     return Double.compare(price1, price2);
                 } else {
                     return Double.compare(price2, price1);

@@ -2,15 +2,13 @@ package com.example.budgetmanagement;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.animation.Easing;
@@ -19,6 +17,21 @@ import com.github.mikephil.charting.components.Legend;
 public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;
     private ChartManager chartManager;
+    private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            int time = binding.sortTimeSpinner.getSelectedItemPosition();
+            chartManager.getPieData(time, data -> {
+                binding.chart.setData(data);
+                binding.chart.invalidate();
+            });
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,23 +47,7 @@ public class PieChartFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int time = binding.sortTimeSpinner.getSelectedItemPosition();
-            chartManager.getPieData(time, data -> {
-                binding.chart.setData(data);
-                binding.chart.invalidate();
-            });
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
-     };
-
-    private void setParameters(){
+    private void setParameters() {
         binding.chart.setUsePercentValues(true);
         binding.chart.getDescription().setEnabled(false);
         binding.chart.setHoleRadius(50f);

@@ -18,14 +18,13 @@ public class BudgetManager {
     private boolean isDownloaded = false;
     private double convertedEUR, convertedRUB, convertedUSD;
 
-    BudgetManager () {
+    BudgetManager() {
         new Thread(() -> {
-            try{
+            try {
                 mapContent = new HashMap<>();
                 download();
                 finishDownload();
-            }
-            catch (IOException ex){
+            } catch (IOException ex) {
                 Log.e("init", ex.toString());
             }
         }).start();
@@ -41,21 +40,21 @@ public class BudgetManager {
             stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
             String line;
-            String  cc = null, rate;
+            String cc = null, rate;
             double rateDouble = 0;
             while ((line = reader.readLine()) != null) {
-                if(line.contains("<rate>")){
+                if (line.contains("<rate>")) {
                     rate = line;
                     rate = rate.replace("    <rate>", "");
                     rate = rate.replace("</rate>", "");
                     rateDouble = Double.parseDouble(rate);
                 }
-                if(line.contains("<cc>")){
+                if (line.contains("<cc>")) {
                     cc = line;
                     cc = cc.replace("    <cc>", "");
                     cc = cc.replace("</cc>", "");
                 }
-                if(line.contains("</currency>")){
+                if (line.contains("</currency>")) {
                     mapContent.put(cc, rateDouble);
                 }
             }
@@ -81,10 +80,10 @@ public class BudgetManager {
         }
     }
 
-    public double convertToSetCurrency(String accType, String purchaseType, double price){
+    public double convertToSetCurrency(String accType, String purchaseType, double price) {
         double purchasePrice;
         double convertedPrice;
-        switch (purchaseType){
+        switch (purchaseType) {
             case "RUB":
                 purchasePrice = price * convertedRUB;
                 break;
@@ -97,7 +96,7 @@ public class BudgetManager {
             default:
                 purchasePrice = price;
         }
-        switch (accType){
+        switch (accType) {
             case "RUB":
                 convertedPrice = purchasePrice / convertedRUB;
                 break;

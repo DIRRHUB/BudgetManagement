@@ -1,18 +1,21 @@
 package com.example.budgetmanagement;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.HOUR_OF_DAY;
+import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.SECOND;
+import static java.util.Calendar.YEAR;
+import static java.util.Calendar.getInstance;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.util.Log;
 
-import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
-import com.github.mikephil.charting.animation.Easing;
+import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -35,6 +38,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ChartManager {
+    private final String SHOP = "Магазин";
+    private final String CAFE = "Рестораны";
+    private final String ENTERTAINMENT = "Развлечения";
+    private final String OTHER = "Другое";
+    private final String PATTERN = "yyyy-MM-dd-hh.mm.ss";
     private DatabaseContent databaseContent;
     private BudgetManager budgetManager;
     private List<Account.Purchase> purchases;
@@ -46,13 +54,8 @@ public class ChartManager {
     private Map<Integer, BarEntry> processedBarPurchasesMap;
     private Map<Integer, String> labelsXBarMap;
     private int categoryType;
-    private final String SHOP = "Магазин";
-    private final String CAFE = "Рестораны";
-    private final String ENTERTAINMENT = "Развлечения";
-    private final String OTHER = "Другое";
-    private final String PATTERN = "yyyy-MM-dd-hh.mm.ss";
 
-    ChartManager (FragmentPieChartBinding binding){
+    ChartManager(FragmentPieChartBinding binding) {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);
@@ -63,7 +66,7 @@ public class ChartManager {
         });
     }
 
-    ChartManager (FragmentBarChartBinding binding){
+    ChartManager(FragmentBarChartBinding binding) {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);
@@ -78,7 +81,7 @@ public class ChartManager {
                 xAxis.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getAxisLabel(float value, AxisBase axis) {
-                        if(labelsXBarMap.containsKey((int) value)){
+                        if (labelsXBarMap.containsKey((int) value)) {
                             return labelsXBarMap.get((int) value);
                         }
                         return "";
@@ -89,14 +92,14 @@ public class ChartManager {
         });
     }
 
-    private void init(){
+    private void init() {
         databaseContent = new DatabaseContent();
         account = new Account();
         budgetManager = new BudgetManager();
         databaseContent.loadAccountFromDatabase(account -> this.account = account);
     }
 
-    public void getPieData(int time, PieChartCallback callback){
+    public void getPieData(int time, PieChartCallback callback) {
         processedPiePurchasesMap = new HashMap<>();
         pieEntries = new ArrayList<>();
         try {
@@ -127,7 +130,7 @@ public class ChartManager {
         processedBarPurchasesMap = new HashMap<>();
         try {
             categoryType = type;
-            processPurchasesList(time+2, "bar");
+            processPurchasesList(time + 2, "bar");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -146,7 +149,7 @@ public class ChartManager {
         callback.barChartCallback(labelsXBarMap, data);
     }
 
-    private void setColorsList(){
+    private void setColorsList() {
         colors = new ArrayList<>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -180,7 +183,7 @@ public class ChartManager {
         calendarEnd.set(SECOND, 59);
         calendarEnd.set(MILLISECOND, 59);
 
-        if(purchases!=null && budgetManager.isDownloaded()) {
+        if (purchases != null && budgetManager.isDownloaded()) {
             for (Account.Purchase p : purchases) {
                 String dateString = p.getDate();
                 Date datePurchase = sdf.parse(dateString);
@@ -207,11 +210,11 @@ public class ChartManager {
                 }
                 dateStart = calendarStart.getTime();
                 dateEnd = calendarEnd.getTime();
-                if (datePurchase!=null && dateStart.getTime() <= datePurchase.getTime()
+                if (datePurchase != null && dateStart.getTime() <= datePurchase.getTime()
                         && dateEnd.getTime() > datePurchase.getTime()) {
-                    if(chartType.equals("pie")) {
+                    if (chartType.equals("pie")) {
                         processPiePurchase(p);
-                    } else if (chartType.equals("bar")){
+                    } else if (chartType.equals("bar")) {
                         processBarPurchase(p);
                     }
                 }
@@ -219,35 +222,35 @@ public class ChartManager {
         }
     }
 
-    private void processPiePurchase(Account.Purchase purchase){
+    private void processPiePurchase(Account.Purchase purchase) {
         double price = 0;
-        if(budgetManager.isDownloaded()){
+        if (budgetManager.isDownloaded()) {
             price = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
         }
         switch (purchase.getCategory()) {
             case SHOP:
-                if(processedPiePurchasesMap.containsKey(SHOP)){
+                if (processedPiePurchasesMap.containsKey(SHOP)) {
                     processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(SHOP)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(SHOP, (float) price);
                 }
                 break;
             case CAFE:
-                if(processedPiePurchasesMap.containsKey(CAFE)){
+                if (processedPiePurchasesMap.containsKey(CAFE)) {
                     processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(CAFE)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(CAFE, (float) price);
                 }
                 break;
             case ENTERTAINMENT:
-                if(processedPiePurchasesMap.containsKey(ENTERTAINMENT)){
+                if (processedPiePurchasesMap.containsKey(ENTERTAINMENT)) {
                     processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(ENTERTAINMENT)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(ENTERTAINMENT, (float) price);
                 }
                 break;
             case OTHER:
-                if(processedPiePurchasesMap.containsKey(OTHER)){
+                if (processedPiePurchasesMap.containsKey(OTHER)) {
                     processedPiePurchasesMap.put(SHOP, Objects.requireNonNull(processedPiePurchasesMap.get(OTHER)) + (float) price);
                 } else {
                     processedPiePurchasesMap.put(OTHER, (float) price);
@@ -259,7 +262,7 @@ public class ChartManager {
     @SuppressLint("SimpleDateFormat")
     private void processBarPurchase(Account.Purchase purchase) {
         float price = 0;
-        if(budgetManager.isDownloaded()){
+        if (budgetManager.isDownloaded()) {
             price = (float) budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
         }
         switch (categoryType) {
@@ -287,7 +290,7 @@ public class ChartManager {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private void fillBarEntriesMap(String date, float price){
+    private void fillBarEntriesMap(String date, float price) {
         SimpleDateFormat sdf = new SimpleDateFormat(PATTERN);
         Calendar calendarPurchase = getInstance();
         try {
@@ -300,10 +303,10 @@ public class ChartManager {
         int today = calendarNow.get(DAY_OF_MONTH);
         int last = calendarPurchase.get(DAY_OF_MONTH);
         int diff = last - today;
-        if(!processedBarPurchasesMap.containsKey(0) && diff != 0){
+        if (!processedBarPurchasesMap.containsKey(0) && diff != 0) {
             processedBarPurchasesMap.put(0, new BarEntry(0, 0));
         }
-        if(processedBarPurchasesMap.containsKey(diff)){
+        if (processedBarPurchasesMap.containsKey(diff)) {
             BarEntry oldEntry = processedBarPurchasesMap.get(diff);
             processedBarPurchasesMap.remove(diff);
             BarEntry entry = new BarEntry(diff, Objects.requireNonNull(oldEntry).getY() + price);
@@ -315,20 +318,20 @@ public class ChartManager {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private void fillLabelXBarMap(Calendar calendarPurchase, int value){
+    private void fillLabelXBarMap(Calendar calendarPurchase, int value) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM");
         String formatted = format.format(calendarPurchase.getTime());
         labelsXBarMap.put(value, formatted);
     }
 
-    private void fillBarEntriesList(){
+    private void fillBarEntriesList() {
         barEntries = new ArrayList<>(processedBarPurchasesMap.values());
     }
 
-    private void fillPieEntriesList(){
+    private void fillPieEntriesList() {
         float value;
         final String[] CATEGORIES = {SHOP, CAFE, ENTERTAINMENT, OTHER};
-        for(String key : CATEGORIES) {
+        for (String key : CATEGORIES) {
             if (!processedPiePurchasesMap.isEmpty()) {
                 if (processedPiePurchasesMap.containsKey(key)) {
                     value = Objects.requireNonNull(processedPiePurchasesMap.get(key));

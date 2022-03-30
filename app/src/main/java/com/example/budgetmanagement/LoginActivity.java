@@ -17,6 +17,20 @@ import com.example.budgetmanagement.databinding.ActivityLoginBinding;
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private DatabaseContent databaseContent;
+    private final TextView.OnEditorActionListener keyboardListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+            if (id == EditorInfo.IME_ACTION_DONE) {
+                Log.i("DONE", "true");
+                if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
+                    databaseContent.tryLogin(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(),
+                            access -> updateUIAuthorized(access), () -> hideKeyboard(textView));
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
     private Intent intent;
 
     @Override
@@ -33,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (databaseContent.checkAuth()) {
-            if(databaseContent.checkVerification()) {
+            if (databaseContent.checkVerification()) {
                 startActivity(intent);
             } else {
                 updateUIAuthorized(false);
@@ -55,13 +69,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickLogin(View view) {
         SpecialFunction.hideKeyboard(view);
         if (!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(),  a -> updateUIAuthorized(a));
+            databaseContent.login(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(), a -> updateUIAuthorized(a));
         }
     }
 
     public void onClickNext(View view) {
         if (databaseContent.checkAuth()) {
-            if(databaseContent.checkVerification()) {
+            if (databaseContent.checkVerification()) {
                 startActivity(intent);
             }
         }
@@ -88,23 +102,8 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginLayout.setVisibility(View.VISIBLE);
     }
 
-    private void hideKeyboard(TextView textView){
+    private void hideKeyboard(TextView textView) {
         SpecialFunction.hideKeyboard(textView);
         Log.i("login", "keyboard");
     }
-
-    private final TextView.OnEditorActionListener keyboardListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-            if(id == EditorInfo.IME_ACTION_DONE){
-                Log.i("DONE", "true");
-                if(!TextUtils.isEmpty(binding.textEmail.getText().toString()) && !TextUtils.isEmpty(binding.textPassword.getText().toString())) {
-                    databaseContent.tryLogin(binding.textEmail.getText().toString(), binding.textPassword.getText().toString(),
-                                             access -> updateUIAuthorized(access), () -> hideKeyboard(textView));
-                    return true;
-                }
-            }
-            return false;
-        }
-    };
 }

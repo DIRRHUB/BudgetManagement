@@ -47,15 +47,15 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             if (view.getId() == R.id.addPurchase) {
                 if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
                     convertPriceToDouble();
-                    if(purchase!=null) {
+                    if (purchase != null) {
                         if (!binding.editName.getText().toString().equals(purchase.getName()) ||
                                 !binding.spinnerEditCategory.getSelectedItem().toString().equals(purchase.getCategory()) ||
                                 !binding.spinnerEditSpecialCurrency.getSelectedItem().toString().equals(purchase.getCurrency()) ||
-                                price != purchase.getPrice() ) {
+                                price != purchase.getPrice()) {
                             createPurchase();
                         } else {
                             Snackbar.make(binding.getRoot(), purchase.getName(), Snackbar.LENGTH_LONG)
@@ -71,7 +71,7 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void convertPriceToDouble(){
+    private void convertPriceToDouble() {
         try {
             price = Double.parseDouble(binding.editPrice.getText().toString().replace(",", "."));
         } catch (NumberFormatException e) {
@@ -79,7 +79,7 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void createPurchase(){
+    private void createPurchase() {
         name = binding.editName.getText().toString();
         if (name.length() > 25) {
             Snackbar.make(binding.getRoot(), getString(R.string.name_size_err), Snackbar.LENGTH_SHORT).show();
@@ -88,7 +88,7 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
         category = binding.spinnerEditCategory.getSelectedItem().toString();
         currency = binding.spinnerEditSpecialCurrency.getSelectedItem().toString();
         purchase = new Account.Purchase();
-        if(!currency.equals(account.getCurrencyType())){
+        if (!currency.equals(account.getCurrencyType())) {
             double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), currency, price);
             decreaseBudget(convertedPrice);
             purchase.addPurchase(name, category, currency, databaseContent.getPurchaseID(), price);
@@ -102,11 +102,11 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
     }
 
     private void decreaseBudget(double price) {
-        account.setBudgetLeft(account.getBudgetLeft()-price);
+        account.setBudgetLeft(account.getBudgetLeft() - price);
     }
 
-    private void setCurrency(){
-        if(purchase==null) {
+    private void setCurrency() {
+        if (purchase == null) {
             String[] currencyArray = {"USD", "EUR", "UAH", "RUB"};
             int position = Arrays.asList(currencyArray).indexOf(account.getCurrencyType());
             binding.spinnerEditSpecialCurrency.setSelection(position);

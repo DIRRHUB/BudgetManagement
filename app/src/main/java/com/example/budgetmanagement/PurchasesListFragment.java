@@ -34,6 +34,35 @@ public class PurchasesListFragment extends Fragment {
     private Account account;
     private RecyclerAdapter recyclerAdapter;
     private BudgetManager budgetManager;
+    final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAbsoluteAdapterPosition();
+
+            if (direction == ItemTouchHelper.LEFT) {
+                removePurchase(position);
+                Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + " " + purchase.getName(), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.cancel, view -> {
+                            cancelRemovePurchase(position);
+                        }).show();
+            }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(requireContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.red))
+                    .addSwipeLeftActionIcon(R.drawable.delete_icon)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +114,7 @@ public class PurchasesListFragment extends Fragment {
     }
 
     private void trySort(ArrayList<Account.Purchase> unsortedArrayList, int sortType) {
-        if(SpecialFunction.isNetworkAvailable()) {
+        if (SpecialFunction.isNetworkAvailable()) {
             purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(sortType).getArrayList();
             setAdapter();
         } else {
@@ -99,58 +128,28 @@ public class PurchasesListFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
-    final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final int position = viewHolder.getAbsoluteAdapterPosition();
-
-            if (direction == ItemTouchHelper.LEFT) {
-                removePurchase(position);
-                Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + " " + purchase.getName(), Snackbar.LENGTH_LONG)
-                        .setAction(R.string.cancel, view -> {
-                    cancelRemovePurchase(position);
-                }).show();
-            }
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            new RecyclerViewSwipeDecorator.Builder(requireContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.red))
-                    .addSwipeLeftActionIcon(R.drawable.delete_icon)
-                    .create()
-                    .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
-
-    private void removePurchase(int position){
+    private void removePurchase(int position) {
         purchase = purchasesList.get(position);
         purchasesList.remove(position);
         recyclerAdapter.notifyItemRemoved(position);
-        if(!purchase.getCurrency().equals(account.getCurrencyType())){
+        if (!purchase.getCurrency().equals(account.getCurrencyType())) {
             double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
-            account.setBudgetLeft(account.getBudgetLeft()-convertedPrice);
+            account.setBudgetLeft(account.getBudgetLeft() - convertedPrice);
         } else {
-            account.setBudgetLeft(account.getBudgetLeft()-purchase.getPrice());
+            account.setBudgetLeft(account.getBudgetLeft() - purchase.getPrice());
         }
         databaseContent.saveToDatabase(account);
         databaseContent.erasePurchaseFromDatabase(purchase.getPurchaseID());
     }
 
-    private void cancelRemovePurchase(int position){
+    private void cancelRemovePurchase(int position) {
         purchasesList.add(position, purchase);
         recyclerAdapter.notifyItemInserted(position);
-        if(!purchase.getCurrency().equals(account.getCurrencyType())){
+        if (!purchase.getCurrency().equals(account.getCurrencyType())) {
             double convertedPrice = budgetManager.convertToSetCurrency(account.getCurrencyType(), purchase.getCurrency(), purchase.getPrice());
-            account.setBudgetLeft(account.getBudgetLeft()+convertedPrice);
+            account.setBudgetLeft(account.getBudgetLeft() + convertedPrice);
         } else {
-            account.setBudgetLeft(account.getBudgetLeft()+purchase.getPrice());
+            account.setBudgetLeft(account.getBudgetLeft() + purchase.getPrice());
         }
         databaseContent.saveToDatabase(account);
         databaseContent.saveToDatabase(purchase, purchase.getPurchaseID());
