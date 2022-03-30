@@ -17,14 +17,11 @@ import com.github.mikephil.charting.components.Legend;
 public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;
     private ChartManager chartManager;
+
     private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int time = binding.sortTimeSpinner.getSelectedItemPosition();
-            chartManager.getPieData(time, data -> {
-                binding.chart.setData(data);
-                binding.chart.invalidate();
-            });
+            updateChart();
         }
 
         @Override
@@ -45,6 +42,21 @@ public class PieChartFragment extends Fragment {
         setParameters();
         binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateChart();
+    }
+
+    private void updateChart(){
+        setParameters();
+        int time = binding.sortTimeSpinner.getSelectedItemPosition();
+        chartManager.getPieData(time, data -> {
+            binding.chart.setData(data);
+            binding.chart.invalidate();
+        });
     }
 
     private void setParameters() {

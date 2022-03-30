@@ -27,14 +27,7 @@ public class BarChartFragment extends Fragment {
     private final AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int time = binding.sortTimeSpinner.getSelectedItemPosition();
-            int type = binding.sortTypeSpinner.getSelectedItemPosition();
-            chartManager.getBarData(time, type, (lb, data) -> {
-                binding.chart.setData(data);
-                labels = lb;
-                setParameters();
-                binding.chart.invalidate();
-            });
+            updateChart();
         }
 
         @Override
@@ -55,6 +48,24 @@ public class BarChartFragment extends Fragment {
         binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);
         binding.sortTypeSpinner.setOnItemSelectedListener(spinnerListener);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateChart();
+    }
+
+    private void updateChart(){
+        setParameters();
+        int time = binding.sortTimeSpinner.getSelectedItemPosition();
+        int type = binding.sortTypeSpinner.getSelectedItemPosition();
+        chartManager.getBarData(time, type, (lb, data) -> {
+            binding.chart.setData(data);
+            labels = lb;
+            setParameters();
+            binding.chart.invalidate();
+        });
     }
 
     private void setParameters() {
