@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
@@ -14,10 +14,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 
-import com.example.budgetmanagement.DatabaseContent;
-import com.example.budgetmanagement.PieChartCallback;
-import com.example.budgetmanagement.databinding.FragmentBarChartBinding;
-import com.example.budgetmanagement.databinding.FragmentPieChartBinding;
+import com.budgetmanagement.DatabaseContent;
+import com.budgetmanagement.PieChartCallback;
+import com.budgetmanagement.databinding.FragmentBarChartBinding;
+import com.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;

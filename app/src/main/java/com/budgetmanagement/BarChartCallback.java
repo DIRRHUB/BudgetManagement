@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import com.github.mikephil.charting.data.BarData;
 

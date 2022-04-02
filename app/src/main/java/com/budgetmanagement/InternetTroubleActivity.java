@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;

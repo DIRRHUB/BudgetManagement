@@ -1,20 +1,17 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.budgetmanagement.databinding.ActivityMainBinding;
+import com.budgetmanagement.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;

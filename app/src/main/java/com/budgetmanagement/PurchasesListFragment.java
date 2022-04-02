@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.budgetmanagement.databinding.FragmentPurchasesListBinding;
+import com.budgetmanagement.databinding.FragmentPurchasesListBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;

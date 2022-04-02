@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.budgetmanagement.databinding.FragmentNewPurchaseBinding;
+import com.budgetmanagement.databinding.FragmentNewPurchaseBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;

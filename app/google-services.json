@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:284829560443:android:8fb71e63279d485c9c7cde",
         "android_client_info": {
-          "package_name": "com.example.budgetmanagement"
+          "package_name": "com.budgetmanagement"
         }
       },
       "oauth_client": [

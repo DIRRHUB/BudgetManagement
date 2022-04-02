@@ -1,4 +1,4 @@
-package com.example.budgetmanagement;
+package com.budgetmanagement;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.budgetmanagement.databinding.FragmentSettingsBinding;
+import com.budgetmanagement.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private DatabaseContent databaseContent;
