@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BudgetManagement"
         tools:targetApi="q">
         <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".InternetTroubleActivity"
             android:exported="false" />
         <activity

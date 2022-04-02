@@ -4,6 +4,8 @@
     <string name="text_login">Вход</string>
     <string name="text_register">Регистрация</string>
     <string name="text_register_login">Регистрация/Вход</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
     <string name="next">Далее</string>
     <string name="hello_message">Добро пожаловать</string>
     <string name="verification_message">Подвердите адрес электронной почты</string>

@@ -3,67 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="visible">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/welcomeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textHello"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:text="@string/hello_message"
-            android:textSize="30sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textVerification"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/verification_message"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textHello" />
-
-        <Button
-            android:id="@+id/bNext"
-            android:layout_width="170dp"
-            android:layout_height="65dp"
-            android:layout_marginBottom="16dp"
-            android:onClick="onClickNext"
-            android:text="@string/next"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/bSignOut"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/bSignOut"
-            android:layout_width="174dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="28dp"
-            android:onClick="onClickSignOut"
-            android:text="@string/sign_out"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/loginLayout"
@@ -71,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,65 +21,79 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_register_login"
-            android:textSize="20sp"
-            android:visibility="visible"
+            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/textEmail"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textEmailLayout"
             android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:textSize="20sp"
-            android:visibility="visible"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRegistration"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/textRegistration">
 
-        <EditText
-            android:id="@+id/textPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:textSize="14sp"
+                tools:ignore="SpeakableTextPresentCheck,TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textPasswordLayout"
             android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:textSize="20sp"
-            android:visibility="visible"
+            android:layout_height="0dp"
+            android:hint="@string/password"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textEmail"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/textEmailLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:textSize="14sp"
+                tools:ignore="SpeakableTextPresentCheck,TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/bRegister"
-            android:layout_width="124dp"
+            android:layout_width="135dp"
             android:layout_height="49dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:onClick="onClickRegister"
             android:text="@string/text_register"
-            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/textPasswordLayout"
+            tools:ignore="TextContrastCheck" />
 
         <Button
             android:id="@+id/bLogin"
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:onClick="onClickLogin"
             android:text="@string/text_login"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/textPasswordLayout"
+            tools:ignore="TextContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

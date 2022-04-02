@@ -145,7 +145,7 @@ public class DatabaseContent {
         account.setEmail(getEmail());
         account.setCurrencyType("USD");
         account.setId(getUID());
-        account.setPersonName("новый пользователь");
+        account.setPersonName("Пользователь");
         account.setBudget(100);
         account.setBudgetLastMonth(0);
         account.setBudgetLeft(100);

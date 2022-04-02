@@ -31,29 +31,26 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
     };
-    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        intent = new Intent(this, MainActivity.class);
         databaseContent = new DatabaseContent();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (databaseContent.checkAuth()) {
             if (databaseContent.checkVerification()) {
-                startActivity(intent);
+                startActivity(new Intent(this, MainActivity.class));
             } else {
-                updateUIAuthorized(false);
+                startActivity(new Intent(this, WelcomeActivity.class));
             }
         } else {
-            updateUIDefault();
             binding.textEmail.setOnEditorActionListener(keyboardListener);
             binding.textPassword.setOnEditorActionListener(keyboardListener);
         }
@@ -73,37 +70,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickNext(View view) {
-        if (databaseContent.checkAuth()) {
-            if (databaseContent.checkVerification()) {
-                startActivity(intent);
-            }
+    private void updateUIAuthorized(boolean access){
+        if(access){
+            startActivity(new Intent(this, MainActivity.class));
+        } else {
+            startActivity(new Intent(this, WelcomeActivity.class));
         }
-    }
-
-    public void onClickSignOut(View view) {
-        databaseContent.signOut();
-        updateUIDefault();
-    }
-
-    private void updateUIAuthorized(boolean access) {
-        binding.loginLayout.setVisibility(View.GONE);
-        binding.welcomeLayout.setVisibility(View.VISIBLE);
-        binding.bNext.setVisibility(View.VISIBLE);
-        binding.bSignOut.setVisibility(View.VISIBLE);
-        binding.textHello.setVisibility(View.VISIBLE);
-        if (!access) {
-            binding.textVerification.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void updateUIDefault() {
-        binding.welcomeLayout.setVisibility(View.GONE);
-        binding.loginLayout.setVisibility(View.VISIBLE);
     }
 
     private void hideKeyboard(TextView textView) {
         SpecialFunction.hideKeyboard(textView);
-        Log.i("login", "keyboard");
     }
 }

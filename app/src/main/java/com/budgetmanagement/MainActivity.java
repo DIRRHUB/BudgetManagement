@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     @Override
     protected void onStart() {
         super.onStart();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         loadAccount();
         loadPurchasesToArrayList();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();

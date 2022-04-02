@@ -1,13 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BudgetManagement" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.BudgetManagement" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="android:colorAccent">@color/primaryColor</item>
-        <item name="android:colorControlActivated">@color/primaryColor</item>
-        <item name="android:colorControlHighlight">@color/primaryColor</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
     </style>
 
     <style name="Theme.BudgetManagement.AppBarOverlay"
