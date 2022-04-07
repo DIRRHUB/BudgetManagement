@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.BudgetManagement" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="colorPrimary">@color/primaryColor</item>
@@ -7,6 +6,10 @@
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+    </style>
+    
+    <style name="FloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/primaryColor</item>
     </style>
 
     <style name="Theme.BudgetManagement.AppBarOverlay"

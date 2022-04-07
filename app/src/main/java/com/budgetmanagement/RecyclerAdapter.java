@@ -21,7 +21,6 @@ import java.util.Locale;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private final List<Account.Purchase> purchasesArrayList;
     private final Context context;
-    private NumberFormat formatDouble;
 
     public RecyclerAdapter(Context context, ArrayList<Account.Purchase> purchasesArrayList) {
         this.context = context;
@@ -38,7 +37,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Account.Purchase purchase = purchasesArrayList.get(position);
-        formatDouble = NumberFormat.getInstance(Locale.ENGLISH);
+        NumberFormat formatDouble = NumberFormat.getInstance(Locale.ENGLISH);
         formatDouble.setMaximumFractionDigits(2);
         viewHolder.textName.setText(purchase.getName());
         viewHolder.textCategory.setText(purchase.getCategory());

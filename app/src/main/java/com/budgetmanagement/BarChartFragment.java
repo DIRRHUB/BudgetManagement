@@ -43,6 +43,7 @@ public class BarChartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBarChartBinding.inflate(getLayoutInflater());
+        binding.sortTimeSpinner.setSelection(1);
         chartManager = new ChartManager(binding);
         labels = new HashMap<>();
         binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);

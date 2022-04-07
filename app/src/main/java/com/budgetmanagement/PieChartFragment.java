@@ -38,6 +38,7 @@ public class PieChartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
+        binding.sortTimeSpinner.setSelection(4);
         chartManager = new ChartManager(binding);
         setParameters();
         binding.sortTimeSpinner.setOnItemSelectedListener(spinnerListener);
@@ -65,7 +66,7 @@ public class PieChartFragment extends Fragment {
         binding.chart.setHoleRadius(50f);
         binding.chart.setTransparentCircleRadius(55f);
         binding.chart.setExtraOffsets(5, 5, 5, 5);
-        binding.chart.animateY(1000, Easing.EaseInCubic);
+        binding.chart.animateY(1000, Easing.EaseInOutCirc);
         binding.chart.setDragDecelerationFrictionCoef(0.95f);
 
         binding.chart.setEntryLabelColor(Color.BLACK);

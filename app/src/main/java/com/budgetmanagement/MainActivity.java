@@ -8,10 +8,12 @@ import android.view.Gravity;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.budgetmanagement.databinding.ActivityMainBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -29,7 +31,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     private ArrayList<Account.Purchase> purchasesList;
     private SortPurchasesContent sortPurchasesContent;
     private FragmentTransaction fragmentTransaction;
-    private PieChartFragment pieChartFragment;
+    private FragmentManager fragmentManager;
+    private HomeFragment homeFragment;
+    private SettingsFragment settingsFragment;
+    private PurchasesListFragment purchasesListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +43,24 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
         View view = binding.getRoot();
         setContentView(view);
         binding.navigationView.setNavigationItemSelectedListener(listenerNavigation);
-        binding.topAppBar.setOnClickListener(listenerAppBar);
+        binding.topAppBar.setOnClickListener(listener);
+        binding.floatingActionButton.setOnClickListener(listener);
         account = new Account();
         purchase = new Account.Purchase();
         sortPurchasesContent = new SortPurchasesContent();
         databaseContent = new DatabaseContent();
-        pieChartFragment = new PieChartFragment();
+        homeFragment = new HomeFragment();
+        settingsFragment = new SettingsFragment();
+        purchasesListFragment = new PurchasesListFragment();
+        fragmentManager = getSupportFragmentManager();
+        setHomeFragment();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         loadAccount();
         loadPurchasesToArrayList();
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(binding.fragmentContainerView.getId(), new BarChartFragment()).commit();
     }
 
     @Override
@@ -64,16 +71,24 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     @SuppressLint("NonConstantResourceId")
     private final NavigationView.OnNavigationItemSelectedListener listenerNavigation = item -> {
         SpecialFunction.hideKeyboard(binding.navigationView);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction = fragmentManager.beginTransaction();
         switch (item.getItemId()) {
+            case R.id.home:
+                setHomeFragment();
+                binding.floatingActionButton.show();
+                setDrawerClosed(true);
+                return true;
             case R.id.new_purchase:
                 fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
+                binding.floatingActionButton.hide();
                 return true;
             case R.id.settings:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new SettingsFragment()).commit();
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), settingsFragment).commit();
+                binding.floatingActionButton.hide();
                 return true;
             case R.id.list_purchases:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new PurchasesListFragment()).commit();
+                fragmentTransaction.replace(binding.fragmentContainerView.getId(), purchasesListFragment).commit();
+                binding.floatingActionButton.hide();
                 return true;
             case R.id.signout:
                 signOut();
@@ -84,9 +99,13 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     };
 
 
-    private final View.OnClickListener listenerAppBar = view -> {
+    private final View.OnClickListener listener = view -> {
         if(view.getId()==R.id.topAppBar){
             setDrawerClosed(false);
+        } else if(view.getId()==R.id.floatingActionButton){
+            binding.floatingActionButton.hide();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
         }
     };
 
@@ -146,7 +165,17 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
 
     @Override
     public void onBackPressed() {
-        setDrawerClosed(true);
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            setDrawerClosed(true);
+        } else {
+            binding.floatingActionButton.show();
+            setHomeFragment();
+        }
+    }
+
+    private void setHomeFragment(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(binding.fragmentContainerView.getId(), homeFragment).commit();
     }
 
     @SuppressLint("RtlHardcoded")

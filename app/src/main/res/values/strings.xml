@@ -64,4 +64,8 @@
     <string name="currency">Валюта:</string>
     <string name="percent_status">Процентное соотношение</string>
     <string name="menu">Меню</string>
+    <string name="pie_chart_text">Круговой график</string>
+    <string name="bar_chart_text">Диаграма значений</string>
+    <string name="budget_left">Использовано установленого бюджета:</string>
+    <string name="home">Главная</string>
 </resources>

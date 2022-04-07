@@ -1,5 +1,6 @@
 package com.budgetmanagement;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class PurchasesListFragment extends Fragment {
             return false;
         }
 
+        @SuppressLint("ResourceAsColor")
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             final int position = viewHolder.getAbsoluteAdapterPosition();
@@ -45,6 +47,7 @@ public class PurchasesListFragment extends Fragment {
             if (direction == ItemTouchHelper.LEFT) {
                 removePurchase(position);
                 Snackbar.make(binding.recyclerView, requireContext().getString(R.string.deleted) + " " + purchase.getName(), Snackbar.LENGTH_LONG)
+                        .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.primaryColor))
                         .setAction(R.string.cancel, view -> {
                             cancelRemovePurchase(position);
                         }).show();

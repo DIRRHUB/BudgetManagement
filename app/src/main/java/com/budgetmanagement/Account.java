@@ -115,40 +115,20 @@ public class Account {
             return category;
         }
 
-        public void setCategory(String category) {
-            this.category = category;
-        }
-
         public String getDate() {
             return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
         }
 
         public String getCurrency() {
             return currency;
         }
 
-        public void setCurrency(String currency) {
-            this.currency = currency;
-        }
-
         public String getPurchaseID() {
             return purchaseID;
         }
 
-        public void setPurchaseID(String purchaseID) {
-            this.purchaseID = purchaseID;
-        }
-
         public double getPrice() {
             return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
         }
 
         @SuppressLint("SimpleDateFormat")
