@@ -47,27 +47,23 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        if (SpecialFunction.isNetworkAvailable()) {
-            if (view.getId() == R.id.addPurchase) {
-                if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
-                    convertPriceToDouble();
-                    if (purchase != null) {
-                        if (!binding.editName.getText().toString().equals(purchase.getName()) ||
-                                !binding.spinnerEditCategory.getSelectedItem().toString().equals(purchase.getCategory()) ||
-                                !binding.spinnerEditSpecialCurrency.getSelectedItem().toString().equals(purchase.getCurrency()) ||
-                                price != purchase.getPrice()) {
-                            createPurchase();
-                        } else {
-                            Snackbar.make(binding.getRoot(), purchase.getName(), Snackbar.LENGTH_LONG)
-                                    .setAction(R.string.confirm_same_purchase, viewConfirm -> createPurchase()).show();
-                        }
-                    } else {
+        if (view.getId() == R.id.addPurchase) {
+            if (!TextUtils.isEmpty(binding.editName.getText().toString()) && !TextUtils.isEmpty(binding.editPrice.getText().toString())) {
+                convertPriceToDouble();
+                if (purchase != null) {
+                    if (!binding.editName.getText().toString().equals(purchase.getName()) ||
+                            !binding.spinnerEditCategory.getSelectedItem().toString().equals(purchase.getCategory()) ||
+                            !binding.spinnerEditSpecialCurrency.getSelectedItem().toString().equals(purchase.getCurrency()) ||
+                            price != purchase.getPrice()) {
                         createPurchase();
+                    } else {
+                        Snackbar.make(binding.getRoot(), purchase.getName(), Snackbar.LENGTH_LONG)
+                                .setAction(R.string.confirm_same_purchase, viewConfirm -> createPurchase()).show();
                     }
+                } else {
+                    createPurchase();
                 }
             }
-        } else {
-            startActivity(new Intent(this.getActivity(), InternetTroubleActivity.class));
         }
     }
 

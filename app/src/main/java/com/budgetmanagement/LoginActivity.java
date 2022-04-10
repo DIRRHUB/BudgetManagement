@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (databaseContent.checkAuth()) {
             if (databaseContent.checkVerification()) {
                 startActivity(new Intent(this, MainActivity.class));

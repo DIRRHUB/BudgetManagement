@@ -71,30 +71,35 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     @SuppressLint("NonConstantResourceId")
     private final NavigationView.OnNavigationItemSelectedListener listenerNavigation = item -> {
         SpecialFunction.hideKeyboard(binding.navigationView);
-        fragmentTransaction = fragmentManager.beginTransaction();
-        switch (item.getItemId()) {
-            case R.id.home:
-                setHomeFragment();
-                binding.floatingActionButton.show();
-                setDrawerClosed(true);
-                return true;
-            case R.id.new_purchase:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
-                binding.floatingActionButton.hide();
-                return true;
-            case R.id.settings:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), settingsFragment).commit();
-                binding.floatingActionButton.hide();
-                return true;
-            case R.id.list_purchases:
-                fragmentTransaction.replace(binding.fragmentContainerView.getId(), purchasesListFragment).commit();
-                binding.floatingActionButton.hide();
-                return true;
-            case R.id.signout:
-                signOut();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if(SpecialFunction.isNetworkAvailable()){
+            fragmentTransaction = fragmentManager.beginTransaction();
+            switch (item.getItemId()) {
+                case R.id.home:
+                    setHomeFragment();
+                    binding.floatingActionButton.show();
+                    setDrawerClosed(true);
+                    return true;
+                case R.id.new_purchase:
+                    fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
+                    binding.floatingActionButton.hide();
+                    return true;
+                case R.id.settings:
+                    fragmentTransaction.replace(binding.fragmentContainerView.getId(), settingsFragment).commit();
+                    binding.floatingActionButton.hide();
+                    return true;
+                case R.id.list_purchases:
+                    fragmentTransaction.replace(binding.fragmentContainerView.getId(), purchasesListFragment).commit();
+                    binding.floatingActionButton.hide();
+                    return true;
+                case R.id.signout:
+                    signOut();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } else {
+            startActivity(new Intent(this, InternetTroubleActivity.class));
+            return true;
         }
     };
 
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     private void loadPurchasesToArrayList() {
         databaseContent.loadPurchaseFromDatabase(unsortedArrayList -> {
             purchasesList = new ArrayList<>(unsortedArrayList);
-            final int SORT_TYPE = 5;
+            final int SORT_TYPE = 4;
             purchasesList = sortPurchasesContent.setArrayList(unsortedArrayList).sort(SORT_TYPE).getArrayList();
             if (purchasesList.size() != 0) {
                 purchase = purchasesList.get(0);
@@ -137,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
             } catch (ParseException e) {
                 Log.e("updateBudgetLastMonth", e.toString());
             }
-
             if (account != null && lastMonth != currentMonth) {
                 account.setBudgetLastMonth(account.getBudgetLeft());
                 account.setBudgetLeft(account.getBudget());
