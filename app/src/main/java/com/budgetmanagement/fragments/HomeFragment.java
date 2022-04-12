@@ -1,14 +1,10 @@
-package com.budgetmanagement;
+package com.budgetmanagement.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,9 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.budgetmanagement.R;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.FragmentHomeBinding;
-
-import java.util.Objects;
+import com.budgetmanagement.entity.Account;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;

@@ -1,9 +1,14 @@
-package com.budgetmanagement;
+package com.budgetmanagement.database;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.budgetmanagement.entity.Account;
+import com.budgetmanagement.interfaces.FirebaseCallbackAccount;
+import com.budgetmanagement.interfaces.FirebaseCallbackPurchase;
+import com.budgetmanagement.interfaces.KeyboardCallback;
+import com.budgetmanagement.interfaces.UpdateUILoginCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +30,7 @@ public class DatabaseContent {
     private Account.Purchase purchase;
     private String lastPurchaseID;
 
-    DatabaseContent() {
+    public DatabaseContent() {
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         database = firebaseDatabase.getReference(String.format("%s/%s", USER_KEY, auth.getUid()));

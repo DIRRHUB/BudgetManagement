@@ -1,4 +1,6 @@
-package com.budgetmanagement;
+package com.budgetmanagement.interfaces;
+
+import com.budgetmanagement.entity.Account;
 
 import java.util.ArrayList;
 

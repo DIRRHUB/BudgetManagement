@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.services;
 
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
@@ -10,12 +10,11 @@ import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 
-import com.budgetmanagement.DatabaseContent;
-import com.budgetmanagement.PieChartCallback;
+import com.budgetmanagement.entity.Account;
+import com.budgetmanagement.database.DatabaseContent;
+import com.budgetmanagement.interfaces.PieChartCallback;
 import com.budgetmanagement.databinding.FragmentBarChartBinding;
 import com.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.github.mikephil.charting.components.AxisBase;
@@ -60,7 +59,7 @@ public class ChartManager {
     private Map<Integer, String> labelsXBarMap;
     private int categoryType;
 
-    ChartManager(FragmentPieChartBinding binding) {
+    public ChartManager(FragmentPieChartBinding binding) {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);
@@ -71,7 +70,7 @@ public class ChartManager {
         });
     }
 
-    ChartManager(FragmentBarChartBinding binding) {
+    public ChartManager(FragmentBarChartBinding binding) {
         init();
         databaseContent.loadPurchaseFromDatabase(arrayList -> {
             purchases = new ArrayList<>(arrayList);

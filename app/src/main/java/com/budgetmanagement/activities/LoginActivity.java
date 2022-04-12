@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
+import com.budgetmanagement.services.SpecialFunction;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

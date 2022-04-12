@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.budgetmanagement.databinding.FragmentPieChartBinding;
+import com.budgetmanagement.services.ChartManager;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
 

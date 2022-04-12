@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.budgetmanagement.R;
+import com.budgetmanagement.entity.Account;
 
 import java.text.NumberFormat;
 import java.text.ParseException;

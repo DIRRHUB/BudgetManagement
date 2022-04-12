@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.budgetmanagement.R;
+import com.budgetmanagement.activities.LoginActivity;
+import com.budgetmanagement.activities.MainActivity;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.ActivityWelcomeBinding;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -28,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private final View.OnClickListener clickListener = view -> {
-        if (view.getId()==R.id.bNext){
+        if (view.getId()== R.id.bNext){
             if(databaseContent.checkVerification()){
                 startActivity(new Intent(this, MainActivity.class));
             }

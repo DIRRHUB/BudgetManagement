@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.services;
 
 import android.util.Log;
 
@@ -18,7 +18,7 @@ public class BudgetManager {
     private boolean isDownloaded = false;
     private double convertedEUR, convertedRUB, convertedUSD;
 
-    BudgetManager() {
+    public BudgetManager() {
         new Thread(() -> {
             try {
                 mapContent = new HashMap<>();

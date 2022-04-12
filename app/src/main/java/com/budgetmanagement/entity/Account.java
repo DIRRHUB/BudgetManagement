@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.entity;
 
 import android.annotation.SuppressLint;
 
@@ -99,7 +99,7 @@ public class Account {
         this.currencyType = currencyType;
     }
 
-    static class Purchase {
+    public static class Purchase {
         private String name, category, date, currency, purchaseID;
         private double price;
 

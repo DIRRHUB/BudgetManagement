@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,7 +12,17 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.budgetmanagement.fragments.HomeFragment;
+import com.budgetmanagement.fragments.NewPurchaseFragment;
+import com.budgetmanagement.fragments.PurchasesListFragment;
+import com.budgetmanagement.R;
+import com.budgetmanagement.fragments.SettingsFragment;
+import com.budgetmanagement.services.SortPurchasesContent;
+import com.budgetmanagement.services.SpecialFunction;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.ActivityMainBinding;
+import com.budgetmanagement.entity.Account;
+import com.budgetmanagement.interfaces.DrawerLocker;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;

@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,7 +16,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.budgetmanagement.R;
+import com.budgetmanagement.adapters.RecyclerAdapter;
+import com.budgetmanagement.services.SortPurchasesContent;
+import com.budgetmanagement.activities.InternetTroubleActivity;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.FragmentPurchasesListBinding;
+import com.budgetmanagement.entity.Account;
+import com.budgetmanagement.interfaces.DrawerLocker;
+import com.budgetmanagement.services.BudgetManager;
+import com.budgetmanagement.services.SpecialFunction;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;

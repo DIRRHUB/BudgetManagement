@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.interfaces;
 
 import com.github.mikephil.charting.data.PieData;
 

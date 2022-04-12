@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.budgetmanagement.databinding.FragmentBarChartBinding;
+import com.budgetmanagement.services.ChartManager;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;

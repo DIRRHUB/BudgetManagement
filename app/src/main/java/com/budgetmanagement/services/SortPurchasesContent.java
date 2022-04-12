@@ -1,7 +1,9 @@
-package com.budgetmanagement;
+package com.budgetmanagement.services;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+
+import com.budgetmanagement.entity.Account;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +18,7 @@ public class SortPurchasesContent {
     }
 
     public SortPurchasesContent setArrayList(ArrayList<Account.Purchase> arrayList) {
-        this.arrayList = (ArrayList<Account.Purchase>) arrayList;
+        this.arrayList = arrayList;
         return this;
     }
 

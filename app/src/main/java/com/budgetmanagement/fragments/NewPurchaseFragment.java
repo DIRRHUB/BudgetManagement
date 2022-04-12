@@ -1,4 +1,4 @@
-package com.budgetmanagement;
+package com.budgetmanagement.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
@@ -13,7 +13,12 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.budgetmanagement.R;
+import com.budgetmanagement.database.DatabaseContent;
 import com.budgetmanagement.databinding.FragmentNewPurchaseBinding;
+import com.budgetmanagement.entity.Account;
+import com.budgetmanagement.interfaces.DrawerLocker;
+import com.budgetmanagement.services.BudgetManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class NewPurchaseFragment extends Fragment implements View.OnClickListener {

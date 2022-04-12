@@ -1,11 +1,13 @@
-package com.budgetmanagement;
+package com.budgetmanagement.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.budgetmanagement.R;
+import com.budgetmanagement.services.SpecialFunction;
 
 public class InternetTroubleActivity extends AppCompatActivity {
 
