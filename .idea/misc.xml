@@ -7,18 +7,23 @@
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/drawable/ic_home.xml" value="0.2165" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/drawable/ic_menu.xml" value="0.2165" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/drawable/ic_sign_out.xml" value="0.2165" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/activity_internet_trouble.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/activity_main.xml" value="0.20948410630536737" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/activity_welcome.xml" value="0.22" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_bar_chart.xml" value="0.22" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_home.xml" value="0.33" />
-        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_new_purchase.xml" value="0.31887755102040816" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_new_purchase.xml" value="0.5" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_pie_chart.xml" value="0.4432194046306505" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_purchases_list.xml" value="0.33" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/header_navigation_drawer.xml" value="0.25" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/list_item.xml" value="0.209375" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/layout/list_item_spinner.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.209375" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/menu/menu_category_extended.xml" value="0.209375" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/menu/menu_category_new_purchase.xml" value="0.209375" />
+        <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/menu/menu_currency.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/menu/navigation_drawer.xml" value="0.33" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2165" />
         <entry key="..\:/Programming/AndroidStudioProjects/BudgetManagment/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2165" />

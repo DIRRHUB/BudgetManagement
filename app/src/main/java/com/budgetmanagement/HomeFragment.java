@@ -2,11 +2,13 @@ package com.budgetmanagement;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -45,25 +47,25 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     private void setBudgetInfo(){
         int budget = (int) account.getBudget();
         int leftBudget = (int) (budget - account.getBudgetLeft());
-        int x = (int) (100 * leftBudget / budget);
+        int x = (100 * leftBudget / budget);
         binding.textBudget.setText(leftBudget + "/" + budget + " (" + x + "%)");
         new Thread(() -> {
             if(x<=50){
-                binding.progressBar.getProgressDrawable().setColorFilter(requireActivity().getResources().
-                        getColor(R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.progressBar.setProgressTintList(ColorStateList
+                        .valueOf(requireActivity().getResources().getColor(R.color.green)));
             } else if(x>50 && x<=75){
-                binding.progressBar.getProgressDrawable().setColorFilter(requireActivity().getResources().
-                        getColor(R.color.yellow), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.progressBar.setProgressTintList(ColorStateList
+                        .valueOf(requireActivity().getResources().getColor(R.color.yellow)));
             } else {
-                binding.progressBar.getProgressDrawable().setColorFilter(requireActivity().getResources().
-                        getColor(R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.progressBar.setProgressTintList(ColorStateList
+                        .valueOf(requireActivity().getResources().getColor(R.color.red)));
             }
         }).start();
-        binding.progressBar.setProgress((int) x);
+        binding.progressBar.setProgress(x);
     }
 
     @SuppressLint("NonConstantResourceId")

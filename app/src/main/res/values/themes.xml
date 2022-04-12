@@ -7,7 +7,7 @@
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
     </style>
-    
+
     <style name="FloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/primaryColor</item>
     </style>

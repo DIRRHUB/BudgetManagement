@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.budgetmanagement.databinding.ActivityMainBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -73,23 +72,27 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
         SpecialFunction.hideKeyboard(binding.navigationView);
         if(SpecialFunction.isNetworkAvailable()){
             fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack(null);
             switch (item.getItemId()) {
                 case R.id.home:
-                    setHomeFragment();
+                    fragmentTransaction.replace(binding.fragmentContainerView.getId(), homeFragment).commit();
                     binding.floatingActionButton.show();
                     setDrawerClosed(true);
                     return true;
                 case R.id.new_purchase:
                     fragmentTransaction.replace(binding.fragmentContainerView.getId(), new NewPurchaseFragment()).commit();
                     binding.floatingActionButton.hide();
+                    setDrawerClosed(true);
                     return true;
                 case R.id.settings:
                     fragmentTransaction.replace(binding.fragmentContainerView.getId(), settingsFragment).commit();
                     binding.floatingActionButton.hide();
+                    setDrawerClosed(true);
                     return true;
                 case R.id.list_purchases:
                     fragmentTransaction.replace(binding.fragmentContainerView.getId(), purchasesListFragment).commit();
                     binding.floatingActionButton.hide();
+                    setDrawerClosed(true);
                     return true;
                 case R.id.signout:
                     signOut();
@@ -102,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
             return true;
         }
     };
-
 
     private final View.OnClickListener listener = view -> {
         if(view.getId()==R.id.topAppBar){
@@ -179,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
 
     private void setHomeFragment(){
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(binding.fragmentContainerView.getId(), homeFragment).commit();
     }
 

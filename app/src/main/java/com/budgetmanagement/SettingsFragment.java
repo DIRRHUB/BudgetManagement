@@ -27,7 +27,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         databaseContent = new DatabaseContent();
         account = new Account();
-        ((DrawerLocker) requireActivity()).setDrawerClosed(true);
     }
 
     @Override
@@ -98,20 +97,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         && !TextUtils.isEmpty(binding.username.getText().toString())
                         && binding.username.getText().toString().length() <= 30) {
                     account.setPersonName(binding.username.getText().toString());
+                    databaseContent.saveToDatabase(account);
                 }
                 break;
             case R.id.setBudget:
                 if (!TextUtils.isEmpty(binding.editBudget.getText().toString()) && Double.parseDouble(binding.editBudget.getText().toString()) != account.getBudget()) {
                     setBudgetConfirmation();
+                    databaseContent.saveToDatabase(account);
                 }
                 break;
             case R.id.setCurrencyType:
                 account.setCurrencyType(binding.editCurrencyType.getSelectedItem().toString());
                 databaseContent.saveToDatabase(account);
                 break;
-        }
-        if (SpecialFunction.isNetworkAvailable()) {
-            databaseContent.saveToDatabase(account);
         }
     }
 }

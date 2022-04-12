@@ -67,7 +67,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(@NonNull View view) {
             super(view);
             this.textName = view.findViewById(R.id.textName);
-            this.textCategory = view.findViewById(R.id.textCategory);
+            this.textCategory = view.findViewById(R.id.editPrice);
             this.textDate = view.findViewById(R.id.textDate);
             this.textPrice = view.findViewById(R.id.textPrice);
             this.textCurrency = view.findViewById(R.id.textCurrency);
