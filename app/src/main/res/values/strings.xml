@@ -55,6 +55,8 @@
     <string name="all_days_sort">Всё время</string>
     <string name="show_time">Показать статистику за:</string>
     <string name="change_budget_alert">Вы уверены, что хотите изменить бюджет на месяц?</string>
+    <string name="update_budget_alert">Обновить бюджет в этом месяце?</string>
+    <string name="change_currency_alert">Вы уверены, что хотите изменить валюту аккаунта?</string>
     <string name="cancel">Отменить</string>
     <string name="deleted">Удалено</string>
     <string name="confirm_same_purchase">Подтвердить добавление аналогичной покупки</string>

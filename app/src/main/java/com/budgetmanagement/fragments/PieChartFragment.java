@@ -1,5 +1,6 @@
 package com.budgetmanagement.fragments;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import com.budgetmanagement.databinding.FragmentPieChartBinding;
 import com.budgetmanagement.services.ChartManager;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
+
+import java.util.Objects;
 
 public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;

@@ -14,6 +14,7 @@ import android.graphics.Color;
 
 import com.budgetmanagement.entity.Account;
 import com.budgetmanagement.database.DatabaseContent;
+import com.budgetmanagement.interfaces.BarChartCallback;
 import com.budgetmanagement.interfaces.PieChartCallback;
 import com.budgetmanagement.databinding.FragmentBarChartBinding;
 import com.budgetmanagement.databinding.FragmentPieChartBinding;

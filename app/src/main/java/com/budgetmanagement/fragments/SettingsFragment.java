@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -39,13 +42,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         binding.setName.setOnClickListener(this);
         binding.setBudget.setOnClickListener(this);
-        binding.setCurrencyType.setOnClickListener(this);
         if (SpecialFunction.isNetworkAvailable()) {
             databaseContent.loadAccountFromDatabase(account -> {
                 this.account = account;
                 setUsername();
                 setBudget();
                 setCurrencyType();
+                fillSpinners();
             });
         } else {
             startActivity(new Intent(getActivity(), InternetTroubleActivity.class));
@@ -57,9 +60,23 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         binding.username.setText(account.getPersonName());
     }
 
+    private void fillSpinners(){
+        Resources r = getResources();
+        String[] currencyArray = r.getStringArray(R.array.list_currency);
+        ArrayAdapter<String> adapterCurrencyMenu = new ArrayAdapter<>(requireContext(), R.layout.list_item_spinner, currencyArray);
+        binding.spinnerEditCurrency.setAdapter(adapterCurrencyMenu);
+        binding.spinnerEditCurrency.setOnItemClickListener((adapterView, view, i, l) -> {
+            if(view.getId()==R.id.spinnerEditCurrency) {
+                setCurrencyConfirmation(adapterView.getSelectedItem().toString());
+            }
+        });
+    }
+
     private void setBudget() {
         try {
-            account.setBudget(Double.parseDouble(binding.editBudget.getText().toString().replace(",", ".")));
+            double newBudget = (Double.parseDouble(binding.editBudget.getText().toString().replace(",", ".")));
+            //TODO Update budgetLeft
+            account.setBudget(newBudget);
             databaseContent.saveToDatabase(account);
         } catch (NumberFormatException e) {
             Log.e("Error parse to double", binding.editBudget.getText().toString());
@@ -68,26 +85,42 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setBudgetConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 setBudget();
+                builder.setMessage(R.string.update_budget_alert)
+                        .setPositiveButton("Да", (dialog2, which2) -> {
+                            if(which2 == DialogInterface.BUTTON_POSITIVE){
+                                account.setBudgetLeft(account.getBudget());
+                                databaseContent.saveToDatabase(account);
+                            }
+                        })
+                        .setNegativeButton("Нет", null).show();
+            }
+        };
+        builder.setMessage(R.string.change_budget_alert)
+                .setPositiveButton("Да", dialogClickListener)
+                .setNegativeButton("Нет", dialogClickListener).show();
+
+    }
+
+    private void setCurrencyConfirmation(String currency){
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            if(which == DialogInterface.BUTTON_POSITIVE) {
+                account.setCurrencyType(currency);
+                databaseContent.saveToDatabase(account);
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(R.string.change_budget_alert).setPositiveButton("Да", dialogClickListener).setNegativeButton("Нет", dialogClickListener).show();
+        builder.setMessage(R.string.change_currency_alert)
+                .setPositiveButton("Да", dialogClickListener)
+                .setNegativeButton("Нет", dialogClickListener).show();
     }
+
 
     private void setCurrencyType() {
-        selectSpinnerValue(binding.editCurrencyType, account.getCurrencyType());
-    }
-
-    private void selectSpinnerValue(@NonNull Spinner spinner, String myString) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equals(myString)) {
-                spinner.setSelection(i);
-                break;
-            }
-        }
+        binding.spinnerEditCurrency.setText(account.getCurrencyType());
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -110,10 +143,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     setBudgetConfirmation();
                     databaseContent.saveToDatabase(account);
                 }
-                break;
-            case R.id.setCurrencyType:
-                account.setCurrencyType(binding.editCurrencyType.getSelectedItem().toString());
-                databaseContent.saveToDatabase(account);
                 break;
         }
     }

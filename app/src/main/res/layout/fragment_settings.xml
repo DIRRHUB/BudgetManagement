@@ -9,17 +9,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
 
         <TextView
             android:id="@+id/textSettings"
-            android:layout_width="350dp"
-            android:layout_height="37dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/profile_settings"
             android:textSize="20sp"
@@ -27,103 +28,105 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/setName"
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/ok_button"
-            app:layout_constraintStart_toEndOf="@+id/username"
-            app:layout_constraintTop_toBottomOf="@+id/textSettings"
-            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="204dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textSettings"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/username"
-            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textSettings" />
+            app:layout_constraintTop_toBottomOf="@+id/textSettings">
 
-        <TextView
-            android:id="@+id/budgetTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="@string/username"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textSettings">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:textSize="16sp"
+                    tools:ignore="SpeakableTextPresentCheck,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/setName"
+                android:layout_width="80dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/ok_button"
+                tools:ignore="TextContrastCheck,DuplicateSpeakableTextCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:text="@string/set_budget_text"
-            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2">
 
-        <TextView
-            android:id="@+id/currencyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:text="@string/currency_type"
-            android:textSize="16sp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout2"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:hint="@string/set_budget_text"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editBudget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    android:textSize="16sp"
+                    tools:ignore="SpeakableTextPresentCheck,TextContrastCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/setBudget"
+                android:layout_width="80dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/ok_button"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout5"
+                app:layout_constraintTop_toBottomOf="@+id/setName"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menu_currency"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+            android:layout_width="288dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:hint="@string/currency_type"
+            app:boxBackgroundColor="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/budgetTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <EditText
-            android:id="@+id/editBudget"
-            android:layout_width="106dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:ems="10"
-            android:inputType="numberSigned"
-            android:longClickable="false"
-            app:layout_constraintStart_toEndOf="@+id/budgetTextView"
-            app:layout_constraintTop_toBottomOf="@+id/username"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <AutoCompleteTextView
+                android:id="@+id/spinnerEditCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="TextContrastCheck" />
 
-        <Button
-            android:id="@+id/setBudget"
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/ok_button"
-            app:layout_constraintStart_toEndOf="@+id/editBudget"
-            app:layout_constraintTop_toBottomOf="@+id/setName" />
-
-        <Button
-            android:id="@+id/setCurrencyType"
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/ok_button"
-            app:layout_constraintStart_toEndOf="@+id/editCurrencyType"
-            app:layout_constraintTop_toBottomOf="@+id/setBudget" />
-
-        <Spinner
-            android:id="@+id/editCurrencyType"
-            android:layout_width="112dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:entries="@array/list_currency"
-            app:layout_constraintStart_toEndOf="@+id/currencyTextView"
-            app:layout_constraintTop_toBottomOf="@+id/editBudget" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -31,7 +31,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
             android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:hint="@string/name_purchase"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
             android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:hint="@string/price"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +73,7 @@
             android:id="@+id/menu_category"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:hint="@string/category"
             app:boxBackgroundColor="#00FFFFFF"
@@ -103,7 +103,7 @@
             app:layout_constraintTop_toBottomOf="@+id/menu_category">
 
             <AutoCompleteTextView
-                android:id="@+id/spinnerEditSpecialCurrency"
+                android:id="@+id/spinnerEditCurrency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"

@@ -62,14 +62,14 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
         ArrayAdapter<String> adapterCurrencyMenu = new ArrayAdapter<>(requireContext(), R.layout.list_item_spinner, currencyArray);
         binding.spinnerEditCategory.setAdapter(adapterCategoryMenu);
         binding.spinnerEditCategory.setOnItemClickListener(spinnerAdapter);
-        binding.spinnerEditSpecialCurrency.setAdapter(adapterCurrencyMenu);
-        binding.spinnerEditSpecialCurrency.setOnItemClickListener(spinnerAdapter);
+        binding.spinnerEditCurrency.setAdapter(adapterCurrencyMenu);
+        binding.spinnerEditCurrency.setOnItemClickListener(spinnerAdapter);
     }
 
     private final AdapterView.OnItemClickListener spinnerAdapter = (adapterView, view, i, l) -> {
         if(view.getId()==R.id.spinnerEditCategory){
             selectedCategory = adapterView.getSelectedItem().toString();
-        } else if (view.getId()==R.id.spinnerEditSpecialCurrency){
+        } else if (view.getId()==R.id.spinnerEditCurrency){
             selectedCurrency = adapterView.getSelectedItem().toString();
         }
     };
@@ -137,7 +137,7 @@ public class NewPurchaseFragment extends Fragment implements View.OnClickListene
 
     private void setCurrency() {
         if (purchase == null) {
-            binding.spinnerEditSpecialCurrency.setText(account.getCurrencyType());
+            binding.spinnerEditCurrency.setText(account.getCurrencyType());
             selectedCurrency = account.getCurrencyType();
         }
     }
